@@ -1,0 +1,2492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GrihaLaxmi">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1a3a8c">
+<title>GrihaLaxmi</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{
+  --p1:#1a3a8c;--p2:#0071e3;--p3:#40a9ff;--pl:#e8f0fe;--pd:#0051a8;
+  --teal:#00B4A2;--tl:#E0F7F5;
+  --purple:#7C5CBF;--purl:#F0EBFF;
+  --green:#27AE60;--gl:#E8F8F0;
+  --amber:#F39C12;--al:#FEF9E7;
+  --red:#E74C3C;--rl:#FDEDEC;
+  --text:#1a2440;--tm:#6b7a99;--border:#dde4f0;--bg:#f0f4ff;
+  --shadow:0 2px 14px rgba(26,58,140,0.10);--radius:16px;--rsm:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:-apple-system,'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:72px;}
+h1,h2{font-family:-apple-system,sans-serif;font-weight:700;}
+
+/* TOPBAR */
+.topbar{background:linear-gradient(135deg,var(--p1),var(--p2));color:white;padding:14px 16px 12px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(26,58,140,0.3);}
+.topbar h1{font-size:20px;font-weight:800;letter-spacing:0.3px;}
+.topbar-sub{font-size:10px;opacity:.8;margin-top:1px;}
+
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);display:flex;z-index:100;box-shadow:0 -2px 12px rgba(26,58,140,0.08);}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;padding:6px 1px 5px;border:none;background:none;cursor:pointer;font-family:inherit;color:var(--tm);font-size:8.5px;font-weight:700;gap:2px;transition:color 0.2s;}
+.nb.active{color:var(--p2);}
+.nb.active .ni{filter:drop-shadow(0 1px 3px rgba(0,113,227,0.3));}
+.ni{font-size:20px;}
+
+/* TABS */
+.tab{display:none;padding:14px;}
+.tab.active{display:block;}
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;}
+.st{font-size:19px;font-weight:800;color:var(--p1);}
+.ab{background:linear-gradient(135deg,var(--p1),var(--p2));color:white;border:none;border-radius:22px;padding:8px 16px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,113,227,0.3);}
+.card{background:white;border-radius:var(--radius);padding:14px;margin-bottom:12px;box-shadow:var(--shadow);}
+
+/* INPUTS */
+.sw{position:relative;margin-bottom:13px;}
+.si{width:100%;padding:10px 13px 10px 37px;border:1.5px solid var(--border);border-radius:24px;font-size:14px;font-family:inherit;outline:none;background:white;color:var(--text);font-weight:600;}
+.si::placeholder{color:#b0bcd4;font-weight:400;}
+.si:focus{border-color:var(--p2);box-shadow:0 0 0 3px rgba(0,113,227,0.1);}
+.sic{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;}
+
+/* INNER TABS */
+.itabs{display:flex;background:var(--bg);border-radius:var(--rsm);padding:3px;margin-bottom:13px;gap:3px;}
+.it{flex:1;text-align:center;padding:7px 4px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;border:none;background:none;font-family:inherit;color:var(--tm);}
+.it.active{background:white;color:var(--p2);box-shadow:0 1px 5px rgba(0,113,227,0.15);}
+
+/* SHOPPING */
+.cath{background:linear-gradient(135deg,#eef3ff,#e8f0fe);border-radius:var(--rsm);padding:10px 13px;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;border:1px solid #d4e0f7;}
+.ir{display:flex;align-items:center;gap:8px;padding:8px 10px;background:white;border-radius:var(--rsm);margin-bottom:4px;border:1.5px solid var(--border);}
+.ir.low{border-color:var(--p2);background:#eef3ff;}
+.ic{width:20px;height:20px;border-radius:5px;cursor:pointer;flex-shrink:0;accent-color:var(--p2);}
+.iname{flex:1;font-size:13px;font-weight:600;color:var(--text);}
+.ir.low .iname{color:var(--p1);font-weight:700;}
+.lb{background:#eef3ff;border:1.5px solid var(--p2);color:var(--p1);border-radius:20px;padding:3px 9px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;white-space:nowrap;}
+.lb.mk{background:var(--p2);color:white;}
+.db{background:none;border:none;color:#c0c8d8;cursor:pointer;font-size:14px;padding:2px;flex-shrink:0;}
+
+/* BILLS */
+.br{display:flex;align-items:center;gap:9px;padding:12px;background:white;border-radius:var(--rsm);margin-bottom:8px;box-shadow:var(--shadow);border-left:4px solid var(--p2);}
+.br.overdue{border-left-color:var(--red);}
+.br.due-soon{border-left-color:var(--amber);}
+.br.paid{border-left-color:var(--green);opacity:.75;}
+.pdb{background:var(--gl);border:1.5px solid var(--green);color:#1a7a40;border-radius:20px;padding:4px 10px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;}
+.pdbg{background:var(--green);color:white;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:700;}
+.dub{background:var(--al);color:#a06800;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:700;}
+.ovb{background:var(--rl);color:var(--red);border-radius:20px;padding:3px 8px;font-size:11px;font-weight:700;}
+.nb2{background:var(--al);border:1.5px solid var(--amber);border-radius:var(--rsm);padding:9px 12px;margin-bottom:12px;font-size:12px;color:#7a4f00;display:flex;align-items:center;gap:7px;}
+
+/* MILK */
+.msm{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.sb{background:white;border-radius:var(--rsm);padding:12px;text-align:center;box-shadow:var(--shadow);}
+.sn{font-size:22px;font-weight:800;}
+.sl{font-size:10px;color:var(--tm);margin-top:2px;}
+.mnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.ml{font-size:15px;font-weight:700;color:var(--p1);}
+.mb{background:white;border:1.5px solid var(--border);border-radius:50%;width:32px;height:32px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow);}
+.mcg{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.mc{border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border:1.5px solid var(--border);background:white;padding:3px 1px;min-height:40px;transition:all 0.15s;}
+.mc .mcd{font-size:10px;color:var(--tm);font-weight:600;line-height:1;}
+.mc .mcq{font-size:9px;font-weight:800;line-height:1;margin-top:2px;}
+.mc.hq{background:linear-gradient(135deg,var(--p1),var(--p2));border-color:var(--p2);}
+.mc.hq .mcd,.mc.hq .mcq{color:white;}
+.mc.nm{background:var(--rl);border-color:var(--red);}
+.mc.nm .mcd,.mc.nm .mcq{color:var(--red);}
+.mc.fut{opacity:.3;cursor:default;}
+.dl{font-size:9px;color:var(--tm);text-align:center;padding:2px 0;font-weight:600;}
+
+/* HELP */
+.ac{aspect-ratio:1;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--border);background:white;font-weight:700;line-height:1.2;padding:1px;transition:all 0.15s;}
+.ac .acd{font-size:9px;color:var(--tm);}
+.ac .acm{font-size:8px;}
+.ac.present{background:linear-gradient(135deg,#27AE60,#2ecc71);border-color:var(--green);}
+.ac.present .acd,.ac.present .acm{color:white;}
+.ac.absent{background:var(--rl);border-color:var(--red);}
+.ac.absent .acd,.ac.absent .acm{color:var(--red);}
+.ac.holiday{background:var(--purl);border-color:var(--purple);}
+.ac.holiday .acd,.ac.holiday .acm{color:var(--purple);}
+.ac.fut{opacity:.3;cursor:default;}
+.sr{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-top:1px solid var(--border);}
+
+/* CONTACTS */
+.cc{background:white;border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;}
+.clb{background:var(--gl);border:none;color:#1a7a40;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;text-decoration:none;flex-shrink:0;}
+.wb{background:#e7fce8;border:none;color:#128C7E;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;text-decoration:none;flex-shrink:0;}
+
+/* SOS */
+.sos-btn-contact{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#c0392b,#e74c3c);color:white;border:none;border-radius:var(--rsm);padding:14px;font-size:15px;font-family:inherit;font-weight:800;cursor:pointer;margin-bottom:16px;box-shadow:0 3px 12px rgba(192,57,43,0.4);animation:sosPulse 2s infinite;}
+@keyframes sosPulse{0%,100%{box-shadow:0 3px 12px rgba(192,57,43,0.4);}50%{box-shadow:0 3px 20px rgba(192,57,43,0.7);}}
+
+/* CASH */
+.cbc{background:linear-gradient(135deg,var(--p1),var(--p2));color:white;border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:0 4px 16px rgba(26,58,140,0.3);}
+.cbn{font-size:32px;font-weight:800;}
+.cio{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.cm{background:rgba(255,255,255,.15);border-radius:10px;padding:8px;text-align:center;}
+.tr{display:flex;align-items:center;gap:9px;padding:11px;background:white;border-radius:var(--rsm);margin-bottom:7px;box-shadow:var(--shadow);border-left:4px solid var(--green);}
+.tr.out{border-left-color:var(--red);}
+
+/* TODO */
+.ti{display:flex;align-items:center;gap:10px;padding:11px 13px;background:white;border-radius:var(--rsm);margin-bottom:7px;box-shadow:var(--shadow);border-left:4px solid var(--p2);}
+.ti.done{opacity:.55;border-left-color:var(--border);}
+.tck{width:22px;height:22px;border-radius:50%;cursor:pointer;flex-shrink:0;accent-color:var(--p2);}
+.ttxt{flex:1;font-size:13px;font-weight:600;}
+.ti.done .ttxt{text-decoration:line-through;color:var(--tm);}
+.tdel{background:none;border:none;color:#c0c8d8;cursor:pointer;font-size:16px;padding:4px;flex-shrink:0;line-height:1;}
+
+/* MODAL */
+.mo{display:none;position:fixed;inset:0;background:rgba(10,20,60,0.55);z-index:200;align-items:flex-end;justify-content:center;}
+.mo.open{display:flex;}
+.md{background:white;border-radius:24px 24px 0 0;padding:22px 18px 30px;width:100%;max-height:88vh;overflow-y:auto;}
+.md h2{font-size:18px;margin-bottom:14px;color:var(--p1);}
+.mc2{float:right;background:var(--bg);border:none;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;line-height:30px;text-align:center;color:var(--tm);}
+.fg{margin-bottom:12px;}
+.fl{font-size:12px;font-weight:700;color:var(--tm);margin-bottom:5px;display:block;letter-spacing:0.3px;}
+.fi{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--rsm);font-size:14px;font-family:inherit;outline:none;background:white;color:var(--text);font-weight:600;}
+.fi::placeholder{color:#b0bcd4;font-weight:400;}
+.fi:focus{border-color:var(--p2);box-shadow:0 0 0 3px rgba(0,113,227,0.1);}
+select.fi{appearance:none;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sb2{width:100%;background:linear-gradient(135deg,var(--p1),var(--p2));color:white;border:none;border-radius:var(--rsm);padding:13px;font-size:15px;font-family:inherit;font-weight:700;cursor:pointer;margin-top:6px;box-shadow:0 3px 10px rgba(0,113,227,0.3);}
+.es{text-align:center;padding:36px 20px;color:var(--tm);}
+
+.fab{position:fixed;bottom:80px;right:16px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--p1),var(--p2));color:white;border:none;font-size:26px;cursor:pointer;box-shadow:0 4px 16px rgba(26,58,140,0.4);z-index:90;display:flex;align-items:center;justify-content:center;transition:transform 0.15s;line-height:1;}
+.fab:active{transform:scale(0.92);}
+.hero{background:linear-gradient(135deg,var(--p1),var(--p2));border-radius:var(--radius);padding:16px;margin-bottom:14px;color:white;box-shadow:0 4px 16px rgba(26,58,140,0.25);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <h1>🪔 GrihaLaxmi</h1>
+    <div class="topbar-sub" id="tdate"></div>
+  </div>
+  <button onclick="openM('m-about')" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:0.3px;">ℹ️ About</button>
+</div>
+
+<!-- SHOPPING -->
+<div class="tab active" id="tab-shopping">
+  <div class="itabs">
+    <button class="it active" onclick="shopView('items',this)">📦 Items</button>
+    <button class="it" onclick="shopView('cart',this)">🛒 Cart</button>
+    <button class="it" onclick="shopView('history',this)">📋 History</button>
+  </div>
+  <div id="sv-items">
+    <div class="sh">
+      <div class="st">Shopping List</div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="shareShoppingList()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+        <button class="ab" onclick="openAddBroad()" style="background:linear-gradient(135deg,var(--teal),#007a6e);">+ Category</button>
+        <button class="ab" onclick="openM('m-additem')">+ Item</button>
+      </div>
+    </div>
+    <div class="sw"><span class="sic">🔍</span><input class="si" id="srch" placeholder="Search items..." oninput="renderShop()"/></div>
+    <div id="shop-list"></div>
+  </div>
+  <div id="sv-cart" style="display:none;">
+    <div class="sh"><div class="st">🛒 Cart</div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="shareCart()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+        <button class="ab" onclick="saveCart()">✓ Save Order</button>
+      </div>
+    </div>
+    <div id="cart-list"></div>
+  </div>
+  <div id="sv-history" style="display:none;">
+    <div class="sh"><div class="st">📋 History</div></div>
+    <div id="hist-list"></div>
+  </div>
+</div>
+
+<!-- BILLS -->
+<div class="tab" id="tab-bills">
+  <div class="sh"><div class="st">💡 Bills</div><button class="ab" onclick="openM('m-addbill')">+ Add</button></div>
+  <div id="bills-soon"></div><div id="bills-list"></div>
+</div>
+
+<!-- MILK -->
+<div class="tab" id="tab-milk">
+  <div class="sh">
+    <div class="st">🥛 Milkman</div>
+    <div style="display:flex;gap:6px;">
+      <button onclick="shareMilk()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+      <button class="ab" onclick="openM('m-addmilkman')">+ Add Milkman</button>
+    </div>
+  </div>
+  <div class="mnav"><button class="mb" onclick="chMilk(-1)">◀</button><div class="ml" id="milk-ml"></div><button class="mb" onclick="chMilk(1)">▶</button></div>
+  <div id="milk-list"></div>
+</div>
+
+<!-- HELP -->
+<div class="tab" id="tab-help">
+  <div class="sh">
+    <div class="st">👨‍👩‍👧 Staff</div>
+    <div style="display:flex;gap:6px;">
+      <button onclick="shareStaff()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+      <button class="ab" onclick="openM('m-addhelp')" style="background:linear-gradient(135deg,var(--purple),#9b59b6);">+ Add</button>
+    </div>
+  </div>
+  <div class="mnav"><button class="mb" onclick="chHelp(-1)">◀</button><div class="ml" id="help-ml"></div><button class="mb" onclick="chHelp(1)">▶</button></div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:9px;font-size:11px;color:var(--tm);">
+    <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--green);margin-right:3px;"></span>Present</span>
+    <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--rl);border:1px solid var(--red);margin-right:3px;"></span>Absent</span>
+    <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--purl);border:1px solid var(--purple);margin-right:3px;"></span>Holiday</span>
+  </div>
+  <div style="font-size:11px;color:var(--tm);margin-bottom:12px;">Tap date: Present ✓ → Absent ✗ → Holiday H → Present</div>
+  <div id="help-list"></div>
+</div>
+
+<!-- CONTACTS -->
+<div class="tab" id="tab-contacts">
+  <div class="sh">
+    <div class="st">🔧 Services</div>
+    <div style="display:flex;gap:6px;">
+      <button onclick="shareServices()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+      <button class="ab" onclick="openM('m-addcon')">+ Add</button>
+    </div>
+  </div>
+  <!-- SOS BUTTON in contacts tab -->
+  <button class="sos-btn-contact" onclick="openSOS()">🆘 SOS — Emergency Alert</button>
+  <div class="sw"><span class="sic">🔍</span><input class="si" id="con-srch" placeholder="Search contacts..." oninput="renderCon()"/></div>
+  <div id="con-list"></div>
+</div>
+
+<!-- CASH -->
+<div class="tab" id="tab-cash">
+  <div id="exp-summary"></div>
+  <div class="mnav"><button class="mb" onclick="chCash(-1)">◀</button><div class="ml" id="cash-ml"></div><button class="mb" onclick="chCash(1)">▶</button></div>
+  <div class="sh">
+    <div class="st">💸 Expenses</div>
+    <div style="display:flex;gap:6px;">
+      <button onclick="shareCash()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+      <button class="ab" onclick="openM('m-addtxn')">+ Entry</button>
+    </div>
+  </div>
+  <div id="cash-list"></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- TODO -->
+<div class="tab" id="tab-todo">
+  <div class="sh">
+    <div class="st">✅ To Do</div>
+    <div style="display:flex;gap:6px;">
+      <button onclick="shareTodo()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+      <button onclick="clearDone()" style="background:white;border:1.5px solid var(--border);color:var(--tm);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">🧹 Clear Done</button>
+      <button class="ab" onclick="openM('m-addtodo')">+ Add</button>
+    </div>
+  </div>
+  <div class="itabs" id="todo-tabs">
+    <button class="it active" onclick="todoFilt('all',this)">All</button>
+    <button class="it" onclick="todoFilt('pending',this)">Pending</button>
+    <button class="it" onclick="todoFilt('done',this)">Done ✓</button>
+  </div>
+  <div id="todo-list"></div>
+</div>
+
+<!-- Floating Action Button -->
+<button class="fab" id="fab-btn" onclick="fabAction()" title="Add new entry">＋</button>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="nb active" onclick="showTab('shopping',this)"><span class="ni">🛒</span>Cart</button>
+  <button class="nb" onclick="showTab('bills',this)"><span class="ni">💡</span>Bills</button>
+  <button class="nb" onclick="showTab('milk',this)"><span class="ni">🥛</span>Milk</button>
+  <button class="nb" onclick="showTab('help',this)"><span class="ni">👫</span>Staff</button>
+  <button class="nb" onclick="showTab('contacts',this)"><span class="ni">🔧</span>Services</button>
+  <button class="nb" onclick="showTab('cash',this)"><span class="ni">💰</span>₹ Book</button>
+  <button class="nb" onclick="showTab('todo',this)"><span class="ni">✅</span>To Do</button>
+</nav>
+
+<!-- ===== MODALS ===== -->
+
+<!-- SOS Modal -->
+<div class="mo" id="m-sos">
+  <div class="md">
+    <div style="text-align:center;margin-bottom:18px;">
+      <div style="font-size:44px;">🆘</div>
+      <div style="font-size:20px;font-weight:800;color:var(--red);margin-top:6px;">Emergency Alert</div>
+      <div style="font-size:12px;color:var(--tm);margin-top:4px;">Each action needs confirmation before sending</div>
+    </div>
+    <div id="sos-clist"></div>
+    <button onclick="closeM('m-sos')" style="width:100%;background:var(--bg);border:1.5px solid var(--border);color:var(--tm);border-radius:var(--rsm);padding:13px;font-size:14px;font-family:inherit;font-weight:700;cursor:pointer;margin-top:6px;">✅ Cancel — I Am Safe</button>
+    <div style="text-align:center;margin-top:12px;"><button onclick="openM('m-sosset');closeM('m-sos');" style="background:none;border:none;color:var(--tm);font-size:12px;font-family:inherit;cursor:pointer;text-decoration:underline;">⚙️ Edit Emergency Contacts</button></div>
+  </div>
+</div>
+
+<!-- SOS Settings -->
+<div class="mo" id="m-sosset">
+  <div class="md">
+    <button class="mc2" onclick="closeM('m-sosset')">✕</button>
+    <h2>🆘 Emergency Contacts</h2>
+    <div style="font-size:12px;color:var(--tm);margin-bottom:14px;">Add up to 3 contacts (husband, family, neighbour)</div>
+    <div id="sos-slist"></div>
+    <button onclick="addSOSField()" style="width:100%;background:var(--bg);border:1.5px solid var(--p2);color:var(--p2);border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:10px;">+ Add Another Contact</button>
+    <button class="sb2" onclick="saveSOS()">Save Emergency Contacts</button>
+  </div>
+</div>
+
+<!-- Add Item -->
+<div class="mo" id="m-additem">
+  <div class="md"><button class="mc2" onclick="closeM('m-additem')">✕</button><h2>Add New Item</h2>
+    <div class="fg"><label class="fl">Broad Category</label><select class="fi" id="ni-broad" onchange="updateSubOptions()"></select></div>
+    <div class="fg"><label class="fl">Sub-Category</label><select class="fi" id="ni-sub"></select></div>
+    <div class="fg"><label class="fl">Item Name</label><input class="fi" id="ni-name" placeholder="e.g. Basmati Rice"/></div>
+    <button class="sb2" onclick="addItem()">Add Item</button>
+  </div>
+</div>
+
+<!-- Add Category -->
+<div class="mo" id="m-addcat">
+  <div class="md"><button class="mc2" onclick="closeM('m-addcat')">✕</button><h2>Add New Category</h2>
+    <div class="fg"><label class="fl">Choose Icon</label>
+      <div style="margin-bottom:8px;font-size:13px;color:var(--tm);">Selected: <span id="cat-emoji" style="font-size:22px;">🛍️</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <span style="font-size:26px;cursor:pointer;" onclick="pickEmoji(this)">🛍️</span><span style="font-size:26px;cursor:pointer;" onclick="pickEmoji(this)">🍱</span>
+        <span style="font-size:26px;cursor:pointer;" onclick="pickEmoji(this)">🐾</span><span style="font-size:26px;cursor:pointer;" onclick="pickEmoji(this)">👶</span>
+        <span style="font-size:26px;cursor:pointer;" onclick="pickEmoji(this)">🏋️</span><span style="font-size:26px;cursor:pointer;" onclick="pickEmoji(this)">🌿</span>
+        <span style="font-size:26px;cursor:pointer;" onclick="pickEmoji(this)">🧸</span><span style="font-size:26px;cursor:pointer;" onclick="pickEmoji(this)">🔧</span>
+        <span style="font-size:26px;cursor:pointer;" onclick="pickEmoji(this)">📚</span><span style="font-size:26px;cursor:pointer;" onclick="pickEmoji(this)">🎁</span>
+        <span style="font-size:26px;cursor:pointer;" onclick="pickEmoji(this)">💊</span><span style="font-size:26px;cursor:pointer;" onclick="pickEmoji(this)">🍳</span>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Category Name</label><input class="fi" id="nc-name" placeholder="e.g. Baby Items"/></div>
+    <button class="sb2" onclick="addCat()">Add Category</button>
+  </div>
+</div>
+
+<!-- Add Bill -->
+<div class="mo" id="m-addbill">
+  <div class="md"><button class="mc2" onclick="closeM('m-addbill')">✕</button><h2 id="bill-modal-title">Add Bill</h2>
+    <input type="hidden" id="b-edit-id" value=""/>
+    <div class="fg"><label class="fl">Bill Name</label><input class="fi" id="b-name" placeholder="e.g. Electricity Bill"/></div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="b-amt" type="number" placeholder="0"/></div>
+      <div class="fg"><label class="fl">Due Date (day)</label><input class="fi" id="b-due" type="number" min="1" max="31" placeholder="e.g. 15"/></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Cycle</label><select class="fi" id="b-cycle"><option value="monthly">Monthly</option><option value="quarterly">Quarterly</option><option value="yearly">Yearly</option></select></div>
+      <div class="fg">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+          <label class="fl" style="margin-bottom:0;">Bill Type</label>
+          <button onclick="openManageList('billicons')" style="background:none;border:none;color:var(--p2);font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">✏️ Edit/Add</button>
+        </div>
+        <select class="fi" id="b-icon"></select>
+      </div>
+    </div>
+    <button class="sb2" id="bill-save-btn" onclick="saveBill()">Add Bill</button>
+  </div>
+</div>
+
+<!-- Milk Entry -->
+<div class="mo" id="m-milkentry">
+  <div class="md"><button class="mc2" onclick="closeM('m-milkentry')">✕</button><h2 id="me-title">Milk Entry</h2>
+    <div style="font-size:13px;color:var(--tm);margin-bottom:13px;">Enter exact quantity received. Enter 0 if not delivered.</div>
+    <div class="fg"><label class="fl">Quantity Received (Litres)</label><input class="fi" id="me-qty" type="number" step="0.5" min="0" placeholder="e.g. 1.5"/></div>
+    <input type="hidden" id="me-day"/><input type="hidden" id="me-key"/><input type="hidden" id="me-mid"/>
+    <button class="sb2" onclick="saveMilkEntry()">Save</button>
+  </div>
+</div>
+
+<!-- Milk Payment -->
+<div class="mo" id="m-milkpay">
+  <div class="md"><button class="mc2" onclick="closeM('m-milkpay')">✕</button><h2>Record Payment</h2>
+    <input type="hidden" id="mp-mid"/>
+    <div class="fg"><label class="fl">Amount Paid (₹)</label><input class="fi" id="mp-amt" type="number" placeholder="0"/></div>
+    <div class="fg"><label class="fl">Date</label><input class="fi" id="mp-date" type="date"/></div>
+    <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="mp-note" placeholder="e.g. Cash payment"/></div>
+    <button class="sb2" onclick="saveMilkPay()">Save Payment</button>
+  </div>
+</div>
+
+<!-- Add Milkman -->
+<div class="mo" id="m-addmilkman">
+  <div class="md"><button class="mc2" onclick="closeM('m-addmilkman')">✕</button><h2>Add Milkman</h2>
+    <div class="fg"><label class="fl">Milkman Name</label><input class="fi" id="mm-name" placeholder="e.g. Ramesh"/></div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Default Daily Qty (L)</label><input class="fi" id="mm-qty" type="number" step="0.5" placeholder="e.g. 2"/></div>
+      <div class="fg"><label class="fl">Rate per Litre (₹)</label><input class="fi" id="mm-rate" type="number" placeholder="e.g. 68"/></div>
+    </div>
+    <button class="sb2" onclick="addMilkman()">Add Milkman</button>
+  </div>
+</div>
+
+<!-- Edit Milkman -->
+<div class="mo" id="m-editmilkman">
+  <div class="md"><button class="mc2" onclick="closeM('m-editmilkman')">✕</button><h2>Edit Milkman</h2>
+    <input type="hidden" id="emm-idx"/>
+    <div class="fg"><label class="fl">Name</label><input class="fi" id="emm-name"/></div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Default Qty (L)</label><input class="fi" id="emm-qty" type="number" step="0.5"/></div>
+      <div class="fg"><label class="fl">Rate per Litre (₹)</label><input class="fi" id="emm-rate" type="number"/></div>
+    </div>
+    <button class="sb2" onclick="saveEditMilkman()">Save Changes</button>
+  </div>
+</div>
+
+<!-- Edit Item -->
+<div class="mo" id="m-edititem">
+  <div class="md"><button class="mc2" onclick="closeM('m-edititem')">✕</button><h2>Edit Item</h2>
+    <input type="hidden" id="ei-key"/>
+    <div class="fg"><label class="fl">Item Name</label><input class="fi" id="ei-name"/></div>
+    <div class="fg"><label class="fl">Broad Category</label><select class="fi" id="ei-broad" onchange="updateEISubOptions()"></select></div>
+    <div class="fg"><label class="fl">Sub-Category</label><select class="fi" id="ei-sub"></select></div>
+    <button class="sb2" onclick="saveEditItem()">Save Changes</button>
+  </div>
+</div>
+
+<!-- Edit Category -->
+<div class="mo" id="m-editcat">
+  <div class="md"><button class="mc2" onclick="closeM('m-editcat')">✕</button><h2>Edit Category</h2>
+    <input type="hidden" id="ecat-old"/>
+    <div class="fg"><label class="fl">Choose Icon</label>
+      <div style="margin-bottom:8px;font-size:13px;color:var(--tm);">Selected: <span id="ecat-emoji" style="font-size:22px;">🛍️</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">🛍️</span><span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">🍱</span>
+        <span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">🐾</span><span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">👶</span>
+        <span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">🏋️</span><span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">🌿</span>
+        <span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">🧸</span><span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">🔧</span>
+        <span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">📚</span><span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">🎁</span>
+        <span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">💊</span><span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">🍳</span>
+        <span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">🌾</span><span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">🥛</span>
+        <span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">🧂</span><span style="font-size:24px;cursor:pointer;" onclick="pickEmojiCat(this)">🧹</span>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Category Name</label><input class="fi" id="ecat-name"/></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">
+      <button class="sb2" onclick="saveEditCat()">Save Changes</button>
+      <button onclick="delCat(document.getElementById('ecat-old').value)" style="padding:13px;border-radius:var(--rsm);border:1.5px solid var(--red);background:white;color:var(--red);font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;">🗑 Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Helper -->
+<div class="mo" id="m-edithelper">
+  <div class="md"><button class="mc2" onclick="closeM('m-edithelper')">✕</button><h2>Edit Staff Member</h2>
+    <input type="hidden" id="eh-idx"/>
+    <div class="fg"><label class="fl">Name</label><input class="fi" id="eh-name"/></div>
+    <div class="fg"><label class="fl">Role</label><select class="fi" id="eh-role"><option>Cook / Bai</option><option>Cleaning</option><option>Driver</option><option>Gardener</option><option>Watchman</option><option>Other</option></select></div>
+    <div class="fg"><label class="fl">Monthly Salary (₹)</label><input class="fi" id="eh-sal" type="number"/></div>
+    <div class="fg"><label class="fl">Holiday Type</label>
+      <select class="fi" id="eh-holtype" onchange="toggleEHolDays()">
+        <option value="sundays">All Sundays (auto-count per month)</option>
+        <option value="fixed">Fixed days per month</option>
+      </select>
+    </div>
+    <div class="fg" id="eh-holdays-row"><label class="fl">Fixed Holidays/Month</label><input class="fi" id="eh-hol" type="number"/></div>
+    <button class="sb2" onclick="saveEditHelper()" style="background:linear-gradient(135deg,var(--purple),#9b59b6);">Save Changes</button>
+  </div>
+</div>
+
+
+<div class="mo" id="m-editsub">
+  <div class="md"><button class="mc2" onclick="closeM('m-editsub')">✕</button>
+    <h2 id="esub-modal-title">Edit Sub-Category</h2>
+    <input type="hidden" id="esub-old"/>
+    <div style="font-size:12px;color:var(--tm);margin-bottom:12px;padding:8px 11px;background:var(--bg);border-radius:var(--rsm);">Under: <strong id="esub-broad-label"></strong></div>
+    <div class="fg"><label class="fl">Sub-Category Name</label><input class="fi" id="esub-name" placeholder="e.g. Atta, Rice & Dal"/></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">
+      <button class="sb2" onclick="saveEditSub()">Save</button>
+      <button id="esub-del-btn" onclick="delSub()" style="padding:13px;border-radius:var(--rsm);border:1.5px solid var(--red);background:white;color:var(--red);font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;">🗑 Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Manage List Modal (reused for payment modes, expense cats, bill types) -->
+<div class="mo" id="m-managelist" style="z-index:300;">
+  <div class="md">
+    <button class="mc2" onclick="closeM('m-managelist')">✕</button>
+    <h2 id="ml-title">Manage List</h2>
+    <div style="font-size:12px;color:var(--tm);margin-bottom:12px;" id="ml-subtitle"></div>
+    <div id="ml-items"></div>
+    <div style="display:flex;gap:8px;margin-top:10px;">
+      <input class="fi" id="ml-new-emoji" placeholder="😀" style="width:60px;flex-shrink:0;text-align:center;font-size:18px;"/>
+      <input class="fi" id="ml-new-name" placeholder="Add new item..."/>
+      <button onclick="addManageItem()" style="background:var(--p2);color:white;border:none;border-radius:var(--rsm);padding:10px 14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;">+</button>
+    </div>
+    <button class="sb2" onclick="closeM('m-managelist')" style="margin-top:10px;">✓ Done</button>
+  </div>
+</div>
+
+<!-- Add Helper -->
+<div class="mo" id="m-addhelp">
+  <div class="md"><button class="mc2" onclick="closeM('m-addhelp')">✕</button><h2>Add Staff Member</h2>
+    <div class="fg"><label class="fl">Name</label><input class="fi" id="h-name" placeholder="e.g. Sunita"/></div>
+    <div class="fg"><label class="fl">Role</label><select class="fi" id="h-role"><option>Cook / Bai</option><option>Cleaning</option><option>Driver</option><option>Gardener</option><option>Watchman</option><option>Other</option></select></div>
+    <div class="fg"><label class="fl">Monthly Salary (₹)</label><input class="fi" id="h-sal" type="number" placeholder="0"/></div>
+    <div class="fg"><label class="fl">Holiday Type</label>
+      <select class="fi" id="h-holtype" onchange="toggleHolDays()">
+        <option value="sundays">All Sundays (auto-count per month)</option>
+        <option value="fixed">Fixed days per month</option>
+      </select>
+    </div>
+    <div class="fg" id="h-holdays-row" style="display:none;"><label class="fl">No. of Fixed Holidays/Month</label><input class="fi" id="h-hol" type="number" placeholder="e.g. 2" value="2"/></div>
+    <button class="sb2" onclick="addHelper()" style="background:linear-gradient(135deg,var(--purple),#9b59b6);">Add Staff Member</button>
+  </div>
+</div>
+
+<!-- Advance -->
+<div class="mo" id="m-adv">
+  <div class="md"><button class="mc2" onclick="closeM('m-adv')">✕</button><h2>💸 Advance Given</h2>
+    <div class="fg"><label class="fl">Helper</label><input class="fi" id="adv-name" readonly/></div>
+    <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="adv-amt" type="number" placeholder="0"/></div>
+    <div class="fg"><label class="fl">Date</label><input class="fi" id="adv-date" type="date"/></div>
+    <input type="hidden" id="adv-id"/>
+    <button class="sb2" onclick="saveAdv()" style="background:linear-gradient(135deg,var(--purple),#9b59b6);">Save Advance</button>
+  </div>
+</div>
+
+<!-- Add Contact -->
+<div class="mo" id="m-addcon">
+  <div class="md"><button class="mc2" onclick="closeM('m-addcon')">✕</button><h2>Add Contact</h2>
+    <div class="fg"><label class="fl">Name</label><input class="fi" id="c-name" placeholder="e.g. Suresh Plumber"/></div>
+    <div class="fg"><label class="fl">Service</label><select class="fi" id="c-role"><option value="🔧 Plumber">🔧 Plumber</option><option value="⚡ Electrician">⚡ Electrician</option><option value="❄️ AC Repair">❄️ AC Repair</option><option value="🪵 Carpenter">🪵 Carpenter</option><option value="🎨 Painter">🎨 Painter</option><option value="🔒 Locksmith">🔒 Locksmith</option><option value="🚗 Car Mechanic">🚗 Car Mechanic</option><option value="📺 Appliance Repair">📺 Appliance Repair</option><option value="🏠 Pest Control">🏠 Pest Control</option><option value="📦 Other">📦 Other</option></select></div>
+    <div class="fg"><label class="fl">Phone</label><input class="fi" id="c-ph" type="tel" placeholder="e.g. 9876543210"/></div>
+    <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="c-note" placeholder="e.g. Very reliable, fair charges"/></div>
+    <button class="sb2" onclick="addCon()">Add Contact</button>
+  </div>
+</div>
+
+<!-- Add Transaction -->
+<div class="mo" id="m-addtxn">
+  <div class="md"><button class="mc2" onclick="closeM('m-addtxn')">✕</button><h2>Add Expense Entry</h2>
+    <div class="fg">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button id="btn-in" onclick="setTtype('in')" style="padding:11px;border-radius:var(--rsm);border:2px solid var(--green);background:var(--green);color:white;font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;">💚 Cash In</button>
+        <button id="btn-out" onclick="setTtype('out')" style="padding:11px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--tm);font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;">🔴 Expense</button>
+      </div>
+      <input type="hidden" id="t-type" value="in"/>
+    </div>
+    <div class="fg"><label class="fl">Description</label><input class="fi" id="t-desc" placeholder="e.g. Grocery, Milk payment, Salary received"/></div>
+    <div class="fg">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+        <label class="fl" style="margin-bottom:0;">Payment Mode</label>
+        <button onclick="openManageList('modes')" style="background:none;border:none;color:var(--p2);font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">✏️ Edit/Add</button>
+      </div>
+      <select class="fi" id="t-mode"></select>
+    </div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="t-amt" type="number" placeholder="0"/></div>
+      <div class="fg"><label class="fl">Date</label><input class="fi" id="t-date" type="date"/></div>
+    </div>
+    <div class="fg">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+        <label class="fl" style="margin-bottom:0;">Category</label>
+        <button onclick="openManageList('expcats')" style="background:none;border:none;color:var(--p2);font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">✏️ Edit/Add</button>
+      </div>
+      <select class="fi" id="t-cat"></select>
+    </div>
+    <button class="sb2" onclick="addTxn()">Add Entry</button>
+  </div>
+</div>
+
+<!-- Add Todo -->
+<div class="mo" id="m-addtodo">
+  <div class="md"><button class="mc2" onclick="closeM('m-addtodo')">✕</button><h2>Add Task</h2>
+    <div class="fg">
+      <label class="fl">Task</label>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input class="fi" id="td-task" placeholder="e.g. Call plumber for leak" style="flex:1;"/>
+        <button id="td-mic-btn" onclick="toggleVoice()" title="Record by voice" style="background:var(--bg);border:1.5px solid var(--border);border-radius:50%;width:42px;height:42px;font-size:20px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;">🎤</button>
+      </div>
+      <div id="td-voice-status" style="display:none;margin-top:7px;padding:8px 12px;background:var(--rl);border-radius:var(--rsm);font-size:12px;color:var(--red);font-weight:700;text-align:center;">🔴 Listening... speak now</div>
+    </div>
+    <div class="fg"><label class="fl">Category</label><select class="fi" id="td-cat"><option value="🏠 Home">🏠 Home</option><option value="🛒 Market">🛒 Market</option><option value="📞 Call">📞 Call</option><option value="🔧 Repair">🔧 Repair</option><option value="💊 Medical">💊 Medical</option><option value="🎓 Kids">🎓 Kids</option><option value="💰 Finance">💰 Finance</option><option value="📦 Other">📦 Other</option></select></div>
+    <div class="fg"><label class="fl">Priority</label><select class="fi" id="td-pri"><option value="normal">Normal</option><option value="urgent">🔴 Urgent</option></select></div>
+    <button class="sb2" onclick="addTodo()">Add Task</button>
+  </div>
+</div>
+
+<!-- Edit Contact -->
+<div class="mo" id="m-editcon">
+  <div class="md"><button class="mc2" onclick="closeM('m-editcon')">✕</button><h2>Edit Contact</h2>
+    <input type="hidden" id="ec-idx"/>
+    <div class="fg"><label class="fl">Name</label><input class="fi" id="ec-name"/></div>
+    <div class="fg"><label class="fl">Service</label><select class="fi" id="ec-role"><option value="🔧 Plumber">🔧 Plumber</option><option value="⚡ Electrician">⚡ Electrician</option><option value="❄️ AC Repair">❄️ AC Repair</option><option value="🪵 Carpenter">🪵 Carpenter</option><option value="🎨 Painter">🎨 Painter</option><option value="🔒 Locksmith">🔒 Locksmith</option><option value="🚗 Car Mechanic">🚗 Car Mechanic</option><option value="📺 Appliance Repair">📺 Appliance Repair</option><option value="🏠 Pest Control">🏠 Pest Control</option><option value="📦 Other">📦 Other</option></select></div>
+    <div class="fg"><label class="fl">Phone</label><input class="fi" id="ec-ph" type="tel"/></div>
+    <div class="fg"><label class="fl">Note</label><input class="fi" id="ec-note" placeholder="e.g. Very reliable"/></div>
+    <button class="sb2" onclick="saveEditCon()">Save Changes</button>
+  </div>
+</div>
+<!-- Edit Todo -->
+<div class="mo" id="m-edittodo">
+  <div class="md"><button class="mc2" onclick="closeM('m-edittodo')">✕</button><h2>Edit Task</h2>
+    <input type="hidden" id="et-id"/>
+    <div class="fg"><label class="fl">Task</label><input class="fi" id="et-task"/></div>
+    <div class="fg"><label class="fl">Category</label><select class="fi" id="et-cat"><option value="🏠 Home">🏠 Home</option><option value="🛒 Market">🛒 Market</option><option value="📞 Call">📞 Call</option><option value="🔧 Repair">🔧 Repair</option><option value="💊 Medical">💊 Medical</option><option value="🎓 Kids">🎓 Kids</option><option value="💰 Finance">💰 Finance</option><option value="📦 Other">📦 Other</option></select></div>
+    <div class="fg"><label class="fl">Priority</label><select class="fi" id="et-pri"><option value="normal">Normal</option><option value="urgent">🔴 Urgent</option></select></div>
+    <button class="sb2" onclick="saveEditTodo()">Save Changes</button>
+  </div>
+</div>
+<!-- Edit Transaction -->
+<div class="mo" id="m-edittxn">
+  <div class="md"><button class="mc2" onclick="closeM('m-edittxn')">✕</button><h2>Edit Entry</h2>
+    <input type="hidden" id="etx-id"/>
+    <div class="fg">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button id="etx-btn-in" onclick="setETtype('in')" style="padding:11px;border-radius:var(--rsm);border:2px solid var(--green);background:var(--green);color:white;font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;">💚 Money In</button>
+        <button id="etx-btn-out" onclick="setETtype('out')" style="padding:11px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--tm);font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;">🔴 Money Out</button>
+      </div>
+      <input type="hidden" id="etx-type" value="in"/>
+    </div>
+    <div class="fg"><label class="fl">Description</label><input class="fi" id="etx-desc"/></div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="etx-amt" type="number"/></div>
+      <div class="fg"><label class="fl">Date</label><input class="fi" id="etx-date" type="date"/></div>
+    </div>
+    <div class="fg"><label class="fl">Category</label><select class="fi" id="etx-cat"></select></div>
+    <button class="sb2" onclick="saveEditTxn()" style="background:var(--teal);">Save Changes</button>
+  </div>
+</div>
+<!-- Contra Entry -->
+<div class="mo" id="m-contra">
+  <div class="md"><button class="mc2" onclick="closeM('m-contra')">✕</button><h2>🔄 Contra Entry</h2>
+    <div style="background:var(--pl);border-radius:var(--rsm);padding:11px;margin-bottom:14px;font-size:13px;color:var(--p1);">Transfer between Cash and Bank. Both entries recorded automatically.</div>
+    <div class="fg"><label class="fl">From</label><select class="fi" id="con-from"><option value="bank">🏦 Bank / UPI</option><option value="cash">💵 Cash</option></select></div>
+    <div class="fg"><label class="fl">To</label><select class="fi" id="con-to"><option value="cash">💵 Cash</option><option value="bank">🏦 Bank / UPI</option></select></div>
+    <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="con-amt" type="number" placeholder="0"/></div>
+    <div class="fg"><label class="fl">Date</label><input class="fi" id="con-date" type="date"/></div>
+    <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="con-note" placeholder="e.g. ATM withdrawal"/></div>
+    <button class="sb2" onclick="saveContra()" style="background:var(--purple);">Record Transfer</button>
+  </div>
+</div>
+<!-- About -->
+<div class="mo" id="m-about">
+  <div class="md">
+    <button class="mc2" onclick="closeM('m-about')">✕</button>
+    <div style="text-align:center;padding:10px 0 6px;">
+      <div style="font-size:60px;margin-bottom:10px;">🪔</div>
+      <div style="font-size:24px;font-weight:800;color:var(--p1);">GrihaLaxmi</div>
+      <div style="font-size:13px;color:var(--tm);margin-top:4px;">Your Complete Home Manager</div>
+      <div style="margin:16px 0 12px;padding:14px;background:var(--bg);border-radius:var(--rsm);text-align:left;">
+        <div style="font-size:13px;color:var(--text);line-height:2.1;">
+          🛒 Smart Shopping List<br>
+          💡 Bills &amp; Reminders<br>
+          🥛 Milkman Account<br>
+          🧹 House Help &amp; Salary<br>
+          🔧 Services &amp; SOS<br>
+          💰 Cash Book<br>
+          ✅ To Do List
+        </div>
+      </div>
+      <!-- Claude branding -->
+      <div style="padding:14px 16px;background:#1a1a1a;border-radius:var(--rsm);color:white;margin-bottom:14px;">
+        <div style="font-size:11px;opacity:0.6;margin-bottom:8px;letter-spacing:0.5px;">BUILT WITH ❤️ BY</div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
+          <!-- Claude asterisk logo in SVG -->
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="14" y1="2" x2="14" y2="26" stroke="#D4694A" stroke-width="2.8" stroke-linecap="round"/>
+            <line x1="2" y1="14" x2="26" y2="14" stroke="#D4694A" stroke-width="2.8" stroke-linecap="round"/>
+            <line x1="5.51" y1="5.51" x2="22.49" y2="22.49" stroke="#D4694A" stroke-width="2.8" stroke-linecap="round"/>
+            <line x1="22.49" y1="5.51" x2="5.51" y2="22.49" stroke="#D4694A" stroke-width="2.8" stroke-linecap="round"/>
+          </svg>
+          <div style="text-align:left;">
+            <div style="font-size:18px;font-weight:700;font-family:Georgia,serif;letter-spacing:0.3px;">Claude</div>
+            <div style="font-size:10px;opacity:0.55;letter-spacing:1.5px;font-weight:600;">BY ANTHROPIC</div>
+          </div>
+        </div>
+        <div style="font-size:11px;opacity:0.5;margin-top:8px;">Designed together with its user</div>
+      </div>
+      <!-- Data Backup -->
+      <div style="background:var(--bg);border-radius:var(--rsm);padding:14px;border:1.5px solid var(--border);margin-bottom:10px;text-align:left;">
+        <div style="font-size:13px;font-weight:800;color:var(--p1);margin-bottom:4px;">💾 Data Backup</div>
+        <div style="font-size:11px;color:var(--tm);margin-bottom:11px;">Export saves all your data as a file. Import restores it on any device.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <button onclick="exportData()" style="background:linear-gradient(135deg,var(--teal),#007a6e);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">⬇️ Export</button>
+          <label style="background:linear-gradient(135deg,var(--purple),#9b59b6);color:white;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;text-align:center;display:block;">⬆️ Import<input type="file" accept=".json" onchange="importData(this)" style="display:none;"/></label>
+        </div>
+      </div>
+      <!-- Reset Shopping -->
+      <div style="background:var(--rl);border-radius:var(--rsm);padding:14px;border:1.5px solid var(--red);margin-bottom:10px;text-align:left;">
+        <div style="font-size:13px;font-weight:800;color:var(--red);margin-bottom:4px;">🔄 Fix Shopping List</div>
+        <div style="font-size:11px;color:var(--tm);margin-bottom:11px;">If shopping list or cart is not working, tap this to reset shopping data to defaults. Your other data (bills, milk, staff etc.) is safe.</div>
+        <button onclick="resetShoppingData()" style="width:100%;background:var(--red);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">🔄 Reset Shopping Data</button>
+      </div>
+      <div style="font-size:11px;color:#c0c8d8;margin-top:6px;">Version 2.1 • 2026</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DS=['S','M','T','W','T','F','S'];
+const CLR=['#1a3a8c','#00B4A2','#7C5CBF','#E74C3C','#27AE60','#F39C12','#0071e3'];
+
+function ld(k,d){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch(e){return d;}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function td(){return new Date().toISOString().split('T')[0];}
+function fmt(r){try{return new Date(r).toLocaleDateString('en-IN');}catch(e){return r;}}
+
+const DEFCATS3=[
+  {broad:'🛒 Grocery & Staples',subs:[
+    {sub:'Atta, Rice & Dal',items:['Basmati Rice','Sona Masoori Rice','Atta (Wheat Flour)','Maida','Besan (Gram Flour)','Suji / Rava','Poha','Chana Dal','Moong Dal','Toor Dal','Masoor Dal','Urad Dal','Rajma','Chhole','Sabudana','Moong Sabut']},
+    {sub:'Oils & Ghee',items:['Refined Oil','Mustard Oil','Coconut Oil','Groundnut Oil','Ghee','Olive Oil']},
+    {sub:'Spices & Masala',items:['Salt','Haldi (Turmeric)','Red Chilli Powder','Jeera (Cumin)','Dhaniya Powder','Garam Masala','Hing (Asafoetida)','Mustard Seeds','Black Pepper','Amchur','Chaat Masala','Kasoori Methi','Ajwain','Saunf','Bay Leaves']},
+    {sub:'Sugar, Salt & Tea',items:['Sugar','Jaggery / Gud','Tea Powder','Green Tea','Coffee Powder','Instant Coffee','Cocoa Powder']},
+    {sub:'Packaged & Canned',items:['Tomato Puree','Pickle (Achar)','Jam','Honey','Peanut Butter','Vinegar','Soy Sauce','Ketchup','Mayonnaise']},
+  ]},
+  {broad:'🥛 Dairy, Bread & Eggs',subs:[
+    {sub:'Milk & Curd',items:['Milk (Packet)','Curd / Dahi','Buttermilk / Chaas','Flavoured Milk']},
+    {sub:'Paneer & Cheese',items:['Paneer','Cheese Slices','Cheese Spread','Mozzarella']},
+    {sub:'Butter & Cream',items:['Butter (Amul)','Cream','Condensed Milk','Khoa / Mawa']},
+    {sub:'Eggs',items:['White Eggs (6 pcs)','Brown Eggs (6 pcs)']},
+    {sub:'Bread & Bakery',items:['White Bread','Brown Bread / Multigrain','Pav Buns','Rusk','Cake','Cookies / Biscuits']},
+  ]},
+  {broad:'🥦 Fruits & Vegetables',subs:[
+    {sub:'Daily Vegetables',items:['Aloo (Potato)','Pyaaz (Onion)','Tamatar (Tomato)','Adrak (Ginger)','Lahsun (Garlic)','Hari Mirchi','Nimbu (Lemon)']},
+    {sub:'Leafy & Seasonal Veggies',items:['Palak (Spinach)','Methi','Gobhi (Cauliflower)','Bhindi (Okra)','Lauki (Bottle Gourd)','Karela','Baingan (Brinjal)','Shimla Mirch','Matar (Peas)','Beans','Tinda','Parwal','Arbi']},
+    {sub:'Exotic Vegetables',items:['Broccoli','Zucchini','Baby Corn','Mushroom','Cherry Tomato','Lettuce']},
+    {sub:'Everyday Fruits',items:['Kela (Banana)','Seb (Apple)','Santara (Orange)','Nimbu (Lemon)','Papita (Papaya)','Angoor (Grapes)']},
+    {sub:'Seasonal Fruits',items:['Anaar (Pomegranate)','Tarbooz (Watermelon)','Kharbooza (Muskmelon)','Aam (Mango)','Nashpati (Pear)','Amrud (Guava)']},
+  ]},
+  {broad:'🍜 Snacks & Beverages',subs:[
+    {sub:'Instant & Ready Food',items:['Maggi Noodles','Yippee Noodles','Oats','Cornflakes / Muesli','Upma / Poha Mix','Soup Packets','Dal Makhani (Ready)']},
+    {sub:'Namkeen & Snacks',items:['Namkeen Mix','Chips / Wafers','Popcorn','Papad','Roasted Makhana','Dry Fruits Mix','Biscuits (Parle-G)','Biscuits (Marie)','Cream Biscuits']},
+    {sub:'Sweets & Chocolates',items:['Chocolate (Dairy Milk)','Chocolate (KitKat)','Ice Cream','Mithai (Box)']},
+    {sub:'Cold Drinks & Juices',items:['Cola (250ml)','Lemonade / Nimbu Pani','Fruit Juice (Tropicana)','Coconut Water','Energy Drink','Lassi','Chaas (Tetrapack)']},
+  ]},
+  {broad:'🧴 Personal Care',subs:[
+    {sub:'Bath & Body',items:['Soap (Bath)','Body Wash','Moisturiser / Lotion','Deo / Perfume','Talcum Powder']},
+    {sub:'Hair Care',items:['Shampoo','Conditioner','Hair Oil','Hair Gel']},
+    {sub:'Oral Care',items:['Toothpaste','Toothbrush','Mouthwash','Tongue Cleaner']},
+    {sub:'Skin Care',items:['Face Wash','Face Cream / Sunscreen','Eye Cream','Lip Balm','Cotton Rounds']},
+    {sub:'Feminine & Hygiene',items:['Sanitary Pads','Panty Liners','Intimate Wash','Razors / Wax Strips']},
+  ]},
+  {broad:'🧹 Home & Cleaning',subs:[
+    {sub:'Floor & Surface',items:['Floor Cleaner (Phenyl)','Floor Mop Refill','Broom / Jhadu','Colin (Glass Cleaner)','Scrubber / Sponge','Duster Cloth']},
+    {sub:'Dishwash',items:['Dish Soap (Vim Liquid)','Dishwash Bar','Steel Scrubber']},
+    {sub:'Laundry',items:['Detergent Powder','Liquid Detergent','Fabric Softener','Stain Remover']},
+    {sub:'Toilet & Bathroom',items:['Toilet Cleaner','Bathroom Freshener / Blocks','Sanitizer (Hand)','Tissue / Toilet Paper']},
+    {sub:'Garbage & Storage',items:['Garbage Bags (Medium)','Garbage Bags (Large)','Zip-lock Bags','Cling Wrap / Foil']},
+  ]},
+  {broad:'👶 Baby & Kids',subs:[
+    {sub:'Baby Food',items:['Baby Formula (Powder)','Baby Cereal','Baby Puree (Pouch)','Baby Biscuits']},
+    {sub:'Diapers & Wipes',items:['Diapers (S)','Diapers (M)','Diapers (L)','Baby Wipes','Diaper Rash Cream']},
+    {sub:'Baby Toiletries',items:['Baby Shampoo','Baby Soap / Body Wash','Baby Oil','Baby Powder','Baby Lotion']},
+    {sub:'Kids Snacks',items:['Fruit Pouches','Juice Box','Flavoured Milk Pouch','Kids Biscuits']},
+  ]},
+  {broad:'💊 Health & Wellness',subs:[
+    {sub:'Medicines (OTC)',items:['Paracetamol (Crocin)','Antacid (Digene)','Cough Syrup','ORS Sachets','Bandage / Band-aid','Antiseptic (Dettol)','Thermometer']},
+    {sub:'Vitamins & Supplements',items:['Vitamin C','Multivitamin Tablets','Calcium Tablets','Iron Tablets','Protein Powder']},
+    {sub:'First Aid',items:['Cotton Roll','Crepe Bandage','Eye Drops','Nasal Spray','Hand Sanitizer']},
+  ]},
+  {broad:'🏠 Household Essentials',subs:[
+    {sub:'Kitchen Needs',items:['Aluminium Foil','Baking Paper','Matchbox','Candles','Rubber Gloves']},
+    {sub:'Stationery & Office',items:['Pens','Notebook','Stapler','Tape / Cello Tape','Scissors','A4 Paper']},
+    {sub:'Puja & Festive',items:['Agarbatti (Incense)','Camphor (Kapoor)','Dhoop Sticks','Diyas','Kumkum / Haldi (Puja)','Flowers (Marigold)']},
+    {sub:'Pet Care',items:['Dog Food (Dry)','Cat Food','Pet Shampoo','Pet Treats']},
+  ]},
+];
+const DEFBILLS=[
+  {id:1,name:'Electricity Bill',icon:'💡',amount:0,dueDay:15,cycle:'monthly',paid:false},
+  {id:2,name:'Water Bill',icon:'💧',amount:0,dueDay:10,cycle:'monthly',paid:false},
+  {id:3,name:'WiFi / Internet',icon:'📶',amount:0,dueDay:5,cycle:'monthly',paid:false},
+  {id:4,name:'Society Maintenance',icon:'🏢',amount:0,dueDay:1,cycle:'monthly',paid:false},
+  {id:5,name:'Mobile Recharge',icon:'📱',amount:0,dueDay:20,cycle:'monthly',paid:false},
+];
+
+function init(){
+  if(!localStorage.getItem('gl_items')){
+    const it={};
+    DEFCATS3.forEach(b=>b.subs.forEach(s=>s.items.forEach(n=>{
+      const k=b.broad+'||'+s.sub+'::'+n;
+      it[k]={name:n,broad:b.broad,sub:s.sub,low:false,inCart:false};
+    })));
+    sv('gl_items',it);
+  }
+  if(!localStorage.getItem('gl_cats3'))sv('gl_cats3',DEFCATS3.map(b=>({broad:b.broad,subs:b.subs.map(s=>s.sub)})));
+  if(!localStorage.getItem('gl_bills'))sv('gl_bills',DEFBILLS);
+  if(!localStorage.getItem('gl_contacts'))sv('gl_contacts',[]);
+
+  // Migrate old 2-tier items AND fix items missing broad/sub fields
+  const items=ld('gl_items',{});
+  let needsMigrate=false;
+  Object.keys(items).forEach(k=>{
+    const item=items[k];
+    if(!k.includes('||')) needsMigrate=true;           // old 2-tier key
+    else if(!item.broad||!item.sub) needsMigrate=true; // 3-tier key but missing fields
+  });
+  if(needsMigrate){
+    const newIt={};
+    Object.keys(items).forEach(k=>{
+      const item=items[k];
+      if(!k.includes('||')){
+        // Old format: "Category::ItemName" → migrate to 3-tier
+        const parts=k.split('::');
+        const itemName=parts[parts.length-1];
+        const newKey='🛒 Grocery & Staples||Other::'+itemName;
+        newIt[newKey]={...item,name:itemName,broad:'🛒 Grocery & Staples',sub:'Other'};
+      } else {
+        // 3-tier key but possibly missing broad/sub on the item object
+        const bPart=k.split('||')[0];
+        const sPart=k.split('||')[1]?k.split('||')[1].split('::')[0]:'Other';
+        newIt[k]={...item,broad:item.broad||bPart,sub:item.sub||sPart};
+      }
+    });
+    sv('gl_items',newIt);
+  }
+}
+
+// TABS
+const FAB_ACTIONS={
+  shopping: ()=>openM('m-additem'),
+  bills:    ()=>openM('m-addbill'),
+  milk:     ()=>openM('m-addmilkman'),
+  help:     ()=>openM('m-addhelp'),
+  contacts: ()=>openM('m-addcon'),
+  cash:     ()=>openM('m-addtxn'),
+  todo:     ()=>openM('m-addtodo'),
+};
+let _activeTab='shopping';
+function fabAction(){
+  const fn=FAB_ACTIONS[_activeTab];
+  if(fn)fn();
+}
+function showTab(n,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');
+  _activeTab=n;
+  ({shopping:renderShop,bills:renderBills,milk:renderMilk,help:renderHelp,contacts:renderCon,cash:renderCash,todo:renderTodo})[n]?.();
+}
+function shopView(v,btn){
+  ['items','cart','history'].forEach(x=>document.getElementById('sv-'+x).style.display=x===v?'block':'none');
+  document.querySelectorAll('#tab-shopping .it').forEach(t=>t.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  if(v==='cart')renderCart();if(v==='history')renderHist();
+}
+
+// MODALS
+function openM(id){
+  document.getElementById(id).classList.add('open');
+  if(id==='m-milkpay')document.getElementById('mp-date').value=td();
+  if(id==='m-adv')document.getElementById('adv-date').value=td();
+  if(id==='m-addtxn'){document.getElementById('t-date').value=td();setTtype('out');refreshTxnSelects();}
+  if(id==='m-addbill'&&!document.getElementById('b-edit-id').value){
+    document.getElementById('bill-modal-title').textContent='Add Bill';
+    document.getElementById('bill-save-btn').textContent='Add Bill';
+    ['b-name','b-amt','b-due'].forEach(x=>document.getElementById(x).value='');
+    refreshBillSelect();
+  }
+  if(id==='m-contra')document.getElementById('con-date').value=td();
+  if(id==='m-milkset'){const s=ld('gl_mset',{});document.getElementById('ms-qty').value=s.qty||'';document.getElementById('ms-rate').value=s.rate||'';document.getElementById('ms-name').value=s.name||'';}
+  if(id==='m-additem'){
+    const cats3=ld('gl_cats3',[]);
+    const bSel=document.getElementById('ni-broad');
+    if(bSel){bSel.innerHTML=cats3.map(b=>`<option>${b.broad}</option>`).join('');updateSubOptions();}
+    document.getElementById('ni-name').value='';
+  }
+  if(id==='m-sosset')renderSOSSet();
+}
+function closeM(id){document.getElementById(id).classList.remove('open');if(id==='m-addtodo')stopVoice();}
+document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+// SHOPPING
+let selEmoji='🛍️';
+let selCatEmoji='🛍️';
+function pickEmoji(el){selEmoji=el.textContent;document.getElementById('cat-emoji').textContent=selEmoji;}
+function pickEmojiCat(el){selCatEmoji=el.textContent;document.getElementById('ecat-emoji').textContent=selCatEmoji;}
+
+function renderShop(){
+  const items=ld('gl_items',{});
+  const q=(document.getElementById('srch')||{}).value||'';
+  const cats3=ld('gl_cats3',[]);
+
+  // Group items: broad → sub → [items]
+  const grp={};
+  cats3.forEach(b=>{
+    grp[b.broad]={};
+    b.subs.forEach(s=>grp[b.broad][s]=[]);
+  });
+  Object.entries(items).forEach(([actualKey, item])=>{
+    const b=item.broad||'🛒 Grocery & Staples';
+    const s=item.sub||'Other';
+    if(q&&!item.name.toLowerCase().includes(q.toLowerCase()))return;
+    if(!grp[b])grp[b]={};
+    if(!grp[b][s])grp[b][s]=[];
+    grp[b][s].push({...item,_actualKey:actualKey});
+  });
+
+  let html='';
+  cats3.forEach(bcat=>{
+    const broad=bcat.broad;
+    const subMap=grp[broad]||{};
+    // Count only items in defined subs for this broad category
+    let totalItems=0,lowCount=0;
+    bcat.subs.forEach(s=>{
+      const si=subMap[s]||[];
+      totalItems+=si.length;
+      lowCount+=si.filter(i=>i.low).length;
+    });
+    if(q&&!totalItems)return;
+
+    const bid='b_'+broad.replace(/[^a-z0-9]/gi,'_');
+    const besc=esc(broad);
+    html+=`<div style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px;">
+        <div onclick="toggleC('${bid}')" style="flex:1;background:linear-gradient(135deg,var(--p1),var(--p2));color:white;border-radius:var(--rsm);padding:10px 13px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-weight:800;font-size:13px;">${broad} <span style="background:rgba(255,255,255,0.25);border-radius:10px;padding:1px 7px;font-size:11px;">${totalItems}</span></span>
+          <div style="display:flex;align-items:center;gap:6px;">${lowCount?`<span style="background:white;color:var(--p1);border-radius:10px;padding:1px 7px;font-size:11px;font-weight:800;">${lowCount} low</span>`:''}<span style="font-size:12px;">${q||lowCount?'▼':'▶'}</span></div>
+        </div>
+        <button onclick="openAddSub('${besc}')" title="Add sub-category" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:50%;width:30px;height:30px;font-size:16px;font-weight:700;cursor:pointer;flex-shrink:0;line-height:1;">+</button>
+        <button onclick="openEditBroad('${besc}')" title="Edit broad category" style="background:white;border:1.5px solid var(--p2);color:var(--p2);border-radius:50%;width:30px;height:30px;font-size:14px;cursor:pointer;flex-shrink:0;line-height:1;">✏️</button>
+      </div>
+      <div id="${bid}" style="display:${q||lowCount?'block':'none'};padding-left:6px;">`;
+
+    bcat.subs.forEach(sub=>{
+      const si=subMap[sub]||[];
+      if(q&&!si.length)return;
+      const lc=si.filter(i=>i.low).length;
+      const sid='s_'+broad.replace(/[^a-z0-9]/gi,'_')+'_'+sub.replace(/[^a-z0-9]/gi,'_');
+      const sesc=esc(sub);
+      html+=`<div style="margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px;">
+          <div class="cath" onclick="toggleC('${sid}')" style="flex:1;margin-bottom:0;">
+            <span style="font-weight:700;font-size:12px;color:var(--p1)">${sub} <span style="background:white;border-radius:10px;padding:1px 6px;font-size:11px;color:var(--tm);">${si.length}</span></span>
+            <div style="display:flex;align-items:center;gap:5px;">${lc?`<span style="background:var(--p2);color:white;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700;">${lc} low</span>`:''}<span style="font-size:11px;color:var(--tm);">${q||lc?'▼':'▶'}</span></div>
+          </div>
+          <button onclick="openAddItemInSub('${besc}','${sesc}')" title="Add item" style="background:var(--pl);border:1.5px solid var(--p2);color:var(--p2);border-radius:50%;width:28px;height:28px;font-size:15px;font-weight:700;cursor:pointer;flex-shrink:0;line-height:1;">+</button>
+          <button onclick="openEditSub('${besc}','${sesc}')" title="Edit sub-category" style="background:none;border:none;font-size:14px;cursor:pointer;color:var(--p2);padding:2px;flex-shrink:0;">✏️</button>
+        </div>
+        <div id="${sid}" style="display:${q||lc?'block':'none'}">`;
+      si.sort((a,b2)=>a.name.localeCompare(b2.name)).forEach(item=>{
+        const k=esc(item._actualKey);
+        html+=`<div class="ir${item.low?' low':''}">
+          <input type="checkbox" class="ic" ${item.inCart?'checked':''} onchange="togCart('${k}',this.checked)"/>
+          <span class="iname">${item.name}</span>
+          <button class="lb${item.low?' mk':''}" onclick="togLow('${k}')">${item.low?'🔵 Low':'📉 Low?'}</button>
+          <button onclick="openEditItem3('${k}')" style="background:none;border:none;font-size:14px;cursor:pointer;color:var(--p2);padding:2px;">✏️</button>
+          <button class="db" onclick="delItem('${k}')">🗑</button>
+        </div>`;
+      });
+      html+=`</div></div>`;
+    });
+    html+=`</div></div>`;
+  });
+  if(!html)html=`<div class="es"><div style="font-size:40px">🔍</div><div>No items found</div></div>`;
+  document.getElementById('shop-list').innerHTML=html;
+  updCart();
+}
+function esc(s){return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+function toggleC(id){const el=document.getElementById(id);if(el)el.style.display=el.style.display==='none'?'block':'none';}
+function updateSubOptions(){
+  const broad=document.getElementById('ni-broad').value;
+  const cats3=ld('gl_cats3',[]);
+  const bc=cats3.find(b=>b.broad===broad);
+  const subs=bc?bc.subs:[];
+  document.getElementById('ni-sub').innerHTML=subs.map(s=>`<option>${s}</option>`).join('');
+}
+function updateEISubOptions(){
+  const broad=document.getElementById('ei-broad').value;
+  const cats3=ld('gl_cats3',[]);
+  const bc=cats3.find(b=>b.broad===broad);
+  const subs=bc?bc.subs:[];
+  document.getElementById('ei-sub').innerHTML=subs.map(s=>`<option>${s}</option>`).join('');
+}
+function openAddItemInSub(broad,sub){
+  const cats3=ld('gl_cats3',[]);
+  const bSel=document.getElementById('ni-broad');
+  bSel.innerHTML=cats3.map(b=>`<option${b.broad===broad?' selected':''}>${b.broad}</option>`).join('');
+  // Update subs for this broad, then set the correct sub
+  const bc=cats3.find(b=>b.broad===broad);
+  const subs=bc?bc.subs:[];
+  document.getElementById('ni-sub').innerHTML=subs.map(s=>`<option${s===sub?' selected':''}>${s}</option>`).join('');
+  document.getElementById('ni-name').value='';
+  openM('m-additem');
+}
+function togLow(k){const rk=unesc(k);const it=ld('gl_items',{});if(it[rk]){it[rk].low=!it[rk].low;it[rk].inCart=it[rk].low;}sv('gl_items',it);renderShop();}
+function togCart(k,v){const rk=unesc(k);const it=ld('gl_items',{});if(it[rk])it[rk].inCart=v;sv('gl_items',it);updCart();}
+function updCart(){const n=Object.values(ld('gl_items',{})).filter(i=>i.inCart).length;const el=document.getElementById('cart-count');if(el)el.textContent=n+' item'+(n!==1?'s':'');}
+function clearCart(){const it=ld('gl_items',{});Object.keys(it).forEach(k=>{it[k].inCart=false;it[k].low=false;});sv('gl_items',it);renderShop();}
+function addItem(){
+  const name=document.getElementById('ni-name').value.trim();
+  const broad=document.getElementById('ni-broad').value;
+  const sub=document.getElementById('ni-sub').value;
+  if(!name){alert('Enter item name');return;}
+  const it=ld('gl_items',{});
+  const k=broad+'||'+sub+'::'+name;
+  it[k]={name,broad,sub,low:false,inCart:false};
+  sv('gl_items',it);closeM('m-additem');document.getElementById('ni-name').value='';renderShop();
+}
+function delItem(k){const rk=unesc(k);const it=ld('gl_items',{});delete it[rk];sv('gl_items',it);renderShop();}
+function openEditItem3(k){
+  const rk=unesc(k);
+  const items=ld('gl_items',{});const item=items[rk];if(!item)return;
+  const cats3=ld('gl_cats3',[]);
+  const bSel=document.getElementById('ei-broad');
+  bSel.innerHTML=cats3.map(b=>`<option${b.broad===item.broad?' selected':''}>${b.broad}</option>`).join('');
+  updateEISubOptions();
+  document.getElementById('ei-sub').value=item.sub||'';
+  document.getElementById('ei-key').value=k;
+  document.getElementById('ei-name').value=item.name;
+  openM('m-edititem');
+}
+function saveEditItem(){
+  const oldKey=unesc(document.getElementById('ei-key').value);
+  const newName=document.getElementById('ei-name').value.trim();
+  const newBroad=document.getElementById('ei-broad').value;
+  const newSub=document.getElementById('ei-sub').value;
+  if(!newName){alert('Enter item name');return;}
+  const items=ld('gl_items',{});
+  const oldItem=items[oldKey];if(!oldItem)return;
+  delete items[oldKey];
+  const newKey=newBroad+'||'+newSub+'::'+newName;
+  items[newKey]={...oldItem,name:newName,broad:newBroad,sub:newSub};
+  sv('gl_items',items);closeM('m-edititem');renderShop();
+}
+function renderCart(){
+  const items=ld('gl_items',{});
+  const cart=Object.entries(items).filter(([k,i])=>i.inCart).map(([k,i])=>({...i,_key:k}));
+  if(!cart.length){document.getElementById('cart-list').innerHTML=`<div class="es"><div style="font-size:44px">🛒</div><div>No items in cart.<br>Mark items as "Low" to add!</div></div>`;return;}
+  const pending=cart.filter(i=>!i.purchased);
+  const bought=cart.filter(i=>i.purchased);
+  let html=`<div style="margin-bottom:10px;padding:11px;background:var(--pl);border-radius:var(--rsm);font-size:13px;color:var(--p1);font-weight:700;border:1px solid #c0d4f7;">🛒 ${pending.length} pending · ✅ ${bought.length} purchased</div>`;
+  if(pending.length){
+    html+=`<div style="font-size:11px;font-weight:700;color:var(--tm);margin-bottom:6px;">PENDING</div>`;
+    pending.forEach(item=>{
+      const k=esc(item._key);
+      html+=`<div style="display:flex;align-items:center;gap:8px;padding:9px 11px;background:white;border-radius:var(--rsm);margin-bottom:5px;border:1.5px solid var(--border);">
+        <input type="checkbox" style="width:20px;height:20px;cursor:pointer;accent-color:var(--green);flex-shrink:0;" onchange="markPurchased('${k}',this.checked)"/>
+        <span style="flex:1;font-size:13px;font-weight:600;color:var(--text)">${item.name}</span>
+        <span style="font-size:10px;color:var(--tm)">${item.sub||''}</span>
+        <button onclick="removeFromCart('${k}')" style="background:none;border:none;font-size:15px;cursor:pointer;color:#c0c8d8;padding:2px;">🗑</button>
+      </div>`;
+    });
+  }
+  if(bought.length){
+    html+=`<div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px;margin-top:10px;">✅ PURCHASED</div>`;
+    bought.forEach(item=>{
+      const k=esc(item._key);
+      html+=`<div style="display:flex;align-items:center;gap:8px;padding:9px 11px;background:#f0fdf4;border-radius:var(--rsm);margin-bottom:5px;border:1.5px solid var(--green);opacity:0.8;">
+        <input type="checkbox" checked style="width:20px;height:20px;cursor:pointer;accent-color:var(--green);flex-shrink:0;" onchange="markPurchased('${k}',this.checked)"/>
+        <span style="flex:1;font-size:13px;font-weight:600;color:var(--tm);text-decoration:line-through">${item.name}</span>
+        <button onclick="removeFromCart('${k}')" style="background:none;border:none;font-size:15px;cursor:pointer;color:#c0c8d8;padding:2px;">🗑</button>
+      </div>`;
+    });
+  }
+  document.getElementById('cart-list').innerHTML=html;
+}
+function unesc(s){return s.replace(/\\'/g,"'").replace(/\\\\/g,"\\");}
+function markPurchased(k,v){const rk=unesc(k);const it=ld('gl_items',{});if(it[rk])it[rk].purchased=v;sv('gl_items',it);renderCart();}
+function removeFromCart(k){const rk=unesc(k);const it=ld('gl_items',{});if(it[rk]){it[rk].inCart=false;it[rk].low=false;it[rk].purchased=false;}sv('gl_items',it);renderCart();updCart();}
+function saveCart(){
+  const items=ld('gl_items',{});
+  const cart=Object.values(items).filter(i=>i.inCart);
+  if(!cart.length){alert('No items in cart!');return;}
+  const h=ld('gl_hist',[]);
+  h.unshift({date:fmt(td()),items:cart.map(i=>i.name)});
+  if(h.length>5)h.pop();
+  sv('gl_hist',h);
+  // Clear cart and purchased flags
+  Object.keys(items).forEach(k=>{items[k].inCart=false;items[k].low=false;items[k].purchased=false;});
+  sv('gl_items',items);
+  document.querySelectorAll('#tab-shopping .it').forEach((t,i)=>t.classList.toggle('active',i===2));
+  shopView('history',null);
+}
+function renderHist(){
+  const h=ld('gl_hist',[]);
+  document.getElementById('hist-list').innerHTML=h.length
+    ?h.map((x,i)=>`<div style="background:white;border-radius:var(--radius);padding:13px;margin-bottom:9px;box-shadow:var(--shadow);border-left:4px solid var(--p2)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <div style="font-size:11px;color:var(--tm)">📅 ${x.date}</div>
+          <button onclick="delHist(${i})" style="background:none;border:none;font-size:14px;cursor:pointer;color:#c0c8d8">🗑</button>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">${x.items.join(', ')}</div>
+        <button style="background:var(--pl);border:1.5px solid var(--p2);color:var(--p1);border-radius:20px;padding:5px 13px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;margin-top:8px" onclick="repeatOrd(${i})">🔄 Repeat Order</button>
+      </div>`).join('')
+    :`<div class="es"><div style="font-size:44px">📋</div><div>No past orders yet.</div></div>`;
+}
+function delHist(i){
+  const h=ld('gl_hist',[]);h.splice(i,1);sv('gl_hist',h);renderHist();
+}
+function repeatOrd(i){
+  const h=ld('gl_hist',[]);const it=ld('gl_items',{});
+  h[i].items.forEach(n=>Object.keys(it).forEach(k=>{if(it[k].name===n){it[k].inCart=true;it[k].low=true;}}));
+  sv('gl_items',it);
+  document.querySelectorAll('#tab-shopping .it').forEach((t,i)=>t.classList.toggle('active',i===1));
+  shopView('cart',null);
+}
+// ===== BROAD CATEGORY MANAGEMENT =====
+function openAddBroad(){
+  selEmoji='🛍️';
+  document.getElementById('cat-emoji').textContent='🛍️';
+  document.getElementById('nc-name').value='';
+  openM('m-addcat');
+}
+function addCat(){
+  const name=document.getElementById('nc-name').value.trim();
+  if(!name){alert('Enter category name');return;}
+  const cats3=ld('gl_cats3',[]);
+  const full=selEmoji+' '+name;
+  if(cats3.find(b=>b.broad===full)){alert('Already exists!');return;}
+  cats3.push({broad:full,subs:[]});
+  sv('gl_cats3',cats3);closeM('m-addcat');document.getElementById('nc-name').value='';renderShop();
+}
+function openEditBroad(broad){
+  document.getElementById('ecat-old').value=broad;
+  document.getElementById('ecat-name').value=broad.replace(/^\S+\s/,'');
+  const em=broad.split(' ')[0];
+  document.getElementById('ecat-emoji').textContent=em;
+  selCatEmoji=em;
+  openM('m-editcat');
+}
+function saveEditCat(){
+  const oldBroad=document.getElementById('ecat-old').value;
+  const newName=document.getElementById('ecat-name').value.trim();
+  if(!newName){alert('Enter category name');return;}
+  const newBroad=selCatEmoji+' '+newName;
+  const cats3=ld('gl_cats3',[]);
+  const idx=cats3.findIndex(b=>b.broad===oldBroad);if(idx===-1)return;
+  cats3[idx].broad=newBroad;sv('gl_cats3',cats3);
+  // Update all items
+  const items=ld('gl_items',{});const newItems={};
+  Object.keys(items).forEach(k=>{
+    const item=items[k];
+    if(item.broad===oldBroad){item.broad=newBroad;newItems[newBroad+'||'+item.sub+'::'+item.name]=item;}
+    else newItems[k]=item;
+  });
+  sv('gl_items',newItems);closeM('m-editcat');renderShop();
+}
+function delCat(broad){
+  const items=ld('gl_items',{});
+  const hasItems=Object.values(items).some(i=>i.broad===broad);
+  if(hasItems){alert('Please delete all items in this category first!');return;}
+  const cats3=ld('gl_cats3',[]).filter(b=>b.broad!==broad);
+  sv('gl_cats3',cats3);closeM('m-editcat');renderShop();
+}
+
+// ===== SUB-CATEGORY MANAGEMENT =====
+let _editSubBroad='';
+function openAddSub(broad){
+  _editSubBroad=broad;
+  document.getElementById('esub-broad-label').textContent=broad;
+  document.getElementById('esub-old').value='';
+  document.getElementById('esub-name').value='';
+  document.getElementById('esub-modal-title').textContent='Add Sub-Category';
+  document.getElementById('esub-del-btn').style.display='none';
+  openM('m-editsub');
+}
+function openEditSub(broad,sub){
+  _editSubBroad=broad;
+  document.getElementById('esub-broad-label').textContent=broad;
+  document.getElementById('esub-old').value=sub;
+  document.getElementById('esub-name').value=sub;
+  document.getElementById('esub-modal-title').textContent='Edit Sub-Category';
+  document.getElementById('esub-del-btn').style.display='block';
+  openM('m-editsub');
+}
+function saveEditSub(){
+  const oldSub=document.getElementById('esub-old').value;
+  const newSub=document.getElementById('esub-name').value.trim();
+  const broad=_editSubBroad;
+  if(!newSub){alert('Enter sub-category name');return;}
+  const cats3=ld('gl_cats3',[]);
+  const bc=cats3.find(b=>b.broad===broad);if(!bc)return;
+  if(oldSub){
+    // Edit existing
+    const idx=bc.subs.indexOf(oldSub);if(idx===-1)return;
+    bc.subs[idx]=newSub;sv('gl_cats3',cats3);
+    // Update all items
+    const items=ld('gl_items',{});const newItems={};
+    Object.keys(items).forEach(k=>{
+      const item=items[k];
+      if(item.broad===broad&&item.sub===oldSub){item.sub=newSub;newItems[broad+'||'+newSub+'::'+item.name]=item;}
+      else newItems[k]=item;
+    });
+    sv('gl_items',newItems);
+  } else {
+    // Add new sub
+    if(bc.subs.includes(newSub)){alert('Sub-category already exists!');return;}
+    bc.subs.push(newSub);sv('gl_cats3',cats3);
+  }
+  closeM('m-editsub');renderShop();
+}
+function delSub(){
+  const sub=document.getElementById('esub-old').value;
+  const broad=_editSubBroad;
+  const items=ld('gl_items',{});
+  const hasItems=Object.values(items).some(i=>i.broad===broad&&i.sub===sub);
+  if(hasItems){alert('Please delete all items in this sub-category first!');return;}
+  const cats3=ld('gl_cats3',[]);
+  const bc=cats3.find(b=>b.broad===broad);
+  if(bc)bc.subs=bc.subs.filter(s=>s!==sub);
+  sv('gl_cats3',cats3);closeM('m-editsub');renderShop();
+}
+
+// Legacy stubs (kept to avoid errors from any old references)
+function openEditItem(k){openEditItem3(k);}
+function openEditCat(broad){openEditBroad(broad);}
+
+// BILLS
+// Auto-reset bills on new month
+function autoResetBills(){
+  const lastReset=ld('gl_bills_reset','');
+  const now=new Date();
+  const thisMonth=now.getFullYear()+'-'+(now.getMonth()+1);
+  if(lastReset!==thisMonth){
+    const b=ld('gl_bills',[]);
+    b.forEach(x=>{x.paid=false;});
+    sv('gl_bills',b);
+    sv('gl_bills_reset',thisMonth);
+  }
+}
+
+function renderBills(){
+  autoResetBills();
+  const bills=ld('gl_bills',[]);const now=new Date();let uh='',html='';
+  const soon=bills.filter(b=>{
+    if(b.paid)return false;
+    const d=new Date(now.getFullYear(),now.getMonth(),b.dueDay);
+    const days=Math.ceil((d-now)/86400000);
+    return days>=0&&days<=3;
+  });
+  if(soon.length)uh=`<div class="nb2">⚠️ <strong>${soon.length} bill(s)</strong> due within 3 days!</div>`;
+  document.getElementById('bills-soon').innerHTML=uh;
+
+  if(!bills.length){
+    document.getElementById('bills-list').innerHTML=`<div class="es"><div style="font-size:44px">💡</div><div>No bills added yet.<br>Tap "+ Add" to add your bills.</div></div>`;
+    return;
+  }
+
+  bills.forEach(b=>{
+    const due=new Date(now.getFullYear(),now.getMonth(),b.dueDay);
+    const days=Math.ceil((due-now)/86400000);
+    // Colour status
+    let borderCol,bgCol,statusBadge;
+    if(b.paid){
+      borderCol='var(--green)';bgCol='#f0fdf4';
+      statusBadge=`<span class="pdbg">✓ Paid</span>`;
+    } else if(days<0){
+      borderCol='var(--red)';bgCol='#fff5f5';
+      statusBadge=`<span class="ovb">⚠️ Overdue by ${Math.abs(days)}d</span>`;
+    } else if(days<=3){
+      borderCol='var(--amber)';bgCol='#fffbeb';
+      statusBadge=`<span class="dub">🔔 Due in ${days}d</span>`;
+    } else {
+      borderCol='var(--border)';bgCol='white';
+      statusBadge=`<span style="font-size:11px;color:var(--tm)">Due: ${b.dueDay}th</span>`;
+    }
+
+    html+=`<div style="background:${bgCol};border:2px solid ${borderCol};border-radius:var(--radius);padding:13px;margin-bottom:9px;box-shadow:var(--shadow);"
+      ondblclick="editBill(${b.id})" title="Double tap to edit">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="font-size:26px">${b.icon}</div>
+        <div style="flex:1">
+          <div style="font-weight:800;font-size:14px;color:var(--p1)">${b.name}</div>
+          <div style="font-size:12px;color:var(--tm);margin-top:2px">${b.cycle} ${b.amount?'• ₹'+b.amount.toLocaleString('en-IN'):'• Tap twice to set amount'}</div>
+          <div style="margin-top:5px">${statusBadge}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+          ${!b.paid
+            ?`<button class="pdb" onclick="event.stopPropagation();markPaid(${b.id})">Mark Paid ✓</button>`
+            :`<button class="pdb" style="opacity:.6" onclick="event.stopPropagation();markUnpaid(${b.id})">Undo</button>`}
+          <button onclick="event.stopPropagation();editBill(${b.id})" style="background:var(--pl);border:1px solid var(--p2);color:var(--p2);border-radius:14px;padding:3px 9px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">✏️ Edit</button>
+          <button onclick="event.stopPropagation();delBill(${b.id})" style="background:none;border:none;font-size:11px;cursor:pointer;color:#c0c8d8">🗑</button>
+        </div>
+      </div>
+      <div style="font-size:10px;color:#c0c8d8;margin-top:6px;text-align:right">Tap ✏️ Edit or double-tap card to update amount</div>
+    </div>`;
+  });
+  document.getElementById('bills-list').innerHTML=html;
+}
+
+function markPaid(id){const b=ld('gl_bills',[]);const x=b.find(v=>v.id===id);if(x)x.paid=true;sv('gl_bills',b);renderBills();}
+function markUnpaid(id){const b=ld('gl_bills',[]);const x=b.find(v=>v.id===id);if(x)x.paid=false;sv('gl_bills',b);renderBills();}
+function delBill(id){sv('gl_bills',ld('gl_bills',[]).filter(v=>v.id!==id));renderBills();}
+
+function editBill(id){
+  const b=ld('gl_bills',[]);const x=b.find(v=>v.id===id);if(!x)return;
+  document.getElementById('bill-modal-title').textContent='Edit Bill';
+  document.getElementById('bill-save-btn').textContent='Save Changes';
+  document.getElementById('b-edit-id').value=id;
+  document.getElementById('b-name').value=x.name;
+  document.getElementById('b-amt').value=x.amount||'';
+  document.getElementById('b-due').value=x.dueDay||'';
+  document.getElementById('b-cycle').value=x.cycle||'monthly';
+  refreshBillSelect(x.icon||'💡');
+  openM('m-addbill');
+}
+
+function saveBill(){
+  const name=document.getElementById('b-name').value.trim();
+  if(!name){alert('Enter bill name');return;}
+  const editId=document.getElementById('b-edit-id').value;
+  const b=ld('gl_bills',[]);
+  if(editId){
+    // Edit existing
+    const x=b.find(v=>v.id===parseInt(editId)||v.id===editId);
+    if(x){
+      x.name=name;
+      x.amount=parseFloat(document.getElementById('b-amt').value)||0;
+      x.dueDay=parseInt(document.getElementById('b-due').value)||1;
+      x.cycle=document.getElementById('b-cycle').value;
+      x.icon=document.getElementById('b-icon').value;
+    }
+  } else {
+    // Add new
+    b.push({id:Date.now(),name,icon:document.getElementById('b-icon').value,amount:parseFloat(document.getElementById('b-amt').value)||0,dueDay:parseInt(document.getElementById('b-due').value)||1,cycle:document.getElementById('b-cycle').value,paid:false});
+  }
+  sv('gl_bills',b);
+  closeM('m-addbill');
+  // Reset modal to Add mode
+  document.getElementById('bill-modal-title').textContent='Add Bill';
+  document.getElementById('bill-save-btn').textContent='Add Bill';
+  document.getElementById('b-edit-id').value='';
+  ['b-name','b-amt','b-due'].forEach(x=>document.getElementById(x).value='');
+  renderBills();
+}
+
+// MILK
+// MILKMAN (multiple)
+let milkM=null;
+function renderMilk(){
+  const now=new Date();
+  if(!milkM)milkM={y:now.getFullYear(),m:now.getMonth()};
+  const {y,m}=milkM;
+  document.getElementById('milk-ml').textContent=MN[m]+' '+y;
+  const milkmen=ld('gl_milkmen',[]);
+  if(!milkmen.length){document.getElementById('milk-list').innerHTML='<div class="es"><div style="font-size:44px">🥛</div><div>No milkman added yet.<br>Tap &quot;+ Add Milkman&quot; to start!</div></div>';return;}
+  const dim=new Date(y,m+1,0).getDate();const tdn=new Date();
+  let html='';
+  milkmen.forEach((mm,mi)=>{
+    const del=ld('gl_mdel_'+mm.id,{});const key=y+'-'+m;const md=del[key]||{};
+    let totL=0,delDays=0;
+    for(let d=1;d<=dim;d++){
+      if(new Date(y,m,d)<=tdn&&md[d]!==undefined&&md[d]!==null){
+        const q=parseFloat(md[d])||0;if(q>0){totL+=q;delDays++;}
+      }
+    }
+    const totBill=Math.round(totL*mm.rate);
+    const pays=ld('gl_mpay_'+mm.id,[]).filter(p=>{const pd=new Date(p.raw);return pd.getFullYear()===y&&pd.getMonth()===m;});
+    const totPaid=pays.reduce((s,p)=>s+p.amt,0);
+    const bal=totBill-totPaid;
+    const col=CLR[mi%CLR.length];
+    html+=`<div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <div style="width:40px;height:40px;border-radius:50%;background:${col};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🥛</div>
+          <div><div style="font-weight:800;font-size:16px;color:var(--p1);">${mm.name}</div><div style="font-size:12px;color:var(--tm);">₹${mm.rate}/L • Default ${mm.qty}L/day</div></div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button onclick="openEditMilkman(${mi})" style="background:var(--pl);border:1px solid var(--p2);color:var(--p2);border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;">✏️</button>
+          <button onclick="delMilkman(${mi})" style="background:none;border:none;font-size:18px;cursor:pointer;color:#c0c8d8;">🗑</button>
+        </div>
+      </div>
+      <div class="msm">
+        <div class="sb"><div class="sn" style="color:var(--p2)">${delDays}</div><div class="sl">Days Recd</div></div>
+        <div class="sb"><div class="sn" style="color:var(--p2)">${totL.toFixed(1)}L</div><div class="sl">Litres</div></div>
+        <div class="sb"><div class="sn" style="color:var(--amber)">₹${totBill}</div><div class="sl">Bill</div></div>
+        <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Due':bal<0?'Overpaid':'Settled'}</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--tm);margin-bottom:5px;">Tap: 1x=default qty | 2x=not delivered ❌ | 3x=custom qty</div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px;">${DS.map(d=>`<div class="dl">${d}</div>`).join('')}</div>
+      <div class="mcg" id="mcal-${mm.id}"></div>
+      <div style="font-weight:700;font-size:13px;margin:11px 0 7px;color:var(--p1);">💰 Payments</div>
+      <div id="mpay-${mm.id}"></div><div id="mbal-${mm.id}"></div>
+      <button onclick="openMilkPay('${mm.id}')" style="width:100%;margin-top:10px;background:var(--tl);border:1.5px solid var(--teal);color:var(--teal);border-radius:var(--rsm);padding:9px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">+ Record Payment</button>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+        <button class="mb" onclick="chMilk(-1)">◀</button>
+        <span style="font-size:12px;color:var(--tm);font-weight:700;">${MN[m]} ${y}</span>
+        <button class="mb" onclick="chMilk(1)">▶</button>
+      </div>
+    </div>`;
+  });
+  document.getElementById('milk-list').innerHTML=html;
+  milkmen.forEach(mm=>{
+    const del=ld('gl_mdel_'+mm.id,{});const key=y+'-'+m;const md=del[key]||{};
+    const fd=new Date(y,m,1).getDay();
+    let cal='';for(let i=0;i<fd;i++)cal+='<div></div>';
+    for(let d=1;d<=dim;d++){
+      const fut=new Date(y,m,d)>tdn;
+      const qty=md[d]!==undefined?parseFloat(md[d]):null;
+      const hasQ=qty!==null&&qty>0;const isN=qty===0;
+      const cls=fut?'fut':hasQ?'hq':isN?'nm':'';
+      const ql=fut?'':(qty===null?`${mm.qty}?`:qty===0?'❌':`${qty}L`);
+      const qs=qty===null&&!fut?'color:#b0bcd4;font-style:italic;':'';;
+      cal+=`<div class="mc ${cls}" onclick="${fut?'':` tapMilkDay('${mm.id}','${key}',${d})`}"><span class="mcd">${d}</span><span class="mcq" style="${qs}">${ql}</span></div>`;
+    }
+    const ce=document.getElementById('mcal-'+mm.id);if(ce)ce.innerHTML=cal;
+    const pays=ld('gl_mpay_'+mm.id,[]).filter(p=>{const pd=new Date(p.raw);return pd.getFullYear()===y&&pd.getMonth()===m;});
+    const totPaid=pays.reduce((s,p)=>s+p.amt,0);
+    let totL2=0;
+    for(let d=1;d<=dim;d++){if(new Date(y,m,d)<=tdn&&md[d]!==undefined){const q=parseFloat(md[d])||0;if(q>0)totL2+=q;}}
+    const totBill2=Math.round(totL2*mm.rate);const bal2=totBill2-totPaid;
+    const pe=document.getElementById('mpay-'+mm.id);
+    if(pe)pe.innerHTML=pays.length?pays.map(p=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--tm);">${p.date}${p.note?' • '+p.note:''}</span><span style="font-weight:700;color:var(--green);">₹${p.amt.toLocaleString('en-IN')}</span></div>`).join(''):`<div style="color:var(--tm);font-size:13px;text-align:center;padding:6px;">No payments this month</div>`;
+    const be=document.getElementById('mbal-'+mm.id);
+    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Bill</span><span>₹${totBill2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid</span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Balance Due':bal2<0?'Overpaid':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
+  });
+}
+function tapMilkDay(mid,key,d){
+  const del=ld('gl_mdel_'+mid,{});if(!del[key])del[key]={};
+  const mm=ld('gl_milkmen',[]).find(m=>m.id===mid);if(!mm)return;
+  const cur=del[key][d];
+  if(cur===undefined){del[key][d]=mm.qty;sv('gl_mdel_'+mid,del);renderMilk();}
+  else if(parseFloat(cur)>0){del[key][d]=0;sv('gl_mdel_'+mid,del);renderMilk();}
+  else{
+    document.getElementById('me-title').textContent=mm.name+' — Day '+d;
+    document.getElementById('me-qty').value='';
+    document.getElementById('me-day').value=d;
+    document.getElementById('me-key').value=key;
+    document.getElementById('me-mid').value=mid;
+    openM('m-milkentry');
+  }
+}
+function saveMilkEntry(){
+  const d=parseInt(document.getElementById('me-day').value);
+  const key=document.getElementById('me-key').value;
+  const mid=document.getElementById('me-mid').value;
+  const qty=parseFloat(document.getElementById('me-qty').value);
+  if(isNaN(qty)||qty<0){alert('Enter valid quantity');return;}
+  const del=ld('gl_mdel_'+mid,{});if(!del[key])del[key]={};del[key][d]=qty;
+  sv('gl_mdel_'+mid,del);closeM('m-milkentry');renderMilk();
+}
+function chMilk(dir){
+  if(!milkM){const n=new Date();milkM={y:n.getFullYear(),m:n.getMonth()};}
+  milkM.m+=dir;if(milkM.m>11){milkM.m=0;milkM.y++;}if(milkM.m<0){milkM.m=11;milkM.y--;}renderMilk();
+}
+function openMilkPay(mid){
+  document.getElementById('mp-mid').value=mid;
+  document.getElementById('mp-date').value=td();
+  document.getElementById('mp-amt').value='';document.getElementById('mp-note').value='';
+  openM('m-milkpay');
+}
+function saveMilkPay(){
+  const mid=document.getElementById('mp-mid').value;
+  const amt=parseFloat(document.getElementById('mp-amt').value);
+  const raw=document.getElementById('mp-date').value;
+  const note=document.getElementById('mp-note').value.trim();
+  if(!amt||!raw){alert('Enter amount and date');return;}
+  const pays=ld('gl_mpay_'+mid,[]);pays.push({amt,date:fmt(raw),raw,note});
+  sv('gl_mpay_'+mid,pays);closeM('m-milkpay');renderMilk();
+}
+function addMilkman(){
+  const name=document.getElementById('mm-name').value.trim();
+  const qty=parseFloat(document.getElementById('mm-qty').value)||2;
+  const rate=parseFloat(document.getElementById('mm-rate').value)||60;
+  if(!name){alert('Enter milkman name');return;}
+  const milkmen=ld('gl_milkmen',[]);
+  milkmen.push({id:Date.now().toString(),name,qty,rate});
+  sv('gl_milkmen',milkmen);closeM('m-addmilkman');
+  ['mm-name','mm-qty','mm-rate'].forEach(x=>document.getElementById(x).value='');
+  renderMilk();
+}
+function openEditMilkman(idx){
+  const mm=ld('gl_milkmen',[]);const m=mm[idx];if(!m)return;
+  document.getElementById('emm-idx').value=idx;
+  document.getElementById('emm-name').value=m.name;
+  document.getElementById('emm-qty').value=m.qty;
+  document.getElementById('emm-rate').value=m.rate;
+  openM('m-editmilkman');
+}
+function saveEditMilkman(){
+  const idx=parseInt(document.getElementById('emm-idx').value);
+  const milkmen=ld('gl_milkmen',[]);
+  if(milkmen[idx]){
+    milkmen[idx].name=document.getElementById('emm-name').value.trim()||milkmen[idx].name;
+    milkmen[idx].qty=parseFloat(document.getElementById('emm-qty').value)||milkmen[idx].qty;
+    milkmen[idx].rate=parseFloat(document.getElementById('emm-rate').value)||milkmen[idx].rate;
+  }
+  sv('gl_milkmen',milkmen);closeM('m-editmilkman');renderMilk();
+}
+function delMilkman(idx){
+  const mm=ld('gl_milkmen',[]);mm.splice(idx,1);sv('gl_milkmen',mm);renderMilk();
+}
+
+// HELP
+let helpM=null;
+function countSundays(y, m) {
+  const dim = new Date(y, m+1, 0).getDate();
+  let sundays = 0;
+  for(let d = 1; d <= dim; d++) { if(new Date(y,m,d).getDay()===0) sundays++; }
+  return sundays;
+}
+function renderHelp(){
+  const now=new Date();
+  if(!helpM)helpM={y:now.getFullYear(),m:now.getMonth()};
+  const {y,m}=helpM;
+  document.getElementById('help-ml').textContent=MN[m]+' '+y;
+  const helpers=ld('gl_helpers',[]);
+  if(!helpers.length){document.getElementById('help-list').innerHTML='<div class="es"><div style="font-size:44px">👫</div><div>No staff added yet.<br>Tap "+ Add" to start!</div></div>';return;}
+  const dim=new Date(y,m+1,0).getDate();const tdn=new Date();
+  let html='';
+  helpers.forEach((h,hi)=>{
+    const att=ld('gl_att_'+h.id,{});const key=y+'-'+m;const ma=att[key]||{};
+    let present=0,absent=0,holiday=0;
+    for(let d=1;d<=dim;d++){
+      if(new Date(y,m,d)>tdn)continue;
+      const st=ma[d]!==undefined?ma[d]:'P';
+      if(st==='P')present++;else if(st==='A')absent++;else holiday++;
+    }
+    // Fix: calculate actual working days based on holiday type
+    let holidayDays;
+    if(h.holtype==='sundays'){
+      holidayDays=countSundays(y,m);
+    } else {
+      holidayDays=h.holidays||0;
+    }
+    const wdays=Math.max(dim-holidayDays,1);
+    const perDay=h.salary/wdays;
+    const earned=Math.round(present*perDay);
+    const advs=ld('gl_adv_'+h.id,[]);
+    const mAdv=advs.filter(a=>{try{const pd=new Date(a.raw);return pd.getFullYear()===y&&pd.getMonth()===m;}catch(e){return false;}});
+    const totAdv=mAdv.reduce((s,a)=>s+a.amt,0);
+    const net=Math.max(0,earned-totAdv);
+    const col=CLR[hi%CLR.length];
+    const ini=h.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const holLabel=h.holtype==='sundays'?`All Sundays (${holidayDays} this month)`:`${holidayDays} fixed days/month`;
+    html+=`<div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:40px;height:40px;border-radius:50%;background:${col};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:white;flex-shrink:0">${ini}</div>
+          <div><div style="font-weight:800;font-size:15px;color:var(--p1)">${h.name}</div><div style="font-size:12px;color:var(--tm)">${h.role}</div></div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button onclick="openEditHelper(${hi})" style="background:var(--pl);border:1px solid var(--p2);color:var(--p2);border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;">✏️</button>
+          <button onclick="delHelper(${hi})" style="background:none;border:none;font-size:18px;cursor:pointer;color:#c0c8d8">🗑</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:11px">
+        <div style="text-align:center;background:var(--bg);border-radius:var(--rsm);padding:9px"><div style="font-size:20px;font-weight:800;color:var(--green)">${present}</div><div style="font-size:10px;color:var(--tm)">Present</div></div>
+        <div style="text-align:center;background:var(--bg);border-radius:var(--rsm);padding:9px"><div style="font-size:20px;font-weight:800;color:var(--red)">${absent}</div><div style="font-size:10px;color:var(--tm)">Absent</div></div>
+        <div style="text-align:center;background:var(--bg);border-radius:var(--rsm);padding:9px"><div style="font-size:20px;font-weight:800;color:var(--purple)">${holiday}</div><div style="font-size:10px;color:var(--tm)">Holiday</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px">${DS.map(d=>`<div style="font-size:9px;color:var(--tm);text-align:center;font-weight:600">${d}</div>`).join('')}</div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:11px">`;
+    const fd=new Date(y,m,1).getDay();
+    for(let i=0;i<fd;i++)html+=`<div></div>`;
+    for(let d=1;d<=dim;d++){
+      const fut=new Date(y,m,d)>tdn;
+      const isSun=new Date(y,m,d).getDay()===0;
+      const st=fut?null:(ma[d]!==undefined?ma[d]:(h.holtype==='sundays'&&isSun?'O':'P'));
+      const cls=fut?'fut':st==='A'?'absent':st==='O'?'holiday':'present';
+      const mark=fut?'':st==='A'?'✗':st==='O'?'H':'✓';
+      html+=`<div class="ac ${cls}" onclick="${fut?'':` cycAtt('${h.id}','${key}',${d})`}" style="${isSun&&h.holtype==='sundays'?'outline:2px solid var(--purple);outline-offset:-2px;':''}"><span class="acd">${d}</span><span class="acm">${mark}</span></div>`;
+    }
+    html+=`</div>
+      <div class="sr"><span style="font-size:12px;color:var(--tm)">🗓 Holidays: ${holLabel}</span><span style="font-size:12px;color:var(--tm)">Working days: ${wdays}</span></div>
+      <div class="sr"><span style="font-size:13px;color:var(--tm)">Monthly Salary</span><span style="font-weight:700;color:var(--text)">₹${h.salary.toLocaleString('en-IN')}</span></div>
+      <div class="sr"><span style="font-size:13px;color:var(--tm)">Earned (${present} days @ ₹${Math.round(perDay)}/day)</span><span style="font-weight:700;color:var(--text)">₹${earned.toLocaleString('en-IN')}</span></div>
+      ${totAdv>0?`<div class="sr"><span style="font-size:13px;color:var(--red)">Advance Deduction</span><span style="font-weight:700;color:var(--red)">− ₹${totAdv.toLocaleString('en-IN')}</span></div>`:''}
+      <div class="sr" style="border-top:2px solid var(--border);margin-top:5px;padding-top:9px">
+        <span style="font-size:14px;font-weight:800;color:var(--p1)">Net Payable</span>
+        <span style="font-size:18px;font-weight:800;color:var(--green)">₹${net.toLocaleString('en-IN')}</span>
+      </div>
+      <button onclick="openAdv('${h.id}','${h.name}')" style="margin-top:11px;width:100%;background:var(--purl);border:1.5px solid var(--purple);color:var(--purple);border-radius:20px;padding:8px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer">+ Record Advance Given</button>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+        <button class="mb" onclick="chHelp(-1)">◀</button>
+        <span style="font-size:12px;color:var(--tm);font-weight:700;">${MN[m]} ${y}</span>
+        <button class="mb" onclick="chHelp(1)">▶</button>
+      </div>
+    </div>`;
+  });
+  document.getElementById('help-list').innerHTML=html;
+}
+function cycAtt(hid,key,d){
+  const att=ld('gl_att_'+hid,{});if(!att[key])att[key]={};
+  const cyc=['P','A','O'];const cur=att[key][d]!==undefined?att[key][d]:'P';
+  att[key][d]=cyc[(cyc.indexOf(cur)+1)%cyc.length];
+  sv('gl_att_'+hid,att);renderHelp();
+}
+function chHelp(dir){helpM.m+=dir;if(helpM.m>11){helpM.m=0;helpM.y++;}if(helpM.m<0){helpM.m=11;helpM.y--;}renderHelp();}
+function toggleHolDays(){
+  const t=document.getElementById('h-holtype').value;
+  document.getElementById('h-holdays-row').style.display=t==='fixed'?'block':'none';
+}
+function toggleEHolDays(){
+  const t=document.getElementById('eh-holtype').value;
+  document.getElementById('eh-holdays-row').style.display=t==='fixed'?'block':'none';
+}
+function openEditHelper(idx){
+  const hs=ld('gl_helpers',[]);const h=hs[idx];if(!h)return;
+  document.getElementById('eh-idx').value=idx;
+  document.getElementById('eh-name').value=h.name||'';
+  document.getElementById('eh-role').value=h.role||'Cook / Bai';
+  document.getElementById('eh-sal').value=h.salary||'';
+  document.getElementById('eh-holtype').value=h.holtype||'fixed';
+  document.getElementById('eh-hol').value=h.holidays||0;
+  toggleEHolDays();
+  openM('m-edithelper');
+}
+function saveEditHelper(){
+  const idx=parseInt(document.getElementById('eh-idx').value);
+  const hs=ld('gl_helpers',[]);
+  if(hs[idx]){
+    hs[idx].name=document.getElementById('eh-name').value.trim()||hs[idx].name;
+    hs[idx].role=document.getElementById('eh-role').value;
+    hs[idx].salary=parseFloat(document.getElementById('eh-sal').value)||hs[idx].salary;
+    hs[idx].holtype=document.getElementById('eh-holtype').value;
+    hs[idx].holidays=parseInt(document.getElementById('eh-hol').value)||0;
+  }
+  sv('gl_helpers',hs);closeM('m-edithelper');renderHelp();
+}
+function addHelper(){
+  const name=document.getElementById('h-name').value.trim();
+  if(!name){alert('Enter name');return;}
+  const holtype=document.getElementById('h-holtype').value;
+  const holidays=holtype==='fixed'?(parseInt(document.getElementById('h-hol').value)||0):0;
+  const hs=ld('gl_helpers',[]);
+  hs.push({id:Date.now(),name,role:document.getElementById('h-role').value,salary:parseFloat(document.getElementById('h-sal').value)||0,holtype,holidays});
+  sv('gl_helpers',hs);closeM('m-addhelp');document.getElementById('h-name').value='';document.getElementById('h-sal').value='';renderHelp();
+}
+function delHelper(idx){
+  
+  const hs=ld('gl_helpers',[]);hs.splice(idx,1);sv('gl_helpers',hs);renderHelp();
+}
+function openAdv(id,name){
+  document.getElementById('adv-id').value=id;document.getElementById('adv-name').value=name;document.getElementById('adv-amt').value='';
+  openM('m-adv');
+}
+function saveAdv(){
+  const id=document.getElementById('adv-id').value;
+  const amt=parseFloat(document.getElementById('adv-amt').value);
+  const raw=document.getElementById('adv-date').value;
+  if(!amt||amt<=0||!raw){alert('Enter valid amount and date');return;}
+  const advs=ld('gl_adv_'+id,[]);advs.push({amt,date:fmt(raw),raw});
+  sv('gl_adv_'+id,advs);closeM('m-adv');renderHelp();
+}
+
+// CONTACTS
+const RCOL={'🔧 Plumber':'#3498DB','⚡ Electrician':'#F39C12','❄️ AC Repair':'#00B4A2','🪵 Carpenter':'#795548','🎨 Painter':'#9C27B0','🔒 Locksmith':'#607D8B','🚗 Car Mechanic':'#FF5722','📺 Appliance Repair':'#E91E63','🏠 Pest Control':'#4CAF50','📦 Other':'#9E9E9E'};
+function renderCon(){
+  const cons=ld('gl_contacts',[]);
+  const q=(document.getElementById('con-srch')||{}).value||'';
+  const fil=cons.filter(c=>!q||c.name.toLowerCase().includes(q.toLowerCase())||c.role.toLowerCase().includes(q.toLowerCase()));
+  if(!fil.length){document.getElementById('con-list').innerHTML=`<div class="es"><div style="font-size:44px">📞</div><div>${q?'No contacts found.':'No contacts yet.<br>Add plumber, electrician etc.'}</div></div>`;return;}
+  document.getElementById('con-list').innerHTML=fil.map(c=>{
+    const col=RCOL[c.role]||'#9E9E9E';const clean=c.phone.replace(/\D/g,'');const ri=cons.indexOf(c);
+    return `<div class="cc">
+      <div style="width:46px;height:46px;border-radius:50%;background:${col}20;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${c.role.split(' ')[0]}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:800;font-size:14px;color:var(--p1)">${c.name}</div>
+        <div style="font-size:11px;color:var(--tm);margin-top:1px">${c.role}</div>
+        ${c.phone?`<div style="font-size:12px;color:var(--tm);margin-top:1px">📱 ${c.phone}</div>`:''}
+        ${c.note?`<div style="font-size:11px;color:var(--tm);margin-top:1px">💬 ${c.note}</div>`:''}
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+        ${c.phone?`<a class="clb" href="tel:${clean}">📞</a><a class="wb" href="https://wa.me/91${clean}" target="_blank">💬</a>`:''}
+        <button onclick="openEditCon(${ri})" style="background:var(--pl);border:1px solid var(--p2);color:var(--p2);border-radius:50%;width:34px;height:34px;font-size:15px;cursor:pointer;">✏️</button>
+        <button onclick="delCon(${ri})" style="background:none;border:none;font-size:16px;cursor:pointer;color:#c0c8d8;width:34px;height:34px">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function addCon(){
+  const name=document.getElementById('c-name').value.trim();
+  if(!name){alert('Enter name');return;}
+  const cs=ld('gl_contacts',[]);
+  cs.push({id:Date.now(),name,role:document.getElementById('c-role').value,phone:document.getElementById('c-ph').value.trim(),note:document.getElementById('c-note').value.trim()});
+  sv('gl_contacts',cs);closeM('m-addcon');['c-name','c-ph','c-note'].forEach(x=>document.getElementById(x).value='');renderCon();
+}
+function delCon(idx){const cs=ld('gl_contacts',[]);cs.splice(idx,1);sv('gl_contacts',cs);renderCon();}
+
+// CASH
+let cashM={y:new Date().getFullYear(),m:new Date().getMonth()};
+function renderCash(){
+  const {y,m}=cashM;
+  document.getElementById('cash-ml').textContent=MN[m]+' '+y;
+  const all=ld('gl_txns',[]);
+  const mT=all.filter(t=>{const d=new Date(t.raw);return d.getFullYear()===y&&d.getMonth()===m;});
+
+  // Cash in hand = all-time cash-in minus cash-out (cash mode only)
+  const cashIn=all.filter(t=>t.type==='in'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0);
+  const cashOut=all.filter(t=>t.type==='out'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0);
+  const cashBal=cashIn-cashOut;
+
+  // Digital balance = all-time digital money in minus digital money out
+  const digitalModes=['📱 UPI/GPay','💳 Credit Card','💳 Debit Card','👛 Wallet','🏦 Net Banking'];
+  const digitalIn=all.filter(t=>t.type==='in'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
+  const digitalOut=all.filter(t=>t.type==='out'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
+  const digitalBal=digitalIn-digitalOut;
+
+  // This month
+  const mCashExp=mT.filter(t=>t.type==='out'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0);
+  const mDigitalExp=mT.filter(t=>t.type==='out'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
+  const mTotalExp=mCashExp+mDigitalExp;
+  const mCashInAmt=mT.filter(t=>t.type==='in'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0);
+  const mDigitalInAmt=mT.filter(t=>t.type==='in'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
+
+  document.getElementById('exp-summary').innerHTML=`
+    <div class="cbc" style="margin-bottom:13px;">
+      <div style="font-size:12px;opacity:.85;margin-bottom:8px;">💰 Overall Balance</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div style="background:rgba(255,255,255,0.18);border-radius:10px;padding:10px;">
+          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">💵 Cash in Hand</div>
+          <div style="font-size:20px;font-weight:800;">₹${cashBal.toLocaleString('en-IN')}</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.18);border-radius:10px;padding:10px;">
+          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">📱 Digital Balance</div>
+          <div style="font-size:20px;font-weight:800;">₹${digitalBal.toLocaleString('en-IN')}</div>
+        </div>
+      </div>
+      <div style="font-size:11px;opacity:.75;margin-bottom:6px;">${MN[m]} ${y} — This Month</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px;">
+          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">💚 Cash Received</div>
+          <div style="font-size:16px;font-weight:800;">₹${mCashInAmt.toLocaleString('en-IN')}</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px;">
+          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">📲 Digital Received</div>
+          <div style="font-size:16px;font-weight:800;">₹${mDigitalInAmt.toLocaleString('en-IN')}</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px;">
+          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">🔴 Cash Spent</div>
+          <div style="font-size:16px;font-weight:800;">₹${mCashExp.toLocaleString('en-IN')}</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.25);border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.4);">
+          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">📊 Total Spent</div>
+          <div style="font-size:16px;font-weight:800;">₹${mTotalExp.toLocaleString('en-IN')}</div>
+        </div>
+      </div>
+    </div>`;
+  if(!mT.length){document.getElementById('cash-list').innerHTML='<div class="es"><div style="font-size:44px">💸</div><div>No entries this month.<br>Tap "+ Entry" to start!</div></div>';return;}
+  const sorted=[...mT].sort((a,b)=>new Date(b.raw)-new Date(a.raw));
+  const modeColors={'💵 Cash':'var(--green)','📱 UPI/GPay':'#9b59b6','💳 Credit Card':'var(--red)','💳 Debit Card':'var(--p2)','👛 Wallet':'var(--amber)','🏦 Net Banking':'var(--teal)'};
+  document.getElementById('cash-list').innerHTML=sorted.map(t=>`
+    <div class="tr ${t.type==='out'?'out':''}">
+      <div style="font-size:22px">${t.cat?t.cat.split(' ')[0]:'💰'}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:700;font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.desc}</div>
+        <div style="font-size:11px;color:var(--tm);margin-top:2px">${t.date} • ${t.cat||''}</div>
+        <div style="font-size:11px;font-weight:700;color:${modeColors[t.mode]||'var(--tm)'};margin-top:1px">${t.mode||'💵 Cash'}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:14px;font-weight:800;color:${t.type==='in'?'var(--green)':'var(--red)'};white-space:nowrap">${t.type==='in'?'+':'−'}₹${t.amt.toLocaleString('en-IN')}</div>
+        <div style="display:flex;gap:4px;justify-content:flex-end;margin-top:3px;">
+          <button onclick="openEditTxn('${t.id}')" style="background:none;border:none;font-size:13px;cursor:pointer;color:var(--p2);">✏️</button>
+          <button onclick="delTxn('${t.id}')" style="background:none;border:none;font-size:13px;cursor:pointer;color:#c0c8d8;">🗑</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function setTtype(type){
+  document.getElementById('t-type').value=type;
+  const ib=document.getElementById('btn-in'),ob=document.getElementById('btn-out');
+  if(type==='in'){ib.style.cssText='padding:11px;border-radius:var(--rsm);border:2px solid var(--green);background:var(--green);color:white;font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;';ob.style.cssText='padding:11px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--tm);font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;';}
+  else{ob.style.cssText='padding:11px;border-radius:var(--rsm);border:2px solid var(--red);background:var(--red);color:white;font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;';ib.style.cssText='padding:11px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--tm);font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;';}
+}
+function addTxn(){
+  const desc=document.getElementById('t-desc').value.trim();
+  const amt=parseFloat(document.getElementById('t-amt').value);
+  const raw=document.getElementById('t-date').value;
+  const mode=document.getElementById('t-mode').value;
+  if(!desc||!amt||!raw){alert('Please fill all fields');return;}
+  const ts=ld('gl_txns',[]);
+  ts.push({id:Date.now().toString(),desc,amt,type:document.getElementById('t-type').value,cat:document.getElementById('t-cat').value,mode,raw,date:fmt(raw)});
+  sv('gl_txns',ts);closeM('m-addtxn');
+  document.getElementById('t-desc').value='';document.getElementById('t-amt').value='';
+  renderCash();
+}
+function delTxn(id){sv('gl_txns',ld('gl_txns',[]).filter(t=>t.id!==id));renderCash();}
+function chCash(dir){cashM.m+=dir;if(cashM.m>11){cashM.m=0;cashM.y++;}if(cashM.m<0){cashM.m=11;cashM.y--;}renderCash();}
+
+// TODO — fixed delete using data-id
+let todoF='all';
+function todoFilt(f,btn){todoF=f;document.querySelectorAll('#todo-tabs .it').forEach(t=>t.classList.remove('active'));if(btn)btn.classList.add('active');renderTodo();}
+const TCOL={'🏠 Home':'var(--p2)','🛒 Market':'var(--teal)','📞 Call':'#9b59b6','🔧 Repair':'var(--amber)','💊 Medical':'var(--red)','🎓 Kids':'var(--purple)','💰 Finance':'var(--green)','📦 Other':'var(--tm)'};
+function renderTodo(){
+  const todos=ld('gl_todos',[]);
+  let fil=[...todos];
+  if(todoF==='pending')fil=fil.filter(t=>!t.done);
+  if(todoF==='done')fil=fil.filter(t=>t.done);
+  fil.sort((a,b)=>{if(a.done!==b.done)return a.done?1:-1;if(a.pri==='urgent'&&b.pri!=='urgent')return -1;if(b.pri==='urgent'&&a.pri!=='urgent')return 1;return 0;});
+  if(!fil.length){document.getElementById('todo-list').innerHTML=`<div class="es"><div style="font-size:44px">✅</div><div>${todoF==='done'?'No completed tasks.':todoF==='pending'?'No pending tasks! 🎉':'No tasks yet.<br>Tap "+ Add" to start!'}</div></div>`;return;}
+  document.getElementById('todo-list').innerHTML=fil.map(t=>`
+    <div class="ti${t.done?' done':''}">
+      <input type="checkbox" class="tck" ${t.done?'checked':''} onchange="togTodo('${t.id}',this.checked)"/>
+      <div style="flex:1;min-width:0">
+        <div class="ttxt">${t.pri==='urgent'&&!t.done?'🔴 ':''}<span style="font-weight:${t.pri==='urgent'&&!t.done?800:600};color:var(--text)">${t.task}</span></div>
+        <span style="font-size:10px;border-radius:10px;padding:2px 8px;font-weight:700;background:${(TCOL[t.cat]||'var(--tm)').replace('var(--p2)','#1a3a8c')}20;color:${TCOL[t.cat]||'var(--tm)'};margin-top:3px;display:inline-block">${t.cat}</span>
+      </div>
+      <button class="tdel" onclick="openEditTodo('${t.id}')">✏️</button>
+      <button class="tdel" onclick="delTodo('${t.id}')">🗑</button>
+    </div>`).join('');
+}
+function addTodo(){
+  const task=document.getElementById('td-task').value.trim();
+  if(!task){alert('Enter task');return;}
+  const ts=ld('gl_todos',[]);
+  ts.push({id:Date.now().toString(),task,cat:document.getElementById('td-cat').value,pri:document.getElementById('td-pri').value,done:false});
+  sv('gl_todos',ts);closeM('m-addtodo');document.getElementById('td-task').value='';renderTodo();
+}
+function togTodo(id,v){
+  const ts=ld('gl_todos',[]);const t=ts.find(x=>x.id===id);if(t)t.done=v;
+  sv('gl_todos',ts);renderTodo();
+}
+function delTodo(id){
+  sv('gl_todos',ld('gl_todos',[]).filter(t=>t.id!==id));
+  renderTodo();
+}
+function clearDone(){
+  const all=ld('gl_todos',[]);
+  const remaining=all.filter(t=>!t.done);
+  if(all.length===remaining.length){alert('No completed tasks to clear!');return;}
+  sv('gl_todos',remaining);renderTodo();
+}
+
+// SOS
+function openSOS(){
+  const cs=ld('gl_sos',[]);
+  if(!cs.length){
+    sv('gl_sos',[{name:'',phone:'',rel:''}]);
+    renderSOSSet();openM('m-sosset');return;
+  }
+  renderSOSCons();openM('m-sos');
+}
+function renderSOSCons(){
+  const cs=ld('gl_sos',[]);
+  const msg=encodeURIComponent('🆘 EMERGENCY! I need help! Please call me immediately. — GrihaLaxmi SOS');
+  let html=`<div style="font-size:13px;color:var(--red);font-weight:700;margin-bottom:14px;text-align:center;padding:10px;background:var(--rl);border-radius:var(--rsm);">⚠️ Select contact and confirm before sending</div>`;
+  cs.forEach(c=>{
+    if(!c.name||!c.phone)return;
+    const cl=c.phone.replace(/\D/g,'');
+    html+=`<div style="background:var(--rl);border:1.5px solid var(--red);border-radius:var(--rsm);padding:13px;margin-bottom:11px;">
+      <div style="font-weight:800;font-size:15px;margin-bottom:9px;color:var(--text);">📞 ${c.name}${c.rel?' ('+c.rel+')':''}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <a href="tel:${cl}" onclick="confSOS(event,'call','${c.name}')" style="background:var(--green);color:white;border-radius:var(--rsm);padding:10px 4px;text-align:center;font-size:12px;font-weight:700;text-decoration:none;display:block">📞 Call</a>
+        <a href="https://wa.me/91${cl}?text=${msg}" target="_blank" onclick="confSOS(event,'WhatsApp','${c.name}')" style="background:#25D366;color:white;border-radius:var(--rsm);padding:10px 4px;text-align:center;font-size:12px;font-weight:700;text-decoration:none;display:block">💬 WA</a>
+        <a href="sms:${cl}?body=${msg}" onclick="confSOS(event,'SMS','${c.name}')" style="background:var(--p2);color:white;border-radius:var(--rsm);padding:10px 4px;text-align:center;font-size:12px;font-weight:700;text-decoration:none;display:block">✉️ SMS</a>
+      </div>
+    </div>`;
+  });
+  document.getElementById('sos-clist').innerHTML=html;
+}
+function confSOS(ev,type,name){
+  if(!confirm(`⚠️ CONFIRM SOS\n\nSend ${type} to ${name}?\n\nOnly proceed if this is a REAL emergency!`)){ev.preventDefault();}
+  else closeM('m-sos');
+}
+function renderSOSSet(){
+  let cs=ld('gl_sos',[]);
+  if(!cs.length)cs=[{name:'',phone:'',rel:''}];
+  document.getElementById('sos-slist').innerHTML=cs.map((c,i)=>`
+    <div style="background:var(--bg);border-radius:var(--rsm);padding:12px;margin-bottom:10px;border:1px solid var(--border);">
+      <div style="font-weight:700;font-size:12px;color:var(--tm);margin-bottom:9px">Contact ${i+1}</div>
+      <div class="fg"><label class="fl">Name</label><input class="fi" id="ss-n${i}" value="${c.name||''}" placeholder="e.g. Husband"/></div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Phone</label><input class="fi" id="ss-p${i}" value="${c.phone||''}" placeholder="9876543210" type="tel"/></div>
+        <div class="fg"><label class="fl">Relation</label><input class="fi" id="ss-r${i}" value="${c.rel||''}" placeholder="e.g. Husband"/></div>
+      </div>
+      <button onclick="remSOS(${i})" style="background:none;border:none;color:var(--red);font-size:12px;font-family:inherit;cursor:pointer;font-weight:700">🗑 Remove</button>
+    </div>`).join('');
+}
+function addSOSField(){
+  const cs=ld('gl_sos',[]);if(cs.length>=3){alert('Max 3 emergency contacts');return;}
+  cs.push({name:'',phone:'',rel:''});sv('gl_sos',cs);renderSOSSet();
+}
+function remSOS(i){const cs=ld('gl_sos',[]);cs.splice(i,1);sv('gl_sos',cs);renderSOSSet();}
+function saveSOS(){
+  const cs=ld('gl_sos',[]);
+  const saved=cs.map((c,i)=>({
+    name:(document.getElementById('ss-n'+i)||{}).value||'',
+    phone:(document.getElementById('ss-p'+i)||{}).value||'',
+    rel:(document.getElementById('ss-r'+i)||{}).value||''
+  })).filter(c=>c.name&&c.phone);
+  if(!saved.length){alert('Please add at least one contact with name and phone');return;}
+  sv('gl_sos',saved);closeM('m-sosset');alert('Emergency contacts saved! ✅\n\nTap SOS button anytime for emergency.');
+}
+
+// NOTIFICATIONS
+function setupNotifs(){if('Notification'in window&&Notification.permission==='default')Notification.requestPermission();}
+function checkNotifs(){
+  if(Notification.permission!=='granted')return;
+  const bills=ld('gl_bills',[]);const t=new Date();
+  bills.forEach(b=>{if(b.paid)return;const d=new Date(t.getFullYear(),t.getMonth(),b.dueDay);const days=Math.ceil((d-t)/86400000);if(days>=0&&days<=3)try{new Notification(b.icon+' '+b.name+' Due Soon!',{body:'Due in '+days+' day(s)'+(b.amount?' • ₹'+b.amount:'')});}catch(x){}});
+}
+
+// Register Service Worker
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js')
+    .then(()=>console.log('SW registered'))
+    .catch(e=>console.log('SW error',e));
+}
+
+// EDIT CONTACT
+function openEditCon(idx){
+  const cs=ld('gl_contacts',[]);const c=cs[idx];if(!c)return;
+  document.getElementById('ec-idx').value=idx;
+  document.getElementById('ec-name').value=c.name||'';
+  document.getElementById('ec-role').value=c.role||'🔧 Plumber';
+  document.getElementById('ec-ph').value=c.phone||'';
+  document.getElementById('ec-note').value=c.note||'';
+  openM('m-editcon');
+}
+function saveEditCon(){
+  const idx=parseInt(document.getElementById('ec-idx').value);
+  const cs=ld('gl_contacts',[]);
+  if(cs[idx]){
+    cs[idx].name=document.getElementById('ec-name').value.trim();
+    cs[idx].role=document.getElementById('ec-role').value;
+    cs[idx].phone=document.getElementById('ec-ph').value.trim();
+    cs[idx].note=document.getElementById('ec-note').value.trim();
+  }
+  sv('gl_contacts',cs);closeM('m-editcon');renderCon();
+}
+
+// EDIT TODO
+function openEditTodo(id){
+  const ts=ld('gl_todos',[]);const t=ts.find(x=>x.id===id);if(!t)return;
+  document.getElementById('et-id').value=id;
+  document.getElementById('et-task').value=t.task||'';
+  document.getElementById('et-cat').value=t.cat||'🏠 Home';
+  document.getElementById('et-pri').value=t.pri||'normal';
+  openM('m-edittodo');
+}
+function saveEditTodo(){
+  const id=document.getElementById('et-id').value;
+  const ts=ld('gl_todos',[]);const t=ts.find(x=>x.id===id);
+  if(t){
+    t.task=document.getElementById('et-task').value.trim();
+    t.cat=document.getElementById('et-cat').value;
+    t.pri=document.getElementById('et-pri').value;
+  }
+  sv('gl_todos',ts);closeM('m-edittodo');renderTodo();
+}
+
+// EDIT TRANSACTION
+function openEditTxn(id){
+  const ts=ld('gl_txns',[]);const t=ts.find(x=>x.id===id);if(!t)return;
+  document.getElementById('etx-id').value=id;
+  document.getElementById('etx-desc').value=t.desc||'';
+  document.getElementById('etx-amt').value=t.amt||'';
+  document.getElementById('etx-date').value=t.raw||'';
+  refreshEditTxnSelects(t.mode||'💵 Cash', t.cat||'📦 Other');
+  setETtype(t.type||'in');
+  openM('m-edittxn');
+}
+function setETtype(type){
+  document.getElementById('etx-type').value=type;
+  const ib=document.getElementById('etx-btn-in'),ob=document.getElementById('etx-btn-out');
+  if(type==='in'){ib.style.cssText='padding:11px;border-radius:var(--rsm);border:2px solid var(--green);background:var(--green);color:white;font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;';ob.style.cssText='padding:11px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--tm);font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;';}
+  else{ob.style.cssText='padding:11px;border-radius:var(--rsm);border:2px solid var(--red);background:var(--red);color:white;font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;';ib.style.cssText='padding:11px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--tm);font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;';}
+}
+function saveEditTxn(){
+  const id=document.getElementById('etx-id').value;
+  const desc=document.getElementById('etx-desc').value.trim();
+  const amt=parseFloat(document.getElementById('etx-amt').value);
+  const raw=document.getElementById('etx-date').value;
+  if(!desc||!amt||!raw){alert('Please fill all fields');return;}
+  const ts=ld('gl_txns',[]);const t=ts.find(x=>x.id===id);
+  if(t){t.desc=desc;t.amt=amt;t.type=document.getElementById('etx-type').value;t.cat=document.getElementById('etx-cat').value;t.raw=raw;t.date=fmt(raw);}
+  sv('gl_txns',ts);closeM('m-edittxn');renderCash();
+}
+
+// CONTRA ENTRY
+function saveContra(){
+  const from=document.getElementById('con-from').value;
+  const to=document.getElementById('con-to').value;
+  const amt=parseFloat(document.getElementById('con-amt').value);
+  const raw=document.getElementById('con-date').value;
+  const note=document.getElementById('con-note').value.trim();
+  if(!amt||!raw){alert('Enter amount and date');return;}
+  if(from===to){alert('From and To cannot be same!');return;}
+  const ts=ld('gl_txns',[]);
+  const fromLabel=from==='bank'?'🏦 Bank/UPI':'💵 Cash';
+  const toLabel=to==='bank'?'🏦 Bank/UPI':'💵 Cash';
+  const desc=note||`Transfer: ${fromLabel} → ${toLabel}`;
+  // Debit from source
+  ts.push({id:Date.now().toString(),desc:`${desc} (Out)`,amt,type:'out',cat:'🔄 Transfer',raw,date:fmt(raw),contra:true});
+  // Credit to destination
+  ts.push({id:(Date.now()+1).toString(),desc:`${desc} (In)`,amt,type:'in',cat:'🔄 Transfer',raw,date:fmt(raw),contra:true});
+  sv('gl_txns',ts);closeM('m-contra');
+  document.getElementById('con-amt').value='';document.getElementById('con-note').value='';
+  renderCash();
+}
+
+function resetShoppingData(){
+  if(!confirm('This will reset your shopping list to defaults.\n\nYour bills, milk, staff, cash book and other data will NOT be affected.\n\nContinue?'))return;
+  localStorage.removeItem('gl_items');
+  localStorage.removeItem('gl_cats3');
+  localStorage.removeItem('gl_data_v22');
+  init();
+  closeM('m-about');
+  renderShop();
+  alert('✅ Shopping data reset! All default items are back.');
+}
+
+// ===== MANAGE LISTS (payment modes, expense cats, bill types) =====
+const DEF_MODES=[
+  {e:'💵',n:'Cash'},
+  {e:'📱',n:'UPI/GPay'},
+  {e:'💳',n:'Credit Card'},
+  {e:'💳',n:'Debit Card'},
+  {e:'👛',n:'Wallet'},
+  {e:'🏦',n:'Net Banking'},
+];
+const DEF_EXPCATS=[
+  {e:'🛒',n:'Grocery'},
+  {e:'💡',n:'Bills'},
+  {e:'💊',n:'Medical'},
+  {e:'👗',n:'Clothing'},
+  {e:'🎓',n:'Education'},
+  {e:'🍽️',n:'Eating Out'},
+  {e:'🚗',n:'Transport'},
+  {e:'🎁',n:'Gift'},
+  {e:'💰',n:'Salary/Income'},
+  {e:'📦',n:'Other'},
+];
+const DEF_BILLICONS=[
+  {e:'💡',n:'Electricity'},
+  {e:'💧',n:'Water'},
+  {e:'📶',n:'WiFi/Internet'},
+  {e:'🏢',n:'Maintenance'},
+  {e:'📱',n:'Mobile Recharge'},
+  {e:'🔥',n:'Gas'},
+  {e:'🏦',n:'Loan/EMI'},
+  {e:'💳',n:'Credit Card'},
+  {e:'📺',n:'DTH/OTT'},
+  {e:'💰',n:'Other'},
+];
+function getModes(){return ld('gl_pay_modes',DEF_MODES);}
+function getExpCats(){return ld('gl_exp_cats',DEF_EXPCATS);}
+function getBillIcons(){return ld('gl_bill_icons',DEF_BILLICONS);}
+
+function populateSelect(selId, items, valFn, labelFn, curVal){
+  const sel=document.getElementById(selId);if(!sel)return;
+  sel.innerHTML=items.map(i=>{
+    const v=valFn(i);
+    const l=labelFn(i);
+    return `<option value="${v}"${curVal&&curVal===v?' selected':''}>${l}</option>`;
+  }).join('');
+}
+function refreshTxnSelects(curMode, curCat){
+  populateSelect('t-mode', getModes(), i=>`${i.e} ${i.n}`, i=>`${i.e} ${i.n}`, curMode);
+  populateSelect('t-cat', getExpCats(), i=>`${i.e} ${i.n}`, i=>`${i.e} ${i.n}`, curCat);
+}
+function refreshBillSelect(curVal){
+  populateSelect('b-icon', getBillIcons(), i=>i.e, i=>`${i.e} ${i.n}`, curVal);
+}
+function refreshEditTxnSelects(curMode, curCat){
+  populateSelect('etx-cat', getExpCats(), i=>`${i.e} ${i.n}`, i=>`${i.e} ${i.n}`, curCat);
+}
+
+let _manageListType='';
+function openManageList(type){
+  _manageListType=type;
+  const titles={modes:'💳 Payment Modes', expcats:'📦 Expense Categories', billicons:'🏷️ Bill Types'};
+  const subs={modes:'Add/edit payment modes used in Cash Book.', expcats:'Add/edit expense categories.', billicons:'Add/edit bill types.'};
+  document.getElementById('ml-title').textContent=titles[type];
+  document.getElementById('ml-subtitle').textContent=subs[type];
+  document.getElementById('ml-new-name').value='';
+  document.getElementById('ml-new-emoji').value='';
+  renderManageList();
+  openM('m-managelist');
+}
+function renderManageList(){
+  const items=_manageListType==='modes'?getModes():_manageListType==='expcats'?getExpCats():getBillIcons();
+  const el=document.getElementById('ml-items');
+  el.innerHTML=items.map((item,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:${i%2?'white':'var(--bg)'};border-radius:var(--rsm);margin-bottom:4px;">
+      <span style="font-size:20px;width:30px;text-align:center;">${item.e}</span>
+      <span style="flex:1;font-size:13px;font-weight:600;">${item.n}</span>
+      <button onclick="delManageItem(${i})" style="background:none;border:none;color:#c0c8d8;cursor:pointer;font-size:15px;padding:2px;">🗑</button>
+    </div>`).join('');
+}
+function addManageItem(){
+  const name=document.getElementById('ml-new-name').value.trim();
+  const emoji=document.getElementById('ml-new-emoji').value.trim()||'📌';
+  if(!name){alert('Enter a name');return;}
+  const key=_manageListType==='modes'?'gl_pay_modes':_manageListType==='expcats'?'gl_exp_cats':'gl_bill_icons';
+  const def=_manageListType==='modes'?DEF_MODES:_manageListType==='expcats'?DEF_EXPCATS:DEF_BILLICONS;
+  const items=ld(key,def);
+  items.push({e:emoji,n:name});
+  sv(key,items);
+  document.getElementById('ml-new-name').value='';
+  document.getElementById('ml-new-emoji').value='';
+  renderManageList();
+  // Refresh the relevant selects
+  if(_manageListType==='modes')refreshTxnSelects();
+  else if(_manageListType==='expcats'){refreshTxnSelects();refreshEditTxnSelects();}
+  else refreshBillSelect();
+}
+function delManageItem(idx){
+  const key=_manageListType==='modes'?'gl_pay_modes':_manageListType==='expcats'?'gl_exp_cats':'gl_bill_icons';
+  const def=_manageListType==='modes'?DEF_MODES:_manageListType==='expcats'?DEF_EXPCATS:DEF_BILLICONS;
+  const items=ld(key,def);
+  if(items.length<=1){alert('Must keep at least one item!');return;}
+  items.splice(idx,1);
+  sv(key,items);
+  renderManageList();
+  if(_manageListType==='modes')refreshTxnSelects();
+  else if(_manageListType==='expcats'){refreshTxnSelects();refreshEditTxnSelects();}
+  else refreshBillSelect();
+}
+
+// ===== MANAGE LISTS END =====
+
+// ===== VOICE RECOGNITION =====
+let _voiceRec=null;
+let _voiceActive=false;
+
+function toggleVoice(){
+  if(_voiceActive){stopVoice();return;}
+  const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SpeechRecognition){
+    alert('Voice input not supported on this browser.\nPlease use Chrome on Android or Mac.');
+    return;
+  }
+  // First explicitly request mic permission — this triggers the browser prompt
+  navigator.mediaDevices.getUserMedia({audio:true})
+  .then(stream=>{
+    // Permission granted — stop the stream immediately, SpeechRecognition handles its own
+    stream.getTracks().forEach(t=>t.stop());
+    startSpeechRecognition();
+  })
+  .catch(err=>{
+    if(err.name==='NotAllowedError'||err.name==='PermissionDeniedError'){
+      alert('🎤 Microphone access denied!\n\nTo fix on Mac Chrome:\n1. Click the 🔒 lock icon in address bar\n2. Set Microphone to "Allow"\n3. Refresh the page and try again\n\nOr go to: Chrome Menu → Settings → Privacy → Site Settings → Microphone');
+    } else if(err.name==='NotFoundError'){
+      alert('No microphone found on this device.');
+    } else {
+      alert('Microphone error: '+err.message);
+    }
+  });
+}
+
+function startSpeechRecognition(){
+  const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+  _voiceRec=new SpeechRecognition();
+  _voiceRec.lang='en-IN';
+  _voiceRec.interimResults=true;
+  _voiceRec.continuous=false;
+  const btn=document.getElementById('td-mic-btn');
+  const status=document.getElementById('td-voice-status');
+  const input=document.getElementById('td-task');
+  _voiceRec.onstart=()=>{
+    _voiceActive=true;
+    btn.style.cssText='background:var(--red);border:1.5px solid var(--red);border-radius:50%;width:42px;height:42px;font-size:18px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;animation:sosPulse 1s infinite;';
+    btn.textContent='⏹';
+    status.style.display='block';
+  };
+  _voiceRec.onresult=(e)=>{
+    const transcript=Array.from(e.results).map(r=>r[0].transcript).join('');
+    input.value=transcript;
+  };
+  _voiceRec.onend=()=>{ stopVoice(); };
+  _voiceRec.onerror=(e)=>{
+    stopVoice();
+    if(e.error==='not-allowed')alert('🎤 Mic permission denied.\nClick the 🔒 lock icon in the address bar → allow Microphone.');
+    else if(e.error==='no-speech')toast('No speech detected. Try again.');
+    else toast('Voice error: '+e.error);
+  };
+  _voiceRec.start();
+}
+function stopVoice(){
+  _voiceActive=false;
+  if(_voiceRec){try{_voiceRec.stop();}catch(e){}_voiceRec=null;}
+  const btn=document.getElementById('td-mic-btn');
+  const status=document.getElementById('td-voice-status');
+  if(btn){btn.style.background='var(--bg)';btn.style.border='1.5px solid var(--border)';btn.style.animation='';btn.textContent='🎤';}
+  if(status)status.style.display='none';
+}
+// ===== VOICE END =====
+
+function exportData(){
+  const keys=['gl_items','gl_cats3','gl_bills','gl_bills_reset','gl_contacts','gl_milkmen','gl_helpers','gl_txns','gl_todos','gl_hist','gl_sos'];
+  const data={_v:'2.1',_d:new Date().toISOString()};
+  keys.forEach(k=>{const v=localStorage.getItem(k);if(v)data[k]=JSON.parse(v);});
+  // Also export dynamic milkman/helper keys
+  Object.keys(localStorage).forEach(k=>{
+    if(k.startsWith('gl_mdel_')||k.startsWith('gl_mpay_')||k.startsWith('gl_att_')||k.startsWith('gl_adv_'))
+      data[k]=JSON.parse(localStorage.getItem(k));
+  });
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='GrihaLaxmi_backup_'+new Date().toISOString().split('T')[0]+'.json';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function importData(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!data._v){alert('Invalid backup file!');return;}
+      const skip=['_v','_d'];
+      let count=0;
+      Object.keys(data).forEach(k=>{
+        if(!skip.includes(k)){localStorage.setItem(k,JSON.stringify(data[k]));count++;}
+      });
+      alert('✅ Data restored successfully!\n'+count+' records imported.\n\nPlease refresh the app.');
+      closeM('m-about');
+      location.reload();
+    }catch(err){alert('❌ Error reading backup file. Please try again.');}
+  };
+  reader.readAsText(file);
+}
+
+// ===== SHARING FUNCTIONS =====
+function shareText(text){
+  if(navigator.share){
+    navigator.share({text}).catch(()=>copyToClip(text));
+  } else {
+    copyToClip(text);
+  }
+}
+function copyToClip(text){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>toast('✅ Copied! Paste in WhatsApp')).catch(()=>fallbackCopy(text));
+  } else fallbackCopy(text);
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);ta.focus();ta.select();
+  try{document.execCommand('copy');toast('✅ Copied! Paste in WhatsApp');}catch(e){toast('❌ Could not copy');}
+  document.body.removeChild(ta);
+}
+function toast(msg){
+  let t=document.getElementById('gl-toast');
+  if(!t){t=document.createElement('div');t.id='gl-toast';
+    t.style.cssText='position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#1a3a8c;color:white;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);font-family:-apple-system,sans-serif;transition:opacity 0.3s;';
+    document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(t._to);t._to=setTimeout(()=>{t.style.opacity='0';},2500);
+}
+
+function shareShoppingList(){
+  const items=ld('gl_items',{});
+  const cats3=ld('gl_cats3',[]);
+  const now=new Date();
+  let lines=[`🛒 *Shopping List — GrihaLaxmi*`,`📅 ${now.getDate()} ${MN[now.getMonth()]} ${now.getFullYear()}`,``];
+  let hasItems=false;
+  cats3.forEach(bcat=>{
+    const broadItems=Object.values(items).filter(i=>i.broad===bcat.broad);
+    if(!broadItems.length)return;
+    lines.push(`*${bcat.broad}*`);
+    bcat.subs.forEach(sub=>{
+      const si=broadItems.filter(i=>i.sub===sub);
+      if(!si.length)return;
+      lines.push(`  _${sub}_`);
+      si.forEach(i=>{lines.push(`  • ${i.name}${i.low?' 🔵':''}`);hasItems=true;});
+    });
+    lines.push('');
+  });
+  if(!hasItems){toast('No items to share!');return;}
+  lines.push(`_Shared from GrihaLaxmi App_ 🪔`);
+  shareText(lines.join('\n'));
+}
+
+function shareCart(){
+  const items=ld('gl_items',{});
+  const cart=Object.values(items).filter(i=>i.inCart);
+  if(!cart.length){toast('Cart is empty!');return;}
+  const now=new Date();
+  let lines=[`🛒 *Shopping Cart — GrihaLaxmi*`,`📅 ${now.getDate()} ${MN[now.getMonth()]} ${now.getFullYear()}`,``];
+  const pending=cart.filter(i=>!i.purchased);
+  const bought=cart.filter(i=>i.purchased);
+  if(pending.length){
+    lines.push(`*🔲 To Buy (${pending.length})*`);
+    pending.forEach(i=>lines.push(`  • ${i.name}`));
+    lines.push('');
+  }
+  if(bought.length){
+    lines.push(`*✅ Purchased (${bought.length})*`);
+    bought.forEach(i=>lines.push(`  ✓ ${i.name}`));
+    lines.push('');
+  }
+  lines.push(`_Shared from GrihaLaxmi App_ 🪔`);
+  shareText(lines.join('\n'));
+}
+
+function shareTodo(){
+  const todos=ld('gl_todos',[]);
+  const pending=todos.filter(t=>!t.done);
+  const done=todos.filter(t=>t.done);
+  if(!todos.length){toast('No tasks to share!');return;}
+  const now=new Date();
+  let lines=[`✅ *To Do List — GrihaLaxmi*`,`📅 ${now.getDate()} ${MN[now.getMonth()]} ${now.getFullYear()}`,``];
+  if(pending.length){
+    lines.push(`*⏳ Pending (${pending.length})*`);
+    pending.forEach(t=>{
+      const urg=t.pri==='urgent'?'🔴 ':'';
+      lines.push(`  ${urg}• ${t.task} _(${t.cat})_`);
+    });
+    lines.push('');
+  }
+  if(done.length){
+    lines.push(`*✅ Done (${done.length})*`);
+    done.forEach(t=>lines.push(`  ✓ ${t.task}`));
+    lines.push('');
+  }
+  lines.push(`_Shared from GrihaLaxmi App_ 🪔`);
+  shareText(lines.join('\n'));
+}
+
+function shareServices(){
+  const cons=ld('gl_contacts',[]);
+  if(!cons.length){toast('No contacts to share!');return;}
+  let lines=[`🔧 *Home Services — GrihaLaxmi*`,``];
+  cons.forEach(c=>{
+    lines.push(`*${c.name}* — ${c.role}`);
+    if(c.phone)lines.push(`  📱 ${c.phone}`);
+    if(c.note)lines.push(`  💬 ${c.note}`);
+    lines.push('');
+  });
+  lines.push(`_Shared from GrihaLaxmi App_ 🪔`);
+  shareText(lines.join('\n'));
+}
+
+function shareMilk(){
+  const milkmen=ld('gl_milkmen',[]);
+  if(!milkmen.length){toast('No milkman data to share!');return;}
+  if(!milkM){const n=new Date();milkM={y:n.getFullYear(),m:n.getMonth()};}
+  const {y,m}=milkM;
+  const dim=new Date(y,m+1,0).getDate();const tdn=new Date();
+  let lines=[`🥛 *Milk Summary — ${MN[m]} ${y}*`,`_GrihaLaxmi_`,``];
+  milkmen.forEach(mm=>{
+    const del=ld('gl_mdel_'+mm.id,{});const key=y+'-'+m;const md=del[key]||{};
+    let totL=0,delDays=0;
+    for(let d=1;d<=dim;d++){
+      if(new Date(y,m,d)<=tdn&&md[d]!==undefined){const q=parseFloat(md[d])||0;if(q>0){totL+=q;delDays++;}}
+    }
+    const totBill=Math.round(totL*mm.rate);
+    const pays=ld('gl_mpay_'+mm.id,[]).filter(p=>{const pd=new Date(p.raw);return pd.getFullYear()===y&&pd.getMonth()===m;});
+    const totPaid=pays.reduce((s,p)=>s+p.amt,0);
+    const bal=totBill-totPaid;
+    lines.push(`*${mm.name}*`);
+    lines.push(`  • Rate: ₹${mm.rate}/L | Default: ${mm.qty}L/day`);
+    lines.push(`  • Days received: ${delDays} | Total: ${totL.toFixed(1)}L`);
+    lines.push(`  • Bill: ₹${totBill} | Paid: ₹${totPaid}`);
+    lines.push(`  • ${bal>0?'Balance Due':'Settled'}: ₹${Math.abs(bal)}`);
+    lines.push('');
+  });
+  lines.push(`_Shared from GrihaLaxmi App_ 🪔`);
+  shareText(lines.join('\n'));
+}
+
+function shareStaff(){
+  const helpers=ld('gl_helpers',[]);
+  if(!helpers.length){toast('No staff data to share!');return;}
+  if(!helpM){const n=new Date();helpM={y:n.getFullYear(),m:n.getMonth()};}
+  const {y,m}=helpM;
+  const dim=new Date(y,m+1,0).getDate();const tdn=new Date();
+  let lines=[`👫 *Staff Summary — ${MN[m]} ${y}*`,`_GrihaLaxmi_`,``];
+  helpers.forEach(h=>{
+    const att=ld('gl_att_'+h.id,{});const key=y+'-'+m;const ma=att[key]||{};
+    let present=0,absent=0,holiday=0;
+    for(let d=1;d<=dim;d++){
+      if(new Date(y,m,d)>tdn)continue;
+      const st=ma[d]!==undefined?ma[d]:'P';
+      if(st==='P')present++;else if(st==='A')absent++;else holiday++;
+    }
+    const holidayDays=h.holtype==='sundays'?countSundays(y,m):(h.holidays||0);
+    const wdays=Math.max(dim-holidayDays,1);
+    const perDay=h.salary/wdays;
+    const earned=Math.round(present*perDay);
+    const advs=ld('gl_adv_'+h.id,[]);
+    const mAdv=advs.filter(a=>{try{const pd=new Date(a.raw);return pd.getFullYear()===y&&pd.getMonth()===m;}catch(e){return false;}});
+    const totAdv=mAdv.reduce((s,a)=>s+a.amt,0);
+    const net=Math.max(0,earned-totAdv);
+    lines.push(`*${h.name}* — ${h.role}`);
+    lines.push(`  • Present: ${present} | Absent: ${absent} | Holiday: ${holiday}`);
+    lines.push(`  • Salary: ₹${h.salary} | Earned: ₹${earned}`);
+    if(totAdv>0)lines.push(`  • Advance: ₹${totAdv}`);
+    lines.push(`  • *Net Payable: ₹${net}*`);
+    lines.push('');
+  });
+  lines.push(`_Shared from GrihaLaxmi App_ 🪔`);
+  shareText(lines.join('\n'));
+}
+
+function shareCash(){
+  const {y,m}=cashM;
+  const all=ld('gl_txns',[]);
+  const mT=all.filter(t=>{const d=new Date(t.raw);return d.getFullYear()===y&&d.getMonth()===m;});
+  const digitalModes=['📱 UPI/GPay','💳 Credit Card','💳 Debit Card','👛 Wallet','🏦 Net Banking'];
+  const cashIn=all.filter(t=>t.type==='in'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0);
+  const cashOut=all.filter(t=>t.type==='out'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0);
+  const digitalIn=all.filter(t=>t.type==='in'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
+  const digitalOut=all.filter(t=>t.type==='out'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
+  const mCashExp=mT.filter(t=>t.type==='out'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0);
+  const mDigiExp=mT.filter(t=>t.type==='out'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
+  const mCashRec=mT.filter(t=>t.type==='in'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0);
+  const mDigiRec=mT.filter(t=>t.type==='in'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
+  let lines=[
+    `💰 *Cash Book Summary — ${MN[m]} ${y}*`,`_GrihaLaxmi_`,``,
+    `*📊 Overall Balance*`,
+    `  💵 Cash in Hand: ₹${(cashIn-cashOut).toLocaleString('en-IN')}`,
+    `  📱 Digital Balance: ₹${(digitalIn-digitalOut).toLocaleString('en-IN')}`,``,
+    `*📅 This Month*`,
+    `  💚 Cash Received: ₹${mCashRec.toLocaleString('en-IN')}`,
+    `  📲 Digital Received: ₹${mDigiRec.toLocaleString('en-IN')}`,
+    `  🔴 Cash Spent: ₹${mCashExp.toLocaleString('en-IN')}`,
+    `  📱 Digital Spent: ₹${mDigiExp.toLocaleString('en-IN')}`,
+    `  *📊 Total Spent: ₹${(mCashExp+mDigiExp).toLocaleString('en-IN')}*`,``,
+  ];
+  if(mT.length){
+    lines.push(`*Transactions (${MN[m]})*`);
+    [...mT].sort((a,b)=>new Date(b.raw)-new Date(a.raw)).forEach(t=>{
+      lines.push(`  ${t.type==='in'?'💚':'🔴'} ${t.desc} — ₹${t.amt.toLocaleString('en-IN')} _(${t.date})_`);
+    });
+    lines.push('');
+  }
+  lines.push(`_Shared from GrihaLaxmi App_ 🪔`);
+  shareText(lines.join('\n'));
+}
+
+// START
+// v2.2 data fix — runs once to repair any items missing broad/sub fields
+(function fixDataV22(){
+  const VER='gl_data_v22';
+  if(localStorage.getItem(VER))return; // already fixed
+  const items=ld('gl_items',{});
+  if(!Object.keys(items).length)return;
+  const cats3=ld('gl_cats3',[]);
+  // Build a lookup: itemName → {broad, sub} from the key itself
+  const newItems={};
+  let changed=false;
+  Object.entries(items).forEach(([k,item])=>{
+    if(k.includes('||')){
+      // Extract broad and sub directly from the key
+      const broadPart=k.split('||')[0];
+      const rest=k.split('||')[1]||'';
+      const subPart=rest.split('::')[0]||'Other';
+      if(!item.broad||!item.sub){
+        newItems[k]={...item,broad:broadPart,sub:subPart};
+        changed=true;
+      } else {
+        newItems[k]=item;
+      }
+    } else {
+      // Old 2-tier key — find correct broad/sub by matching item name in cats3
+      let foundBroad='🛒 Grocery & Staples',foundSub='Other';
+      const namePart=k.includes('::')?k.split('::').pop():item.name;
+      cats3.forEach(b=>b.subs.forEach(s=>{
+        // Check if this item name exists in this sub
+        const testKey=b.broad+'||'+s+'::'+namePart;
+        if(items[testKey]){}else{
+          // item might belong here based on old cat
+          const oldCat=k.split('::')[0];
+          if(oldCat&&b.broad.toLowerCase().includes(oldCat.toLowerCase().substring(2,8))){
+            foundBroad=b.broad;foundSub=s;
+          }
+        }
+      }));
+      const newKey=foundBroad+'||'+foundSub+'::'+namePart;
+      newItems[newKey]={...item,name:namePart,broad:foundBroad,sub:foundSub};
+      changed=true;
+    }
+  });
+  if(changed){sv('gl_items',newItems);}
+  localStorage.setItem(VER,'1');
+})();
+const _n=new Date();
+document.getElementById('tdate').textContent=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][_n.getDay()]+', '+_n.getDate()+' '+MN[_n.getMonth()]+' '+_n.getFullYear();
+init();renderShop();setupNotifs();setTimeout(checkNotifs,2000);
+</script>
+</body>
+</html>
