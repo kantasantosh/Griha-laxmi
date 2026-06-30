@@ -147,7 +147,7 @@ h1,h2{font-family:-apple-system,sans-serif;font-weight:700;}
 .fi{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--rsm);font-size:14px;font-family:inherit;outline:none;background:white;color:var(--text);font-weight:600;}
 .fi::placeholder{color:#b0bcd4;font-weight:400;}
 .fi:focus{border-color:var(--p2);box-shadow:0 0 0 3px rgba(0,113,227,0.1);}
-select.fi{appearance:none;}
+select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%236b7a99' d='M4 6l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;background-size:14px;padding-right:36px;cursor:pointer;}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .sb2{width:100%;background:linear-gradient(135deg,var(--p1),var(--p2));color:white;border:none;border-radius:var(--rsm);padding:13px;font-size:15px;font-family:inherit;font-weight:700;cursor:pointer;margin-top:6px;box-shadow:0 3px 10px rgba(0,113,227,0.3);}
 .es{text-align:center;padding:36px 20px;color:var(--tm);}
@@ -164,7 +164,10 @@ select.fi{appearance:none;}
     <h1>🪔 GrihaLaxmi</h1>
     <div class="topbar-sub" id="tdate"></div>
   </div>
-  <button onclick="openM('m-about')" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:0.3px;">ℹ️ About</button>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+    <button onclick="openM('m-about')" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:0.3px;">ℹ️ About</button>
+    <span id="ver-badge" style="font-size:9px;color:rgba(255,255,255,0.65);font-weight:600;letter-spacing:0.3px;"></span>
+  </div>
 </div>
 
 <!-- SHOPPING -->
@@ -202,56 +205,66 @@ select.fi{appearance:none;}
 </div>
 
 <!-- BILLS -->
-<div class="tab" id="tab-bills">
-  <div class="sh"><div class="st">💡 Bills</div><button class="ab" onclick="openM('m-addbill')">+ Add</button></div>
-  <div id="bills-soon"></div><div id="bills-list"></div>
-</div>
+<!-- ORGANISER -->
+<div class="tab" id="tab-organiser">
+  <div class="itabs" id="org-tabs">
+    <button class="it active" onclick="orgView('bills',this)">💡 Bills</button>
+    <button class="it" onclick="orgView('todo',this)">✅ To Do</button>
+    <button class="it" onclick="orgView('services',this)">🔧 Services</button>
+    <button class="it" onclick="orgView('notes',this)">📝 Notes</button>
+  </div>
 
-<!-- MILK -->
-<div class="tab" id="tab-milk">
-  <div class="sh">
-    <div class="st">🥛 Milkman</div>
-    <div style="display:flex;gap:6px;">
-      <button onclick="shareMilk()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
-      <button class="ab" onclick="openM('m-addmilkman')">+ Add Milkman</button>
+  <div id="ov-bills">
+    <div class="sh"><div class="st">💡 Bills</div><button class="ab" onclick="openM('m-addbill')">+ Add</button></div>
+    <div id="bills-soon"></div><div id="bills-list"></div>
+  </div>
+
+  <div id="ov-todo" style="display:none;">
+    <div class="sh">
+      <div class="st">✅ To Do</div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="shareTodo()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+        <button onclick="clearDone()" style="background:white;border:1.5px solid var(--border);color:var(--tm);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">🧹 Clear Done</button>
+        <button class="ab" onclick="openM('m-addtodo')">+ Add</button>
+      </div>
+    </div>
+    <div class="itabs" id="todo-tabs">
+      <button class="it active" onclick="todoFilt('all',this)">All</button>
+      <button class="it" onclick="todoFilt('pending',this)">Pending</button>
+      <button class="it" onclick="todoFilt('done',this)">Done ✓</button>
+    </div>
+    <div id="todo-list"></div>
+  </div>
+
+  <div id="ov-services" style="display:none;">
+    <div class="sh">
+      <div class="st">🔧 Services</div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="shareServices()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+        <button class="ab" id="svc-add-btn" onclick="openM('m-addcon')">+ Add</button>
+      </div>
+    </div>
+    <button class="sos-btn-contact" onclick="openSOS()">🆘 SOS — Emergency Alert</button>
+    <div class="itabs" id="svc-tabs">
+      <button class="it active" onclick="svcView('repair',this)">🔧 Repair/Vendors</button>
+      <button class="it" onclick="svcView('medical',this)">👨‍⚕️ Medical</button>
+    </div>
+    <div id="sv-repair">
+      <div class="sw"><span class="sic">🔍</span><input class="si" id="con-srch" placeholder="Search contacts..." oninput="renderCon()"/></div>
+      <div id="con-list"></div>
+    </div>
+    <div id="sv-medical" style="display:none;">
+      <div id="med-con-list"></div>
     </div>
   </div>
-  <div class="mnav"><button class="mb" onclick="chMilk(-1)">◀</button><div class="ml" id="milk-ml"></div><button class="mb" onclick="chMilk(1)">▶</button></div>
-  <div id="milk-list"></div>
-</div>
 
-<!-- HELP -->
-<div class="tab" id="tab-help">
-  <div class="sh">
-    <div class="st">👨‍👩‍👧 Staff</div>
-    <div style="display:flex;gap:6px;">
-      <button onclick="shareStaff()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
-      <button class="ab" onclick="openM('m-addhelp')" style="background:linear-gradient(135deg,var(--purple),#9b59b6);">+ Add</button>
+  <div id="ov-notes" style="display:none;">
+    <div class="sh">
+      <div class="st">📝 Notes</div>
+      <button class="ab" onclick="openM('m-addnote')" style="background:linear-gradient(135deg,var(--amber),#e08e0b);">+ Note</button>
     </div>
+    <div id="notes-list"></div>
   </div>
-  <div class="mnav"><button class="mb" onclick="chHelp(-1)">◀</button><div class="ml" id="help-ml"></div><button class="mb" onclick="chHelp(1)">▶</button></div>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:9px;font-size:11px;color:var(--tm);">
-    <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--green);margin-right:3px;"></span>Present</span>
-    <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--rl);border:1px solid var(--red);margin-right:3px;"></span>Absent</span>
-    <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--purl);border:1px solid var(--purple);margin-right:3px;"></span>Holiday</span>
-  </div>
-  <div style="font-size:11px;color:var(--tm);margin-bottom:12px;">Tap date: Present ✓ → Absent ✗ → Holiday H → Present</div>
-  <div id="help-list"></div>
-</div>
-
-<!-- CONTACTS -->
-<div class="tab" id="tab-contacts">
-  <div class="sh">
-    <div class="st">🔧 Services</div>
-    <div style="display:flex;gap:6px;">
-      <button onclick="shareServices()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
-      <button class="ab" onclick="openM('m-addcon')">+ Add</button>
-    </div>
-  </div>
-  <!-- SOS BUTTON in contacts tab -->
-  <button class="sos-btn-contact" onclick="openSOS()">🆘 SOS — Emergency Alert</button>
-  <div class="sw"><span class="sic">🔍</span><input class="si" id="con-srch" placeholder="Search contacts..." oninput="renderCon()"/></div>
-  <div id="con-list"></div>
 </div>
 
 <!-- CASH -->
@@ -260,7 +273,7 @@ select.fi{appearance:none;}
   <div class="mnav"><button class="mb" onclick="chCash(-1)">◀</button><div class="ml" id="cash-ml"></div><button class="mb" onclick="chCash(1)">▶</button></div>
   <div class="sh">
     <div class="st">💸 Expenses</div>
-    <div style="display:flex;gap:6px;">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;">
       <button onclick="shareCash()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
       <button class="ab" onclick="openM('m-addtxn')">+ Entry</button>
     </div>
@@ -268,47 +281,80 @@ select.fi{appearance:none;}
   <div id="cash-list"></div>
 </div>
 
+<!-- HOUSEHOLD -->
+<div class="tab" id="tab-household">
+  <div class="itabs" id="hh-tabs">
+    <button class="it active" onclick="hhView('help',this)">👫 Staff</button>
+    <button class="it" onclick="hhView('milk',this)">🥛 Milk</button>
+    <button class="it" onclick="hhView('fruitwala',this)">🥦 Fruit/Tarkari</button>
+    <button class="it" onclick="hhView('dhobi',this)">👔 Dhobi</button>
+  </div>
 
-
-
-
-
-
-
-
-
-
-
-<!-- TODO -->
-<div class="tab" id="tab-todo">
-  <div class="sh">
-    <div class="st">✅ To Do</div>
-    <div style="display:flex;gap:6px;">
-      <button onclick="shareTodo()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
-      <button onclick="clearDone()" style="background:white;border:1.5px solid var(--border);color:var(--tm);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">🧹 Clear Done</button>
-      <button class="ab" onclick="openM('m-addtodo')">+ Add</button>
+  <div id="hv-help">
+    <div class="sh">
+      <div class="st">👨‍👩‍👧 Staff</div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="shareStaff()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+        <button class="ab" onclick="openM('m-addhelp')" style="background:linear-gradient(135deg,var(--purple),#9b59b6);">+ Add</button>
+      </div>
     </div>
+    <div class="mnav"><button class="mb" onclick="chHelp(-1)">◀</button><div class="ml" id="help-ml"></div><button class="mb" onclick="chHelp(1)">▶</button></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:9px;font-size:11px;color:var(--tm);">
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--green);margin-right:3px;"></span>Present</span>
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--rl);border:1px solid var(--red);margin-right:3px;"></span>Absent</span>
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--purl);border:1px solid var(--purple);margin-right:3px;"></span>Holiday</span>
+    </div>
+    <div style="font-size:11px;color:var(--tm);margin-bottom:12px;">Tap date: Present ✓ → Absent ✗ → Holiday H → Present</div>
+    <div id="help-list"></div>
   </div>
-  <div class="itabs" id="todo-tabs">
-    <button class="it active" onclick="todoFilt('all',this)">All</button>
-    <button class="it" onclick="todoFilt('pending',this)">Pending</button>
-    <button class="it" onclick="todoFilt('done',this)">Done ✓</button>
+
+  <div id="hv-milk" style="display:none;">
+    <div class="sh">
+      <div class="st">🥛 Milkman</div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="shareMilk()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+        <button class="ab" onclick="openM('m-addmilkman')">+ Add Milkman</button>
+      </div>
+    </div>
+    <div class="mnav"><button class="mb" onclick="chMilk(-1)">◀</button><div class="ml" id="milk-ml"></div><button class="mb" onclick="chMilk(1)">▶</button></div>
+    <div id="milk-list"></div>
   </div>
-  <div id="todo-list"></div>
+
+  <div id="hv-fruitwala" style="display:none;">
+    <div class="sh">
+      <div class="st">🥦 Fruit/Tarkari Wala</div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="shareSupplier('fruitwala')" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+        <button class="ab" onclick="openAddSupplier('fruitwala')">+ Add Vendor</button>
+      </div>
+    </div>
+    <div class="mnav"><button class="mb" onclick="chSupplier('fruitwala',-1)">◀</button><div class="ml" id="fruitwala-ml"></div><button class="mb" onclick="chSupplier('fruitwala',1)">▶</button></div>
+    <div id="fruitwala-list"></div>
+  </div>
+
+  <div id="hv-dhobi" style="display:none;">
+    <div class="sh">
+      <div class="st">👔 Dhobi / Dry Cleaner</div>
+      <div style="display:flex;gap:6px;">
+        <button onclick="shareSupplier('dhobi')" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+        <button class="ab" onclick="openAddSupplier('dhobi')">+ Add Vendor</button>
+      </div>
+    </div>
+    <div class="mnav"><button class="mb" onclick="chSupplier('dhobi',-1)">◀</button><div class="ml" id="dhobi-ml"></div><button class="mb" onclick="chSupplier('dhobi',1)">▶</button></div>
+    <div id="dhobi-list"></div>
+  </div>
 </div>
 
+<!-- MEDICAL -->
 <!-- Floating Action Button -->
 <button class="fab" id="fab-btn" onclick="fabAction()" title="Add new entry">＋</button>
 
 <!-- BOTTOM NAV -->
 <nav class="bnav">
   <button class="nb active" onclick="showTab('shopping',this)"><span class="ni">🛒</span>Cart</button>
-  <button class="nb" onclick="showTab('bills',this)"><span class="ni">💡</span>Bills</button>
-  <button class="nb" onclick="showTab('milk',this)"><span class="ni">🥛</span>Milk</button>
-  <button class="nb" onclick="showTab('help',this)"><span class="ni">👫</span>Staff</button>
-  <button class="nb" onclick="showTab('contacts',this)"><span class="ni">🔧</span>Services</button>
+  <button class="nb" onclick="showTab('organiser',this)"><span class="ni">📋</span>Organiser</button>
   <button class="nb" onclick="showTab('cash',this)"><span class="ni">💰</span>₹ Book</button>
-  <button class="nb" onclick="showTab('todo',this)"><span class="ni">✅</span>To Do</button>
+  <button class="nb" onclick="showTab('household',this)"><span class="ni">🏠</span>Household</button>
 </nav>
 
 <!-- ===== MODALS ===== -->
@@ -345,6 +391,10 @@ select.fi{appearance:none;}
     <div class="fg"><label class="fl">Broad Category</label><select class="fi" id="ni-broad" onchange="updateSubOptions()"></select></div>
     <div class="fg"><label class="fl">Sub-Category</label><select class="fi" id="ni-sub"></select></div>
     <div class="fg"><label class="fl">Item Name</label><input class="fi" id="ni-name" placeholder="e.g. Basmati Rice"/></div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Qty (optional)</label><input class="fi" id="ni-qty" type="number" step="0.5" min="0" placeholder="e.g. 2"/></div>
+      <div class="fg"><label class="fl">Unit</label><select class="fi" id="ni-unit"></select></div>
+    </div>
     <button class="sb2" onclick="addItem()">Add Item</button>
   </div>
 </div>
@@ -416,6 +466,7 @@ select.fi{appearance:none;}
 <div class="mo" id="m-addmilkman">
   <div class="md"><button class="mc2" onclick="closeM('m-addmilkman')">✕</button><h2>Add Milkman</h2>
     <div class="fg"><label class="fl">Milkman Name</label><input class="fi" id="mm-name" placeholder="e.g. Ramesh"/></div>
+    <div class="fg"><label class="fl">Mobile No. (optional)</label><input class="fi" id="mm-phone" type="tel" placeholder="e.g. 9876543210"/></div>
     <div class="fr">
       <div class="fg"><label class="fl">Default Daily Qty (L)</label><input class="fi" id="mm-qty" type="number" step="0.5" placeholder="e.g. 2"/></div>
       <div class="fg"><label class="fl">Rate per Litre (₹)</label><input class="fi" id="mm-rate" type="number" placeholder="e.g. 68"/></div>
@@ -429,6 +480,7 @@ select.fi{appearance:none;}
   <div class="md"><button class="mc2" onclick="closeM('m-editmilkman')">✕</button><h2>Edit Milkman</h2>
     <input type="hidden" id="emm-idx"/>
     <div class="fg"><label class="fl">Name</label><input class="fi" id="emm-name"/></div>
+    <div class="fg"><label class="fl">Mobile No.</label><input class="fi" id="emm-phone" type="tel"/></div>
     <div class="fr">
       <div class="fg"><label class="fl">Default Qty (L)</label><input class="fi" id="emm-qty" type="number" step="0.5"/></div>
       <div class="fg"><label class="fl">Rate per Litre (₹)</label><input class="fi" id="emm-rate" type="number"/></div>
@@ -437,13 +489,63 @@ select.fi{appearance:none;}
   </div>
 </div>
 
+<!-- Add Supplier (Fruitwala/Dhobi) -->
+<div class="mo" id="m-addsupplier">
+  <div class="md"><button class="mc2" onclick="closeM('m-addsupplier')">✕</button><h2 id="m-addsupplier-title">Add Vendor</h2>
+    <input type="hidden" id="sv-type"/>
+    <div class="fg"><label class="fl">Vendor Name</label><input class="fi" id="sv-name" placeholder="e.g. Ramu Bhaiya"/></div>
+    <div class="fg"><label class="fl">Mobile No. (optional)</label><input class="fi" id="sv-phone" type="tel" placeholder="e.g. 9876543210"/></div>
+    <button class="sb2" onclick="addSupplier()">Add Vendor</button>
+  </div>
+</div>
+
+<!-- Edit Supplier -->
+<div class="mo" id="m-editsupplier">
+  <div class="md"><button class="mc2" onclick="closeM('m-editsupplier')">✕</button><h2>Edit Vendor</h2>
+    <input type="hidden" id="esv-type"/><input type="hidden" id="esv-idx"/>
+    <div class="fg"><label class="fl">Vendor Name</label><input class="fi" id="esv-name"/></div>
+    <div class="fg"><label class="fl">Mobile No.</label><input class="fi" id="esv-phone" type="tel"/></div>
+    <button class="sb2" onclick="saveEditSupplier()">Save Changes</button>
+  </div>
+</div>
+
+<!-- Supplier Day Entry -->
+<div class="mo" id="m-supentry">
+  <div class="md"><button class="mc2" onclick="closeM('m-supentry')">✕</button><h2 id="se-title">Amount Spent</h2>
+    <div style="font-size:13px;color:var(--tm);margin-bottom:13px;">Enter amount spent that day. Enter 0 if not used.</div>
+    <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="se-amt" type="number" min="0" placeholder="e.g. 150"/></div>
+    <input type="hidden" id="se-day"/><input type="hidden" id="se-key"/><input type="hidden" id="se-vid"/><input type="hidden" id="se-type"/>
+    <button class="sb2" onclick="saveSupplierEntry()">Save</button>
+  </div>
+</div>
+
+<!-- Supplier Payment -->
+<div class="mo" id="m-suppay">
+  <div class="md"><button class="mc2" onclick="closeM('m-suppay')">✕</button><h2>Record Payment</h2>
+    <input type="hidden" id="sp-type"/><input type="hidden" id="sp-vid"/>
+    <div class="fg"><label class="fl">Amount Paid (₹)</label><input class="fi" id="sp-amt" type="number" placeholder="0"/></div>
+    <div class="fg"><label class="fl">Date</label><input class="fi" id="sp-date" type="date"/></div>
+    <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="sp-note" placeholder="e.g. Cash payment"/></div>
+    <button class="sb2" onclick="saveSupplierPay()">Save Payment</button>
+  </div>
+</div>
+
 <!-- Edit Item -->
 <div class="mo" id="m-edititem">
   <div class="md"><button class="mc2" onclick="closeM('m-edititem')">✕</button><h2>Edit Item</h2>
     <input type="hidden" id="ei-key"/>
     <div class="fg"><label class="fl">Item Name</label><input class="fi" id="ei-name"/></div>
-    <div class="fg"><label class="fl">Broad Category</label><select class="fi" id="ei-broad" onchange="updateEISubOptions()"></select></div>
-    <div class="fg"><label class="fl">Sub-Category</label><select class="fi" id="ei-sub"></select></div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Qty</label><input class="fi" id="ei-qty" type="number" step="0.5" min="0" placeholder="e.g. 2"/></div>
+      <div class="fg"><label class="fl">Unit</label><select class="fi" id="ei-unit"></select></div>
+    </div>
+    <details style="margin-bottom:12px;">
+      <summary style="font-size:12px;font-weight:700;color:var(--p2);cursor:pointer;padding:4px 0;">📂 Move to a different category</summary>
+      <div style="margin-top:10px;">
+        <div class="fg"><label class="fl">Broad Category</label><select class="fi" id="ei-broad" onchange="updateEISubOptions()"></select></div>
+        <div class="fg"><label class="fl">Sub-Category</label><select class="fi" id="ei-sub"></select></div>
+      </div>
+    </details>
     <button class="sb2" onclick="saveEditItem()">Save Changes</button>
   </div>
 </div>
@@ -478,6 +580,7 @@ select.fi{appearance:none;}
   <div class="md"><button class="mc2" onclick="closeM('m-edithelper')">✕</button><h2>Edit Staff Member</h2>
     <input type="hidden" id="eh-idx"/>
     <div class="fg"><label class="fl">Name</label><input class="fi" id="eh-name"/></div>
+    <div class="fg"><label class="fl">Mobile No.</label><input class="fi" id="eh-phone" type="tel"/></div>
     <div class="fg"><label class="fl">Role</label><select class="fi" id="eh-role"><option>Cook / Bai</option><option>Cleaning</option><option>Driver</option><option>Gardener</option><option>Watchman</option><option>Other</option></select></div>
     <div class="fg"><label class="fl">Monthly Salary (₹)</label><input class="fi" id="eh-sal" type="number"/></div>
     <div class="fg"><label class="fl">Holiday Type</label>
@@ -525,6 +628,7 @@ select.fi{appearance:none;}
 <div class="mo" id="m-addhelp">
   <div class="md"><button class="mc2" onclick="closeM('m-addhelp')">✕</button><h2>Add Staff Member</h2>
     <div class="fg"><label class="fl">Name</label><input class="fi" id="h-name" placeholder="e.g. Sunita"/></div>
+    <div class="fg"><label class="fl">Mobile No. (optional)</label><input class="fi" id="h-phone" type="tel" placeholder="e.g. 9876543210"/></div>
     <div class="fg"><label class="fl">Role</label><select class="fi" id="h-role"><option>Cook / Bai</option><option>Cleaning</option><option>Driver</option><option>Gardener</option><option>Watchman</option><option>Other</option></select></div>
     <div class="fg"><label class="fl">Monthly Salary (₹)</label><input class="fi" id="h-sal" type="number" placeholder="0"/></div>
     <div class="fg"><label class="fl">Holiday Type</label>
@@ -552,6 +656,7 @@ select.fi{appearance:none;}
 <!-- Add Contact -->
 <div class="mo" id="m-addcon">
   <div class="md"><button class="mc2" onclick="closeM('m-addcon')">✕</button><h2>Add Contact</h2>
+    <button id="c-pick-btn" onclick="pickFromContacts('c-name','c-ph')" style="display:none;width:100%;background:var(--pl);border:1.5px solid var(--p2);color:var(--p1);border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:12px;">📇 Pick from Phone Contacts</button>
     <div class="fg"><label class="fl">Name</label><input class="fi" id="c-name" placeholder="e.g. Suresh Plumber"/></div>
     <div class="fg"><label class="fl">Service</label><select class="fi" id="c-role"><option value="🔧 Plumber">🔧 Plumber</option><option value="⚡ Electrician">⚡ Electrician</option><option value="❄️ AC Repair">❄️ AC Repair</option><option value="🪵 Carpenter">🪵 Carpenter</option><option value="🎨 Painter">🎨 Painter</option><option value="🔒 Locksmith">🔒 Locksmith</option><option value="🚗 Car Mechanic">🚗 Car Mechanic</option><option value="📺 Appliance Repair">📺 Appliance Repair</option><option value="🏠 Pest Control">🏠 Pest Control</option><option value="📦 Other">📦 Other</option></select></div>
     <div class="fg"><label class="fl">Phone</label><input class="fi" id="c-ph" type="tel" placeholder="e.g. 9876543210"/></div>
@@ -560,36 +665,57 @@ select.fi{appearance:none;}
   </div>
 </div>
 
+<!-- Add Medical Contact -->
+<div class="mo" id="m-addmed">
+  <div class="md"><button class="mc2" onclick="closeM('m-addmed')">✕</button><h2>👨‍⚕️ Add Doctor/Pharmacy</h2>
+    <button id="med-pick-btn" onclick="pickFromContacts('med-name','med-ph')" style="display:none;width:100%;background:var(--rl);border:1.5px solid var(--red);color:var(--red);border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:12px;">📇 Pick from Phone Contacts</button>
+    <div class="fg"><label class="fl">Name</label><input class="fi" id="med-name" placeholder="e.g. Dr. Sharma"/></div>
+    <div class="fg"><label class="fl">Type</label><select class="fi" id="med-role"><option value="👨‍⚕️ Doctor">👨‍⚕️ Doctor</option><option value="💊 Pharmacy">💊 Pharmacy</option><option value="🏥 Hospital">🏥 Hospital</option><option value="🦷 Dentist">🦷 Dentist</option><option value="👁️ Eye Specialist">👁️ Eye Specialist</option><option value="🧪 Lab/Diagnostics">🧪 Lab/Diagnostics</option><option value="📦 Other">📦 Other</option></select></div>
+    <div class="fg"><label class="fl">Phone</label><input class="fi" id="med-ph" type="tel" placeholder="e.g. 9876543210"/></div>
+    <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="med-note" placeholder="e.g. Family physician, OPD 5-8pm"/></div>
+    <button class="sb2" onclick="addMedCon()" style="background:linear-gradient(135deg,var(--red),#c0392b);">Add</button>
+  </div>
+</div>
+
 <!-- Add Transaction -->
 <div class="mo" id="m-addtxn">
-  <div class="md"><button class="mc2" onclick="closeM('m-addtxn')">✕</button><h2>Add Expense Entry</h2>
+  <div class="md"><button class="mc2" onclick="closeM('m-addtxn')">✕</button><h2>Add Entry</h2>
     <div class="fg">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-        <button id="btn-in" onclick="setTtype('in')" style="padding:11px;border-radius:var(--rsm);border:2px solid var(--green);background:var(--green);color:white;font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;">💚 Cash In</button>
-        <button id="btn-out" onclick="setTtype('out')" style="padding:11px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--tm);font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;">🔴 Expense</button>
+      <label class="fl">Voucher Type</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <button id="btn-in" onclick="setTtype('in')" style="padding:11px 4px;border-radius:var(--rsm);border:2px solid var(--green);background:var(--green);color:white;font-family:inherit;font-weight:700;cursor:pointer;font-size:13px;">💚 Receipt</button>
+        <button id="btn-out" onclick="setTtype('out')" style="padding:11px 4px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--tm);font-family:inherit;font-weight:700;cursor:pointer;font-size:13px;">🔴 Payment</button>
+        <button id="btn-contra" onclick="setTtype('contra')" style="padding:11px 4px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--tm);font-family:inherit;font-weight:700;cursor:pointer;font-size:13px;">🔄 Contra</button>
       </div>
       <input type="hidden" id="t-type" value="in"/>
     </div>
-    <div class="fg"><label class="fl">Description</label><input class="fi" id="t-desc" placeholder="e.g. Grocery, Milk payment, Salary received"/></div>
-    <div class="fg">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
-        <label class="fl" style="margin-bottom:0;">Payment Mode</label>
-        <button onclick="openManageList('modes')" style="background:none;border:none;color:var(--p2);font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">✏️ Edit/Add</button>
+    <div id="txn-normal-fields">
+      <div class="fg"><label class="fl">Description</label><input class="fi" id="t-desc" placeholder="e.g. Grocery, Milk payment, Salary received"/></div>
+      <div class="fg">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+          <label class="fl" style="margin-bottom:0;">Payment Mode</label>
+          <button onclick="openManageList('modes')" style="background:none;border:none;color:var(--p2);font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">✏️ Edit/Add</button>
+        </div>
+        <select class="fi" id="t-mode"></select>
       </div>
-      <select class="fi" id="t-mode"></select>
+    </div>
+    <div id="txn-contra-fields" style="display:none;">
+      <div style="background:var(--pl);border-radius:var(--rsm);padding:11px;margin-bottom:12px;font-size:12px;color:var(--p1);">Transfer between Cash and Bank. Shown as one neutral entry — doesn't affect your total.</div>
+      <div class="fg"><label class="fl">From</label><select class="fi" id="t-confrom"><option value="bank">🏦 Bank / UPI</option><option value="cash">💵 Cash</option></select></div>
+      <div class="fg"><label class="fl">To</label><select class="fi" id="t-conto"><option value="cash">💵 Cash</option><option value="bank">🏦 Bank / UPI</option></select></div>
     </div>
     <div class="fr">
       <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="t-amt" type="number" placeholder="0"/></div>
       <div class="fg"><label class="fl">Date</label><input class="fi" id="t-date" type="date"/></div>
     </div>
-    <div class="fg">
+    <div class="fg" id="txn-cat-field">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
         <label class="fl" style="margin-bottom:0;">Category</label>
         <button onclick="openManageList('expcats')" style="background:none;border:none;color:var(--p2);font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">✏️ Edit/Add</button>
       </div>
       <select class="fi" id="t-cat"></select>
     </div>
-    <button class="sb2" onclick="addTxn()">Add Entry</button>
+    <button class="sb2" onclick="addTxn()">Save Entry</button>
   </div>
 </div>
 
@@ -607,6 +733,28 @@ select.fi{appearance:none;}
     <div class="fg"><label class="fl">Category</label><select class="fi" id="td-cat"><option value="🏠 Home">🏠 Home</option><option value="🛒 Market">🛒 Market</option><option value="📞 Call">📞 Call</option><option value="🔧 Repair">🔧 Repair</option><option value="💊 Medical">💊 Medical</option><option value="🎓 Kids">🎓 Kids</option><option value="💰 Finance">💰 Finance</option><option value="📦 Other">📦 Other</option></select></div>
     <div class="fg"><label class="fl">Priority</label><select class="fi" id="td-pri"><option value="normal">Normal</option><option value="urgent">🔴 Urgent</option></select></div>
     <button class="sb2" onclick="addTodo()">Add Task</button>
+  </div>
+</div>
+
+<!-- Add Note -->
+<div class="mo" id="m-addnote">
+  <div class="md"><button class="mc2" onclick="closeM('m-addnote')">✕</button><h2>📝 Add Note</h2>
+    <div class="fg"><label class="fl">Title</label><input class="fi" id="note-title" placeholder="e.g. Gas cylinder booking"/></div>
+    <div class="fg"><label class="fl">Note</label><textarea class="fi" id="note-body" rows="6" placeholder="Write anything..." style="resize:vertical;font-family:inherit;"></textarea></div>
+    <button class="sb2" onclick="addNote()" style="background:linear-gradient(135deg,var(--amber),#e08e0b);">Save Note</button>
+  </div>
+</div>
+
+<!-- Edit Note -->
+<div class="mo" id="m-editnote">
+  <div class="md"><button class="mc2" onclick="closeM('m-editnote')">✕</button><h2>📝 Edit Note</h2>
+    <input type="hidden" id="enote-idx"/>
+    <div class="fg"><label class="fl">Title</label><input class="fi" id="enote-title"/></div>
+    <div class="fg"><label class="fl">Note</label><textarea class="fi" id="enote-body" rows="6" style="resize:vertical;font-family:inherit;"></textarea></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">
+      <button class="sb2" onclick="saveEditNote()" style="background:linear-gradient(135deg,var(--amber),#e08e0b);">Save</button>
+      <button onclick="delNote(parseInt(document.getElementById('enote-idx').value));closeM('m-editnote');" style="padding:13px;border-radius:var(--rsm);border:1.5px solid var(--red);background:white;color:var(--red);font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;">🗑 Delete</button>
+    </div>
   </div>
 </div>
 
@@ -651,18 +799,6 @@ select.fi{appearance:none;}
     <button class="sb2" onclick="saveEditTxn()" style="background:var(--teal);">Save Changes</button>
   </div>
 </div>
-<!-- Contra Entry -->
-<div class="mo" id="m-contra">
-  <div class="md"><button class="mc2" onclick="closeM('m-contra')">✕</button><h2>🔄 Contra Entry</h2>
-    <div style="background:var(--pl);border-radius:var(--rsm);padding:11px;margin-bottom:14px;font-size:13px;color:var(--p1);">Transfer between Cash and Bank. Both entries recorded automatically.</div>
-    <div class="fg"><label class="fl">From</label><select class="fi" id="con-from"><option value="bank">🏦 Bank / UPI</option><option value="cash">💵 Cash</option></select></div>
-    <div class="fg"><label class="fl">To</label><select class="fi" id="con-to"><option value="cash">💵 Cash</option><option value="bank">🏦 Bank / UPI</option></select></div>
-    <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="con-amt" type="number" placeholder="0"/></div>
-    <div class="fg"><label class="fl">Date</label><input class="fi" id="con-date" type="date"/></div>
-    <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="con-note" placeholder="e.g. ATM withdrawal"/></div>
-    <button class="sb2" onclick="saveContra()" style="background:var(--purple);">Record Transfer</button>
-  </div>
-</div>
 <!-- About -->
 <div class="mo" id="m-about">
   <div class="md">
@@ -700,6 +836,12 @@ select.fi{appearance:none;}
         </div>
         <div style="font-size:11px;opacity:0.5;margin-top:8px;">Designed together with its user</div>
       </div>
+      <!-- Sync (placeholder for Session 3b) -->
+      <div style="background:var(--pl);border-radius:var(--rsm);padding:14px;border:1.5px solid var(--p2);margin-bottom:10px;text-align:left;">
+        <div style="font-size:13px;font-weight:800;color:var(--p1);margin-bottom:4px;">☁️ Sync Across Devices</div>
+        <div style="font-size:11px;color:var(--tm);margin-bottom:11px;" id="sync-status-text">Not set up yet — coming soon. For now, use Export/Import to move data between devices.</div>
+        <button onclick="forceSyncNow()" style="width:100%;background:var(--p2);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">🔄 Force Sync Now</button>
+      </div>
       <!-- Data Backup -->
       <div style="background:var(--bg);border-radius:var(--rsm);padding:14px;border:1.5px solid var(--border);margin-bottom:10px;text-align:left;">
         <div style="font-size:13px;font-weight:800;color:var(--p1);margin-bottom:4px;">💾 Data Backup</div>
@@ -709,18 +851,36 @@ select.fi{appearance:none;}
           <label style="background:linear-gradient(135deg,var(--purple),#9b59b6);color:white;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;text-align:center;display:block;">⬆️ Import<input type="file" accept=".json" onchange="importData(this)" style="display:none;"/></label>
         </div>
       </div>
+      <!-- Feedback / Bug Report -->
+      <div style="background:var(--al);border-radius:var(--rsm);padding:14px;border:1.5px solid var(--amber);margin-bottom:10px;text-align:left;">
+        <div style="font-size:13px;font-weight:800;color:#a06800;margin-bottom:4px;">💬 Feedback / Bug Report</div>
+        <div style="font-size:11px;color:var(--tm);margin-bottom:11px;">Found a bug or have a suggestion? Send it across.</div>
+        <button onclick="openM('m-feedback')" style="width:100%;background:var(--amber);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">💬 Send Feedback</button>
+      </div>
       <!-- Reset Shopping -->
       <div style="background:var(--rl);border-radius:var(--rsm);padding:14px;border:1.5px solid var(--red);margin-bottom:10px;text-align:left;">
         <div style="font-size:13px;font-weight:800;color:var(--red);margin-bottom:4px;">🔄 Fix Shopping List</div>
         <div style="font-size:11px;color:var(--tm);margin-bottom:11px;">If shopping list or cart is not working, tap this to reset shopping data to defaults. Your other data (bills, milk, staff etc.) is safe.</div>
         <button onclick="resetShoppingData()" style="width:100%;background:var(--red);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">🔄 Reset Shopping Data</button>
       </div>
-      <div style="font-size:11px;color:#c0c8d8;margin-top:6px;">Version 2.1 • 2026</div>
+      <div style="font-size:11px;color:#c0c8d8;margin-top:6px;" id="about-ver-line"></div>
     </div>
   </div>
 </div>
 
+<!-- Feedback / Bug Report -->
+<div class="mo" id="m-feedback">
+  <div class="md"><button class="mc2" onclick="closeM('m-feedback')">✕</button><h2>💬 Feedback / Bug Report</h2>
+    <div class="fg"><label class="fl">Type</label><select class="fi" id="fb-type"><option value="🐞 Bug">🐞 Bug Report</option><option value="💡 Suggestion">💡 Suggestion</option><option value="❓ Question">❓ Question</option></select></div>
+    <div class="fg"><label class="fl">Details</label><textarea class="fi" id="fb-body" rows="6" placeholder="Describe the issue or idea. Mention which screen/tab if it's a bug." style="resize:vertical;font-family:inherit;"></textarea></div>
+    <div style="font-size:11px;color:var(--tm);margin-bottom:12px;">This opens your messaging app with the feedback pre-filled, addressed to the developer — nothing is sent automatically.</div>
+    <button class="sb2" onclick="sendFeedback()" style="background:linear-gradient(135deg,var(--amber),#e08e0b);">Send Feedback</button>
+  </div>
+</div>
+
 <script>
+const APP_VERSION='2.3.0';
+const APP_BUILD='30 Jun 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
 const CLR=['#1a3a8c','#00B4A2','#7C5CBF','#E74C3C','#27AE60','#F39C12','#0071e3'];
@@ -843,24 +1003,36 @@ function init(){
 // TABS
 const FAB_ACTIONS={
   shopping: ()=>openM('m-additem'),
-  bills:    ()=>openM('m-addbill'),
-  milk:     ()=>openM('m-addmilkman'),
-  help:     ()=>openM('m-addhelp'),
-  contacts: ()=>openM('m-addcon'),
+  organiser:{ bills:()=>openM('m-addbill'), todo:()=>openM('m-addtodo'), services:()=>svcAddAction(), notes:()=>openM('m-addnote') },
   cash:     ()=>openM('m-addtxn'),
-  todo:     ()=>openM('m-addtodo'),
+  household:{ help:()=>openM('m-addhelp'), milk:()=>openM('m-addmilkman'), fruitwala:()=>openAddSupplier('fruitwala'), dhobi:()=>openAddSupplier('dhobi') },
 };
 let _activeTab='shopping';
+let _activeOrgView='bills';
+let _activeHHView='help';
+let _activeSvcView='repair';
+function svcAddAction(){
+  if(_activeSvcView==='medical')openM('m-addmed');
+  else openM('m-addcon');
+}
 function fabAction(){
-  const fn=FAB_ACTIONS[_activeTab];
-  if(fn)fn();
+  const entry=FAB_ACTIONS[_activeTab];
+  if(typeof entry==='function'){entry();return;}
+  if(entry&&typeof entry==='object'){
+    const sub=_activeTab==='organiser'?_activeOrgView:_activeHHView;
+    const fn=entry[sub];
+    if(fn)fn();
+  }
 }
 function showTab(n,btn){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');
   _activeTab=n;
-  ({shopping:renderShop,bills:renderBills,milk:renderMilk,help:renderHelp,contacts:renderCon,cash:renderCash,todo:renderTodo})[n]?.();
+  if(n==='shopping')renderShop();
+  else if(n==='cash')renderCash();
+  else if(n==='organiser')({bills:renderBills,todo:renderTodo,services:()=>{renderCon();renderMedCon();},notes:renderNotes})[_activeOrgView]?.();
+  else if(n==='household')({help:renderHelp,milk:renderMilk,fruitwala:()=>renderSupplier('fruitwala'),dhobi:()=>renderSupplier('dhobi')})[_activeHHView]?.();
 }
 function shopView(v,btn){
   ['items','cart','history'].forEach(x=>document.getElementById('sv-'+x).style.display=x===v?'block':'none');
@@ -868,11 +1040,33 @@ function shopView(v,btn){
   if(btn)btn.classList.add('active');
   if(v==='cart')renderCart();if(v==='history')renderHist();
 }
+function orgView(v,btn){
+  ['bills','todo','services','notes'].forEach(x=>document.getElementById('ov-'+x).style.display=x===v?'block':'none');
+  document.querySelectorAll('#org-tabs .it').forEach(t=>t.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  _activeOrgView=v;
+  ({bills:renderBills,todo:renderTodo,services:()=>{renderCon();renderMedCon();},notes:renderNotes})[v]?.();
+}
+function svcView(v,btn){
+  ['repair','medical'].forEach(x=>document.getElementById('sv-'+x).style.display=x===v?'block':'none');
+  document.querySelectorAll('#svc-tabs .it').forEach(t=>t.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  _activeSvcView=v;
+  if(v==='repair')renderCon();else renderMedCon();
+}
+function hhView(v,btn){
+  ['help','milk','fruitwala','dhobi'].forEach(x=>document.getElementById('hv-'+x).style.display=x===v?'block':'none');
+  document.querySelectorAll('#hh-tabs .it').forEach(t=>t.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  _activeHHView=v;
+  ({help:renderHelp,milk:renderMilk,fruitwala:()=>renderSupplier('fruitwala'),dhobi:()=>renderSupplier('dhobi')})[v]?.();
+}
 
 // MODALS
 function openM(id){
   document.getElementById(id).classList.add('open');
   if(id==='m-milkpay')document.getElementById('mp-date').value=td();
+  if(id==='m-suppay')document.getElementById('sp-date').value=td();
   if(id==='m-adv')document.getElementById('adv-date').value=td();
   if(id==='m-addtxn'){document.getElementById('t-date').value=td();setTtype('out');refreshTxnSelects();}
   if(id==='m-addbill'&&!document.getElementById('b-edit-id').value){
@@ -881,13 +1075,14 @@ function openM(id){
     ['b-name','b-amt','b-due'].forEach(x=>document.getElementById(x).value='');
     refreshBillSelect();
   }
-  if(id==='m-contra')document.getElementById('con-date').value=td();
   if(id==='m-milkset'){const s=ld('gl_mset',{});document.getElementById('ms-qty').value=s.qty||'';document.getElementById('ms-rate').value=s.rate||'';document.getElementById('ms-name').value=s.name||'';}
   if(id==='m-additem'){
     const cats3=ld('gl_cats3',[]);
     const bSel=document.getElementById('ni-broad');
     if(bSel){bSel.innerHTML=cats3.map(b=>`<option>${b.broad}</option>`).join('');updateSubOptions();}
     document.getElementById('ni-name').value='';
+    document.getElementById('ni-qty').value='';
+    populateUnitSelect('ni-unit','');
   }
   if(id==='m-sosset')renderSOSSet();
 }
@@ -895,6 +1090,13 @@ function closeM(id){document.getElementById(id).classList.remove('open');if(id==
 document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
 
 // SHOPPING
+// UNITS for item quantity
+const UNITS=['Piece','Kg','Gram','Litre','ml','Packet','Bottle','Dozen','Meter','Box'];
+function populateUnitSelect(selId,curVal){
+  const sel=document.getElementById(selId);if(!sel)return;
+  sel.innerHTML='<option value="">No unit</option>'+UNITS.map(u=>`<option${curVal===u?' selected':''}>${u}</option>`).join('');
+}
+
 let selEmoji='🛍️';
 let selCatEmoji='🛍️';
 function pickEmoji(el){selEmoji=el.textContent;document.getElementById('cat-emoji').textContent=selEmoji;}
@@ -964,9 +1166,9 @@ function renderShop(){
         <div id="${sid}" style="display:${q||lc?'block':'none'}">`;
       si.sort((a,b2)=>a.name.localeCompare(b2.name)).forEach(item=>{
         const k=esc(item._actualKey);
+        const qtyLabel=item.qty!=null&&item.qty!==''?`<span style="font-size:11px;color:var(--tm);font-weight:600;margin-left:6px;">${item.qty}${item.unit?' '+item.unit:''}</span>`:'';
         html+=`<div class="ir${item.low?' low':''}">
-          <input type="checkbox" class="ic" ${item.inCart?'checked':''} onchange="togCart('${k}',this.checked)"/>
-          <span class="iname">${item.name}</span>
+          <span class="iname">${item.name}${qtyLabel}</span>
           <button class="lb${item.low?' mk':''}" onclick="togLow('${k}')">${item.low?'🔵 Low':'📉 Low?'}</button>
           <button onclick="openEditItem3('${k}')" style="background:none;border:none;font-size:14px;cursor:pointer;color:var(--p2);padding:2px;">✏️</button>
           <button class="db" onclick="delItem('${k}')">🗑</button>
@@ -1015,11 +1217,13 @@ function addItem(){
   const name=document.getElementById('ni-name').value.trim();
   const broad=document.getElementById('ni-broad').value;
   const sub=document.getElementById('ni-sub').value;
+  const qty=document.getElementById('ni-qty').value.trim();
+  const unit=document.getElementById('ni-unit').value;
   if(!name){alert('Enter item name');return;}
   const it=ld('gl_items',{});
   const k=broad+'||'+sub+'::'+name;
-  it[k]={name,broad,sub,low:false,inCart:false};
-  sv('gl_items',it);closeM('m-additem');document.getElementById('ni-name').value='';renderShop();
+  it[k]={name,broad,sub,low:false,inCart:false,qty:qty?parseFloat(qty):null,unit:unit||''};
+  sv('gl_items',it);closeM('m-additem');document.getElementById('ni-name').value='';document.getElementById('ni-qty').value='';renderShop();
 }
 function delItem(k){const rk=unesc(k);const it=ld('gl_items',{});delete it[rk];sv('gl_items',it);renderShop();}
 function openEditItem3(k){
@@ -1032,6 +1236,8 @@ function openEditItem3(k){
   document.getElementById('ei-sub').value=item.sub||'';
   document.getElementById('ei-key').value=k;
   document.getElementById('ei-name').value=item.name;
+  document.getElementById('ei-qty').value=item.qty!=null?item.qty:'';
+  populateUnitSelect('ei-unit',item.unit||'');
   openM('m-edititem');
 }
 function saveEditItem(){
@@ -1039,12 +1245,14 @@ function saveEditItem(){
   const newName=document.getElementById('ei-name').value.trim();
   const newBroad=document.getElementById('ei-broad').value;
   const newSub=document.getElementById('ei-sub').value;
+  const newQty=document.getElementById('ei-qty').value.trim();
+  const newUnit=document.getElementById('ei-unit').value;
   if(!newName){alert('Enter item name');return;}
   const items=ld('gl_items',{});
   const oldItem=items[oldKey];if(!oldItem)return;
   delete items[oldKey];
   const newKey=newBroad+'||'+newSub+'::'+newName;
-  items[newKey]={...oldItem,name:newName,broad:newBroad,sub:newSub};
+  items[newKey]={...oldItem,name:newName,broad:newBroad,sub:newSub,qty:newQty?parseFloat(newQty):null,unit:newUnit||''};
   sv('gl_items',items);closeM('m-edititem');renderShop();
 }
 function renderCart(){
@@ -1058,9 +1266,10 @@ function renderCart(){
     html+=`<div style="font-size:11px;font-weight:700;color:var(--tm);margin-bottom:6px;">PENDING</div>`;
     pending.forEach(item=>{
       const k=esc(item._key);
+      const qtyLabel=item.qty!=null&&item.qty!==''?` <span style="color:var(--p2);font-weight:700;">(${item.qty}${item.unit?' '+item.unit:''})</span>`:'';
       html+=`<div style="display:flex;align-items:center;gap:8px;padding:9px 11px;background:white;border-radius:var(--rsm);margin-bottom:5px;border:1.5px solid var(--border);">
         <input type="checkbox" style="width:20px;height:20px;cursor:pointer;accent-color:var(--green);flex-shrink:0;" onchange="markPurchased('${k}',this.checked)"/>
-        <span style="flex:1;font-size:13px;font-weight:600;color:var(--text)">${item.name}</span>
+        <span style="flex:1;font-size:13px;font-weight:600;color:var(--text)">${item.name}${qtyLabel}</span>
         <span style="font-size:10px;color:var(--tm)">${item.sub||''}</span>
         <button onclick="removeFromCart('${k}')" style="background:none;border:none;font-size:15px;cursor:pointer;color:#c0c8d8;padding:2px;">🗑</button>
       </div>`;
@@ -1378,7 +1587,7 @@ function renderMilk(){
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;">
         <div style="display:flex;align-items:center;gap:9px;">
           <div style="width:40px;height:40px;border-radius:50%;background:${col};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">🥛</div>
-          <div><div style="font-weight:800;font-size:16px;color:var(--p1);">${mm.name}</div><div style="font-size:12px;color:var(--tm);">₹${mm.rate}/L • Default ${mm.qty}L/day</div></div>
+          <div><div style="font-weight:800;font-size:16px;color:var(--p1);">${mm.name}${mm.phone?` <a href="tel:${mm.phone.replace(/\D/g,'')}" style="text-decoration:none;font-size:13px;">📞</a>`:''}</div><div style="font-size:12px;color:var(--tm);">₹${mm.rate}/L • Default ${mm.qty}L/day</div></div>
         </div>
         <div style="display:flex;gap:6px;">
           <button onclick="openEditMilkman(${mi})" style="background:var(--pl);border:1px solid var(--p2);color:var(--p2);border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;">✏️</button>
@@ -1475,19 +1684,21 @@ function saveMilkPay(){
 }
 function addMilkman(){
   const name=document.getElementById('mm-name').value.trim();
+  const phone=document.getElementById('mm-phone').value.trim();
   const qty=parseFloat(document.getElementById('mm-qty').value)||2;
   const rate=parseFloat(document.getElementById('mm-rate').value)||60;
   if(!name){alert('Enter milkman name');return;}
   const milkmen=ld('gl_milkmen',[]);
-  milkmen.push({id:Date.now().toString(),name,qty,rate});
+  milkmen.push({id:Date.now().toString(),name,phone,qty,rate});
   sv('gl_milkmen',milkmen);closeM('m-addmilkman');
-  ['mm-name','mm-qty','mm-rate'].forEach(x=>document.getElementById(x).value='');
+  ['mm-name','mm-phone','mm-qty','mm-rate'].forEach(x=>document.getElementById(x).value='');
   renderMilk();
 }
 function openEditMilkman(idx){
   const mm=ld('gl_milkmen',[]);const m=mm[idx];if(!m)return;
   document.getElementById('emm-idx').value=idx;
   document.getElementById('emm-name').value=m.name;
+  document.getElementById('emm-phone').value=m.phone||'';
   document.getElementById('emm-qty').value=m.qty;
   document.getElementById('emm-rate').value=m.rate;
   openM('m-editmilkman');
@@ -1497,6 +1708,7 @@ function saveEditMilkman(){
   const milkmen=ld('gl_milkmen',[]);
   if(milkmen[idx]){
     milkmen[idx].name=document.getElementById('emm-name').value.trim()||milkmen[idx].name;
+    milkmen[idx].phone=document.getElementById('emm-phone').value.trim();
     milkmen[idx].qty=parseFloat(document.getElementById('emm-qty').value)||milkmen[idx].qty;
     milkmen[idx].rate=parseFloat(document.getElementById('emm-rate').value)||milkmen[idx].rate;
   }
@@ -1504,6 +1716,193 @@ function saveEditMilkman(){
 }
 function delMilkman(idx){
   const mm=ld('gl_milkmen',[]);mm.splice(idx,1);sv('gl_milkmen',mm);renderMilk();
+}
+
+// GENERIC SUPPLIER ENGINE (Fruit/Tarkari Wala, Dhobi) — same pattern as Milk, parameterized by type
+const SUP_META={
+  fruitwala:{icon:'🥦',unit:'',label:'Items',noun:'Vendor'},
+  dhobi:{icon:'👔',unit:'',label:'Items',noun:'Vendor'},
+};
+let supplierM={fruitwala:null,dhobi:null};
+function renderSupplier(type){
+  const meta=SUP_META[type];
+  const now=new Date();
+  if(!supplierM[type])supplierM[type]={y:now.getFullYear(),m:now.getMonth()};
+  const {y,m}=supplierM[type];
+  document.getElementById(type+'-ml').textContent=MN[m]+' '+y;
+  const vendors=ld('gl_sup_'+type,[]);
+  if(!vendors.length){document.getElementById(type+'-list').innerHTML=`<div class="es"><div style="font-size:44px">${meta.icon}</div><div>No vendor added yet.<br>Tap "+ Add Vendor" to start!</div></div>`;return;}
+  const dim=new Date(y,m+1,0).getDate();const tdn=new Date();
+  let html='';
+  vendors.forEach((vd,vi)=>{
+    const del=ld('gl_supdel_'+type+'_'+vd.id,{});const key=y+'-'+m;const md=del[key]||{};
+    let totAmt=0,delDays=0;
+    for(let d=1;d<=dim;d++){
+      if(new Date(y,m,d)<=tdn&&md[d]!==undefined&&md[d]!==null){
+        const amt=parseFloat(md[d])||0;if(amt>0){totAmt+=amt;delDays++;}
+      }
+    }
+    const pays=ld('gl_suppay_'+type+'_'+vd.id,[]).filter(p=>{const pd=new Date(p.raw);return pd.getFullYear()===y&&pd.getMonth()===m;});
+    const totPaid=pays.reduce((s,p)=>s+p.amt,0);
+    const bal=totAmt-totPaid;
+    const col=CLR[vi%CLR.length];
+    html+=`<div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <div style="width:40px;height:40px;border-radius:50%;background:${col};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">${meta.icon}</div>
+          <div><div style="font-weight:800;font-size:16px;color:var(--p1);">${vd.name}${vd.phone?` <a href="tel:${vd.phone.replace(/\D/g,'')}" style="text-decoration:none;font-size:13px;">📞</a>`:''}</div><div style="font-size:12px;color:var(--tm);">Tap a date to record amount spent</div></div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button onclick="openEditSupplier('${type}',${vi})" style="background:var(--pl);border:1px solid var(--p2);color:var(--p2);border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;">✏️</button>
+          <button onclick="delSupplier('${type}',${vi})" style="background:none;border:none;font-size:18px;cursor:pointer;color:#c0c8d8;">🗑</button>
+        </div>
+      </div>
+      <div class="msm">
+        <div class="sb"><div class="sn" style="color:var(--p2)">${delDays}</div><div class="sl">Days Used</div></div>
+        <div class="sb"><div class="sn" style="color:var(--amber)">₹${totAmt}</div><div class="sl">Total Spent</div></div>
+        <div class="sb"><div class="sn" style="color:var(--green)">₹${totPaid}</div><div class="sl">Paid</div></div>
+        <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Due':bal<0?'Overpaid':'Settled'}</div></div>
+      </div>
+      <div style="font-size:11px;color:var(--tm);margin-bottom:5px;">Tap a date to enter amount spent (₹0 = not used that day)</div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px;">${DS.map(d=>`<div class="dl">${d}</div>`).join('')}</div>
+      <div class="mcg" id="supcal-${type}-${vd.id}"></div>
+      <div style="font-weight:700;font-size:13px;margin:11px 0 7px;color:var(--p1);">💰 Payments</div>
+      <div id="suppay-${type}-${vd.id}"></div><div id="supbal-${type}-${vd.id}"></div>
+      <button onclick="openSupplierPay('${type}','${vd.id}')" style="width:100%;margin-top:10px;background:var(--tl);border:1.5px solid var(--teal);color:var(--teal);border-radius:var(--rsm);padding:9px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">+ Record Payment</button>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+        <button class="mb" onclick="chSupplier('${type}',-1)">◀</button>
+        <span style="font-size:12px;color:var(--tm);font-weight:700;">${MN[m]} ${y}</span>
+        <button class="mb" onclick="chSupplier('${type}',1)">▶</button>
+      </div>
+    </div>`;
+  });
+  document.getElementById(type+'-list').innerHTML=html;
+  vendors.forEach(vd=>{
+    const del=ld('gl_supdel_'+type+'_'+vd.id,{});const key=y+'-'+m;const md=del[key]||{};
+    const fd=new Date(y,m,1).getDay();
+    let cal='';for(let i=0;i<fd;i++)cal+='<div></div>';
+    for(let d=1;d<=dim;d++){
+      const fut=new Date(y,m,d)>tdn;
+      const amt=md[d]!==undefined?parseFloat(md[d]):null;
+      const hasA=amt!==null&&amt>0;const isN=amt===0;
+      const cls=fut?'fut':hasA?'hq':isN?'nm':'';
+      const al=fut?'':(amt===null?'?':amt===0?'❌':`₹${amt}`);
+      const as=amt===null&&!fut?'color:#b0bcd4;font-style:italic;':'';
+      cal+=`<div class="mc ${cls}" onclick="${fut?'':`tapSupplierDay('${type}','${vd.id}','${key}',${d})`}"><span class="mcd">${d}</span><span class="mcq" style="${as}">${al}</span></div>`;
+    }
+    const ce=document.getElementById('supcal-'+type+'-'+vd.id);if(ce)ce.innerHTML=cal;
+    const pays=ld('gl_suppay_'+type+'_'+vd.id,[]).filter(p=>{const pd=new Date(p.raw);return pd.getFullYear()===y&&pd.getMonth()===m;});
+    const totPaid=pays.reduce((s,p)=>s+p.amt,0);
+    let totAmt2=0;
+    for(let d=1;d<=dim;d++){if(new Date(y,m,d)<=tdn&&md[d]!==undefined){const a=parseFloat(md[d])||0;if(a>0)totAmt2+=a;}}
+    const bal2=totAmt2-totPaid;
+    const pe=document.getElementById('suppay-'+type+'-'+vd.id);
+    if(pe)pe.innerHTML=pays.length?pays.map(p=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--tm);">${p.date}${p.note?' • '+p.note:''}</span><span style="font-weight:700;color:var(--green);">₹${p.amt.toLocaleString('en-IN')}</span></div>`).join(''):`<div style="color:var(--tm);font-size:13px;text-align:center;padding:6px;">No payments this month</div>`;
+    const be=document.getElementById('supbal-'+type+'-'+vd.id);
+    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Spent</span><span>₹${totAmt2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid</span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Balance Due':bal2<0?'Overpaid':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
+  });
+}
+function tapSupplierDay(type,vid,key,d){
+  document.getElementById('se-title').textContent='Day '+d+' — Amount Spent';
+  document.getElementById('se-amt').value='';
+  document.getElementById('se-day').value=d;
+  document.getElementById('se-key').value=key;
+  document.getElementById('se-vid').value=vid;
+  document.getElementById('se-type').value=type;
+  openM('m-supentry');
+}
+function saveSupplierEntry(){
+  const d=parseInt(document.getElementById('se-day').value);
+  const key=document.getElementById('se-key').value;
+  const vid=document.getElementById('se-vid').value;
+  const type=document.getElementById('se-type').value;
+  const amt=parseFloat(document.getElementById('se-amt').value);
+  if(isNaN(amt)||amt<0){alert('Enter valid amount');return;}
+  const del=ld('gl_supdel_'+type+'_'+vid,{});if(!del[key])del[key]={};del[key][d]=amt;
+  sv('gl_supdel_'+type+'_'+vid,del);closeM('m-supentry');renderSupplier(type);
+}
+function chSupplier(type,dir){
+  if(!supplierM[type]){const n=new Date();supplierM[type]={y:n.getFullYear(),m:n.getMonth()};}
+  supplierM[type].m+=dir;if(supplierM[type].m>11){supplierM[type].m=0;supplierM[type].y++;}if(supplierM[type].m<0){supplierM[type].m=11;supplierM[type].y--;}renderSupplier(type);
+}
+function openSupplierPay(type,vid){
+  document.getElementById('sp-type').value=type;
+  document.getElementById('sp-vid').value=vid;
+  document.getElementById('sp-date').value=td();
+  document.getElementById('sp-amt').value='';document.getElementById('sp-note').value='';
+  openM('m-suppay');
+}
+function saveSupplierPay(){
+  const type=document.getElementById('sp-type').value;
+  const vid=document.getElementById('sp-vid').value;
+  const amt=parseFloat(document.getElementById('sp-amt').value);
+  const raw=document.getElementById('sp-date').value;
+  const note=document.getElementById('sp-note').value.trim();
+  if(!amt||!raw){alert('Enter amount and date');return;}
+  const pays=ld('gl_suppay_'+type+'_'+vid,[]);pays.push({amt,date:fmt(raw),raw,note});
+  sv('gl_suppay_'+type+'_'+vid,pays);closeM('m-suppay');renderSupplier(type);
+}
+function openAddSupplier(type){
+  document.getElementById('sv-type').value=type;
+  document.getElementById('sv-name').value='';
+  document.getElementById('m-addsupplier-title').textContent='Add '+(type==='dhobi'?'Dhobi / Dry Cleaner':'Fruit/Tarkari Vendor');
+  openM('m-addsupplier');
+}
+function addSupplier(){
+  const type=document.getElementById('sv-type').value;
+  const name=document.getElementById('sv-name').value.trim();
+  const phone=document.getElementById('sv-phone').value.trim();
+  if(!name){alert('Enter vendor name');return;}
+  const vendors=ld('gl_sup_'+type,[]);
+  vendors.push({id:Date.now().toString(),name,phone});
+  sv('gl_sup_'+type,vendors);closeM('m-addsupplier');
+  document.getElementById('sv-phone').value='';
+  renderSupplier(type);
+}
+function openEditSupplier(type,idx){
+  const vendors=ld('gl_sup_'+type,[]);const v=vendors[idx];if(!v)return;
+  document.getElementById('esv-type').value=type;
+  document.getElementById('esv-idx').value=idx;
+  document.getElementById('esv-name').value=v.name;
+  document.getElementById('esv-phone').value=v.phone||'';
+  openM('m-editsupplier');
+}
+function saveEditSupplier(){
+  const type=document.getElementById('esv-type').value;
+  const idx=parseInt(document.getElementById('esv-idx').value);
+  const vendors=ld('gl_sup_'+type,[]);
+  if(vendors[idx]){
+    vendors[idx].name=document.getElementById('esv-name').value.trim()||vendors[idx].name;
+    vendors[idx].phone=document.getElementById('esv-phone').value.trim();
+  }
+  sv('gl_sup_'+type,vendors);closeM('m-editsupplier');renderSupplier(type);
+}
+function delSupplier(type,idx){
+  const vendors=ld('gl_sup_'+type,[]);vendors.splice(idx,1);sv('gl_sup_'+type,vendors);renderSupplier(type);
+}
+function shareSupplier(type){
+  const vendors=ld('gl_sup_'+type,[]);
+  if(!vendors.length){toast('No vendor data to share!');return;}
+  if(!supplierM[type]){const n=new Date();supplierM[type]={y:n.getFullYear(),m:n.getMonth()};}
+  const {y,m}=supplierM[type];
+  const dim=new Date(y,m+1,0).getDate();const tdn=new Date();
+  const label=type==='dhobi'?'Dhobi':'Fruit/Tarkari';
+  let lines=[`${SUP_META[type].icon} *${label} Summary — ${MN[m]} ${y}*`,`_GrihaLaxmi_`,``];
+  vendors.forEach(vd=>{
+    const del=ld('gl_supdel_'+type+'_'+vd.id,{});const key=y+'-'+m;const md=del[key]||{};
+    let totAmt=0,delDays=0;
+    for(let d=1;d<=dim;d++){if(new Date(y,m,d)<=tdn&&md[d]!==undefined){const a=parseFloat(md[d])||0;if(a>0){totAmt+=a;delDays++;}}}
+    const pays=ld('gl_suppay_'+type+'_'+vd.id,[]).filter(p=>{const pd=new Date(p.raw);return pd.getFullYear()===y&&pd.getMonth()===m;});
+    const totPaid=pays.reduce((s,p)=>s+p.amt,0);
+    const bal=totAmt-totPaid;
+    lines.push(`*${vd.name}*`);
+    lines.push(`  • Days used: ${delDays} | Total: ₹${totAmt}`);
+    lines.push(`  • Paid: ₹${totPaid}`);
+    lines.push(`  • ${bal>0?'Balance Due':'Settled'}: ₹${Math.abs(bal)}`);
+    lines.push('');
+  });
+  lines.push(`_Shared from GrihaLaxmi App_ 🪔`);
+  shareText(lines.join('\n'));
 }
 
 // HELP
@@ -1552,7 +1951,7 @@ function renderHelp(){
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
         <div style="display:flex;align-items:center;gap:10px">
           <div style="width:40px;height:40px;border-radius:50%;background:${col};display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:white;flex-shrink:0">${ini}</div>
-          <div><div style="font-weight:800;font-size:15px;color:var(--p1)">${h.name}</div><div style="font-size:12px;color:var(--tm)">${h.role}</div></div>
+          <div><div style="font-weight:800;font-size:15px;color:var(--p1)">${h.name}${h.phone?` <a href="tel:${h.phone.replace(/\D/g,'')}" style="text-decoration:none;font-size:13px;">📞</a>`:''}</div><div style="font-size:12px;color:var(--tm)">${h.role}</div></div>
         </div>
         <div style="display:flex;gap:6px;">
           <button onclick="openEditHelper(${hi})" style="background:var(--pl);border:1px solid var(--p2);color:var(--p2);border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;">✏️</button>
@@ -1614,6 +2013,7 @@ function openEditHelper(idx){
   const hs=ld('gl_helpers',[]);const h=hs[idx];if(!h)return;
   document.getElementById('eh-idx').value=idx;
   document.getElementById('eh-name').value=h.name||'';
+  document.getElementById('eh-phone').value=h.phone||'';
   document.getElementById('eh-role').value=h.role||'Cook / Bai';
   document.getElementById('eh-sal').value=h.salary||'';
   document.getElementById('eh-holtype').value=h.holtype||'fixed';
@@ -1626,6 +2026,7 @@ function saveEditHelper(){
   const hs=ld('gl_helpers',[]);
   if(hs[idx]){
     hs[idx].name=document.getElementById('eh-name').value.trim()||hs[idx].name;
+    hs[idx].phone=document.getElementById('eh-phone').value.trim();
     hs[idx].role=document.getElementById('eh-role').value;
     hs[idx].salary=parseFloat(document.getElementById('eh-sal').value)||hs[idx].salary;
     hs[idx].holtype=document.getElementById('eh-holtype').value;
@@ -1639,8 +2040,8 @@ function addHelper(){
   const holtype=document.getElementById('h-holtype').value;
   const holidays=holtype==='fixed'?(parseInt(document.getElementById('h-hol').value)||0):0;
   const hs=ld('gl_helpers',[]);
-  hs.push({id:Date.now(),name,role:document.getElementById('h-role').value,salary:parseFloat(document.getElementById('h-sal').value)||0,holtype,holidays});
-  sv('gl_helpers',hs);closeM('m-addhelp');document.getElementById('h-name').value='';document.getElementById('h-sal').value='';renderHelp();
+  hs.push({id:Date.now(),name,phone:document.getElementById('h-phone').value.trim(),role:document.getElementById('h-role').value,salary:parseFloat(document.getElementById('h-sal').value)||0,holtype,holidays});
+  sv('gl_helpers',hs);closeM('m-addhelp');document.getElementById('h-name').value='';document.getElementById('h-phone').value='';document.getElementById('h-sal').value='';renderHelp();
 }
 function delHelper(idx){
   
@@ -1693,6 +2094,39 @@ function addCon(){
 }
 function delCon(idx){const cs=ld('gl_contacts',[]);cs.splice(idx,1);sv('gl_contacts',cs);renderCon();}
 
+
+
+// MEDICAL — Doctors & Pharmacy contacts
+const MEDROL={'👨‍⚕️ Doctor':'#3498DB','💊 Pharmacy':'#27AE60','🏥 Hospital':'#E74C3C','🦷 Dentist':'#00B4A2','👁️ Eye Specialist':'#9C27B0','🧪 Lab/Diagnostics':'#F39C12','📦 Other':'#9E9E9E'};
+function renderMedCon(){
+  const cons=ld('gl_medcons',[]);
+  if(!cons.length){document.getElementById('med-con-list').innerHTML=`<div class="es"><div style="font-size:44px">👨‍⚕️</div><div>No doctors/pharmacy added yet.<br>Tap "+ Add" to start!</div></div>`;return;}
+  document.getElementById('med-con-list').innerHTML=cons.map((c,i)=>{
+    const col=MEDROL[c.role]||'#9E9E9E';const clean=(c.phone||'').replace(/\D/g,'');
+    return `<div class="cc">
+      <div style="width:46px;height:46px;border-radius:50%;background:${col}20;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${c.role.split(' ')[0]}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:800;font-size:14px;color:var(--p1)">${c.name}</div>
+        <div style="font-size:11px;color:var(--tm);margin-top:1px">${c.role}</div>
+        ${c.phone?`<div style="font-size:12px;color:var(--tm);margin-top:1px">📱 ${c.phone}</div>`:''}
+        ${c.note?`<div style="font-size:11px;color:var(--tm);margin-top:1px">💬 ${c.note}</div>`:''}
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+        ${c.phone?`<a class="clb" href="tel:${clean}">📞</a><a class="wb" href="https://wa.me/91${clean}" target="_blank">💬</a>`:''}
+        <button onclick="delMedCon(${i})" style="background:none;border:none;font-size:16px;cursor:pointer;color:#c0c8d8;width:34px;height:34px">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function addMedCon(){
+  const name=document.getElementById('med-name').value.trim();
+  if(!name){alert('Enter name');return;}
+  const cs=ld('gl_medcons',[]);
+  cs.push({name,role:document.getElementById('med-role').value,phone:document.getElementById('med-ph').value.trim(),note:document.getElementById('med-note').value.trim()});
+  sv('gl_medcons',cs);closeM('m-addmed');['med-name','med-ph','med-note'].forEach(x=>document.getElementById(x).value='');renderMedCon();
+}
+function delMedCon(idx){const cs=ld('gl_medcons',[]);cs.splice(idx,1);sv('gl_medcons',cs);renderMedCon();}
+
 // CASH
 let cashM={y:new Date().getFullYear(),m:new Date().getMonth()};
 function renderCash(){
@@ -1700,19 +2134,25 @@ function renderCash(){
   document.getElementById('cash-ml').textContent=MN[m]+' '+y;
   const all=ld('gl_txns',[]);
   const mT=all.filter(t=>{const d=new Date(t.raw);return d.getFullYear()===y&&d.getMonth()===m;});
+  const digitalModes=['📱 UPI/GPay','💳 Credit Card','💳 Debit Card','👛 Wallet','🏦 Net Banking'];
 
-  // Cash in hand = all-time cash-in minus cash-out (cash mode only)
+  // Cash in hand = all-time cash receipts/payments (cash mode), plus contra transfers in/out of cash
   const cashIn=all.filter(t=>t.type==='in'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0);
   const cashOut=all.filter(t=>t.type==='out'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0);
-  const cashBal=cashIn-cashOut;
+  const cashContraIn=all.filter(t=>t.type==='contra'&&t.contraTo==='cash').reduce((s,t)=>s+t.amt,0);
+  const cashContraOut=all.filter(t=>t.type==='contra'&&t.contraFrom==='cash').reduce((s,t)=>s+t.amt,0);
+  const cashBal=cashIn-cashOut+cashContraIn-cashContraOut;
 
-  // Digital balance = all-time digital money in minus digital money out
-  const digitalModes=['📱 UPI/GPay','💳 Credit Card','💳 Debit Card','👛 Wallet','🏦 Net Banking'];
+  // Bank/Digital balance = all-time digital receipts/payments, plus contra transfers in/out of bank
   const digitalIn=all.filter(t=>t.type==='in'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
   const digitalOut=all.filter(t=>t.type==='out'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
-  const digitalBal=digitalIn-digitalOut;
+  const bankContraIn=all.filter(t=>t.type==='contra'&&t.contraTo==='bank').reduce((s,t)=>s+t.amt,0);
+  const bankContraOut=all.filter(t=>t.type==='contra'&&t.contraFrom==='bank').reduce((s,t)=>s+t.amt,0);
+  const digitalBal=digitalIn-digitalOut+bankContraIn-bankContraOut;
 
-  // This month
+  const totalBal=cashBal+digitalBal;
+
+  // This month — real income/expense only, contra excluded since it's a transfer not income/expense
   const mCashExp=mT.filter(t=>t.type==='out'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0);
   const mDigitalExp=mT.filter(t=>t.type==='out'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
   const mTotalExp=mCashExp+mDigitalExp;
@@ -1722,15 +2162,19 @@ function renderCash(){
   document.getElementById('exp-summary').innerHTML=`
     <div class="cbc" style="margin-bottom:13px;">
       <div style="font-size:12px;opacity:.85;margin-bottom:8px;">💰 Overall Balance</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
         <div style="background:rgba(255,255,255,0.18);border-radius:10px;padding:10px;">
           <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">💵 Cash in Hand</div>
           <div style="font-size:20px;font-weight:800;">₹${cashBal.toLocaleString('en-IN')}</div>
         </div>
         <div style="background:rgba(255,255,255,0.18);border-radius:10px;padding:10px;">
-          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">📱 Digital Balance</div>
+          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">🏦 Bank Balance</div>
           <div style="font-size:20px;font-weight:800;">₹${digitalBal.toLocaleString('en-IN')}</div>
         </div>
+      </div>
+      <div style="background:rgba(255,255,255,0.3);border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.45);margin-bottom:10px;">
+        <div style="font-size:10px;opacity:0.85;margin-bottom:3px;">📊 Total (Cash + Bank)</div>
+        <div style="font-size:22px;font-weight:800;">₹${totalBal.toLocaleString('en-IN')}</div>
       </div>
       <div style="font-size:11px;opacity:.75;margin-bottom:6px;">${MN[m]} ${y} — This Month</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
@@ -1739,7 +2183,7 @@ function renderCash(){
           <div style="font-size:16px;font-weight:800;">₹${mCashInAmt.toLocaleString('en-IN')}</div>
         </div>
         <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px;">
-          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">📲 Digital Received</div>
+          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">📲 Bank Received</div>
           <div style="font-size:16px;font-weight:800;">₹${mDigitalInAmt.toLocaleString('en-IN')}</div>
         </div>
         <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px;">
@@ -1755,8 +2199,23 @@ function renderCash(){
   if(!mT.length){document.getElementById('cash-list').innerHTML='<div class="es"><div style="font-size:44px">💸</div><div>No entries this month.<br>Tap "+ Entry" to start!</div></div>';return;}
   const sorted=[...mT].sort((a,b)=>new Date(b.raw)-new Date(a.raw));
   const modeColors={'💵 Cash':'var(--green)','📱 UPI/GPay':'#9b59b6','💳 Credit Card':'var(--red)','💳 Debit Card':'var(--p2)','👛 Wallet':'var(--amber)','🏦 Net Banking':'var(--teal)'};
-  document.getElementById('cash-list').innerHTML=sorted.map(t=>`
-    <div class="tr ${t.type==='out'?'out':''}">
+  document.getElementById('cash-list').innerHTML=sorted.map(t=>{
+    if(t.type==='contra'){
+      return `<div class="tr" style="border-left-color:var(--purple);">
+        <div style="font-size:22px">🔄</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.desc}</div>
+          <div style="font-size:11px;color:var(--tm);margin-top:2px">${t.date} • Contra (no effect on total)</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:14px;font-weight:800;color:var(--purple);white-space:nowrap">₹${t.amt.toLocaleString('en-IN')}</div>
+          <div style="display:flex;gap:4px;justify-content:flex-end;margin-top:3px;">
+            <button onclick="delTxn('${t.id}')" style="background:none;border:none;font-size:13px;cursor:pointer;color:#c0c8d8;">🗑</button>
+          </div>
+        </div>
+      </div>`;
+    }
+    return `<div class="tr ${t.type==='out'?'out':''}">
       <div style="font-size:22px">${t.cat?t.cat.split(' ')[0]:'💰'}</div>
       <div style="flex:1;min-width:0">
         <div style="font-weight:700;font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.desc}</div>
@@ -1770,22 +2229,41 @@ function renderCash(){
           <button onclick="delTxn('${t.id}')" style="background:none;border:none;font-size:13px;cursor:pointer;color:#c0c8d8;">🗑</button>
         </div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 function setTtype(type){
   document.getElementById('t-type').value=type;
-  const ib=document.getElementById('btn-in'),ob=document.getElementById('btn-out');
-  if(type==='in'){ib.style.cssText='padding:11px;border-radius:var(--rsm);border:2px solid var(--green);background:var(--green);color:white;font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;';ob.style.cssText='padding:11px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--tm);font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;';}
-  else{ob.style.cssText='padding:11px;border-radius:var(--rsm);border:2px solid var(--red);background:var(--red);color:white;font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;';ib.style.cssText='padding:11px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--tm);font-family:inherit;font-weight:700;cursor:pointer;font-size:14px;';}
+  const ib=document.getElementById('btn-in'),ob=document.getElementById('btn-out'),cb=document.getElementById('btn-contra');
+  const base='padding:11px 4px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--tm);font-family:inherit;font-weight:700;cursor:pointer;font-size:13px;';
+  ib.style.cssText=base;ob.style.cssText=base;cb.style.cssText=base;
+  if(type==='in')ib.style.cssText='padding:11px 4px;border-radius:var(--rsm);border:2px solid var(--green);background:var(--green);color:white;font-family:inherit;font-weight:700;cursor:pointer;font-size:13px;';
+  else if(type==='out')ob.style.cssText='padding:11px 4px;border-radius:var(--rsm);border:2px solid var(--red);background:var(--red);color:white;font-family:inherit;font-weight:700;cursor:pointer;font-size:13px;';
+  else cb.style.cssText='padding:11px 4px;border-radius:var(--rsm);border:2px solid var(--purple);background:var(--purple);color:white;font-family:inherit;font-weight:700;cursor:pointer;font-size:13px;';
+  const isContra=type==='contra';
+  document.getElementById('txn-normal-fields').style.display=isContra?'none':'block';
+  document.getElementById('txn-contra-fields').style.display=isContra?'block':'none';
+  document.getElementById('txn-cat-field').style.display=isContra?'none':'block';
 }
 function addTxn(){
-  const desc=document.getElementById('t-desc').value.trim();
+  const type=document.getElementById('t-type').value;
   const amt=parseFloat(document.getElementById('t-amt').value);
   const raw=document.getElementById('t-date').value;
-  const mode=document.getElementById('t-mode').value;
-  if(!desc||!amt||!raw){alert('Please fill all fields');return;}
+  if(!amt||!raw){alert('Please fill amount and date');return;}
   const ts=ld('gl_txns',[]);
-  ts.push({id:Date.now().toString(),desc,amt,type:document.getElementById('t-type').value,cat:document.getElementById('t-cat').value,mode,raw,date:fmt(raw)});
+  if(type==='contra'){
+    const from=document.getElementById('t-confrom').value;
+    const to=document.getElementById('t-conto').value;
+    if(from===to){alert('From and To cannot be same!');return;}
+    const fromLabel=from==='bank'?'🏦 Bank/UPI':'💵 Cash';
+    const toLabel=to==='bank'?'🏦 Bank/UPI':'💵 Cash';
+    ts.push({id:Date.now().toString(),desc:`🔄 Transfer: ${fromLabel} → ${toLabel}`,amt,type:'contra',cat:'🔄 Transfer',raw,date:fmt(raw),contraFrom:from,contraTo:to});
+    sv('gl_txns',ts);closeM('m-addtxn');document.getElementById('t-amt').value='';renderCash();return;
+  }
+  const desc=document.getElementById('t-desc').value.trim();
+  const mode=document.getElementById('t-mode').value;
+  if(!desc){alert('Please enter a description');return;}
+  ts.push({id:Date.now().toString(),desc,amt,type,cat:document.getElementById('t-cat').value,mode,raw,date:fmt(raw)});
   sv('gl_txns',ts);closeM('m-addtxn');
   document.getElementById('t-desc').value='';document.getElementById('t-amt').value='';
   renderCash();
@@ -1837,6 +2315,56 @@ function clearDone(){
   sv('gl_todos',remaining);renderTodo();
 }
 
+// NOTES
+const NCOL=['#FFF6D6','#E0F7F5','#F0EBFF','#FDEDEC','#E8F8F0','#E8F0FE'];
+function renderNotes(){
+  const notes=ld('gl_notes',[]);
+  if(!notes.length){document.getElementById('notes-list').innerHTML=`<div class="es"><div style="font-size:44px">📝</div><div>No notes yet.<br>Tap "+ Note" to scribble something!</div></div>`;return;}
+  document.getElementById('notes-list').innerHTML=[...notes].sort((a,b)=>(b.ts||0)-(a.ts||0)).map((n,_i)=>{
+    const i=notes.indexOf(n);
+    const col=NCOL[i%NCOL.length];
+    return `<div style="background:${col};border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--shadow);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;">
+        <div style="font-weight:800;font-size:14px;color:var(--text);flex:1;">${n.title||'Untitled'}</div>
+        <div style="display:flex;gap:4px;flex-shrink:0;">
+          <button onclick="openEditNote(${i})" style="background:none;border:none;font-size:14px;cursor:pointer;color:var(--p2);">✏️</button>
+          <button onclick="delNote(${i})" style="background:none;border:none;font-size:14px;cursor:pointer;color:#9a8a50;">🗑</button>
+        </div>
+      </div>
+      <div style="font-size:13px;color:var(--text);white-space:pre-wrap;line-height:1.5;">${n.body||''}</div>
+    </div>`;
+  }).join('');
+}
+function addNote(){
+  const title=document.getElementById('note-title').value.trim();
+  const body=document.getElementById('note-body').value.trim();
+  if(!title&&!body){alert('Write something first!');return;}
+  const notes=ld('gl_notes',[]);
+  notes.push({title,body,ts:Date.now()});
+  sv('gl_notes',notes);closeM('m-addnote');
+  document.getElementById('note-title').value='';document.getElementById('note-body').value='';
+  renderNotes();
+}
+function openEditNote(idx){
+  const notes=ld('gl_notes',[]);const n=notes[idx];if(!n)return;
+  document.getElementById('enote-idx').value=idx;
+  document.getElementById('enote-title').value=n.title||'';
+  document.getElementById('enote-body').value=n.body||'';
+  openM('m-editnote');
+}
+function saveEditNote(){
+  const idx=parseInt(document.getElementById('enote-idx').value);
+  const notes=ld('gl_notes',[]);
+  if(notes[idx]){
+    notes[idx].title=document.getElementById('enote-title').value.trim();
+    notes[idx].body=document.getElementById('enote-body').value.trim();
+  }
+  sv('gl_notes',notes);closeM('m-editnote');renderNotes();
+}
+function delNote(idx){
+  const notes=ld('gl_notes',[]);notes.splice(idx,1);sv('gl_notes',notes);renderNotes();
+}
+
 // SOS
 function openSOS(){
   const cs=ld('gl_sos',[]);
@@ -1874,6 +2402,7 @@ function renderSOSSet(){
   document.getElementById('sos-slist').innerHTML=cs.map((c,i)=>`
     <div style="background:var(--bg);border-radius:var(--rsm);padding:12px;margin-bottom:10px;border:1px solid var(--border);">
       <div style="font-weight:700;font-size:12px;color:var(--tm);margin-bottom:9px">Contact ${i+1}</div>
+      <button class="sos-pick-btn" onclick="pickFromContacts('ss-n${i}','ss-p${i}')" style="display:none;width:100%;background:white;border:1.5px solid var(--p2);color:var(--p1);border-radius:var(--rsm);padding:8px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:9px;">📇 Pick from Phone Contacts</button>
       <div class="fg"><label class="fl">Name</label><input class="fi" id="ss-n${i}" value="${c.name||''}" placeholder="e.g. Husband"/></div>
       <div class="fr">
         <div class="fg"><label class="fl">Phone</label><input class="fi" id="ss-p${i}" value="${c.phone||''}" placeholder="9876543210" type="tel"/></div>
@@ -1881,6 +2410,7 @@ function renderSOSSet(){
       </div>
       <button onclick="remSOS(${i})" style="background:none;border:none;color:var(--red);font-size:12px;font-family:inherit;cursor:pointer;font-weight:700">🗑 Remove</button>
     </div>`).join('');
+  toggleContactPickerButtons();
 }
 function addSOSField(){
   const cs=ld('gl_sos',[]);if(cs.length>=3){alert('Max 3 emergency contacts');return;}
@@ -1981,28 +2511,6 @@ function saveEditTxn(){
   const ts=ld('gl_txns',[]);const t=ts.find(x=>x.id===id);
   if(t){t.desc=desc;t.amt=amt;t.type=document.getElementById('etx-type').value;t.cat=document.getElementById('etx-cat').value;t.raw=raw;t.date=fmt(raw);}
   sv('gl_txns',ts);closeM('m-edittxn');renderCash();
-}
-
-// CONTRA ENTRY
-function saveContra(){
-  const from=document.getElementById('con-from').value;
-  const to=document.getElementById('con-to').value;
-  const amt=parseFloat(document.getElementById('con-amt').value);
-  const raw=document.getElementById('con-date').value;
-  const note=document.getElementById('con-note').value.trim();
-  if(!amt||!raw){alert('Enter amount and date');return;}
-  if(from===to){alert('From and To cannot be same!');return;}
-  const ts=ld('gl_txns',[]);
-  const fromLabel=from==='bank'?'🏦 Bank/UPI':'💵 Cash';
-  const toLabel=to==='bank'?'🏦 Bank/UPI':'💵 Cash';
-  const desc=note||`Transfer: ${fromLabel} → ${toLabel}`;
-  // Debit from source
-  ts.push({id:Date.now().toString(),desc:`${desc} (Out)`,amt,type:'out',cat:'🔄 Transfer',raw,date:fmt(raw),contra:true});
-  // Credit to destination
-  ts.push({id:(Date.now()+1).toString(),desc:`${desc} (In)`,amt,type:'in',cat:'🔄 Transfer',raw,date:fmt(raw),contra:true});
-  sv('gl_txns',ts);closeM('m-contra');
-  document.getElementById('con-amt').value='';document.getElementById('con-note').value='';
-  renderCash();
 }
 
 function resetShoppingData(){
@@ -2193,13 +2701,43 @@ function stopVoice(){
 }
 // ===== VOICE END =====
 
+// ===== CONTACT PICKER (Android Chrome only) =====
+function contactPickerSupported(){
+  return 'contacts' in navigator && 'ContactsManager' in window;
+}
+function toggleContactPickerButtons(){
+  const show=contactPickerSupported();
+  document.querySelectorAll('#c-pick-btn,#med-pick-btn,.sos-pick-btn').forEach(b=>{b.style.display=show?'block':'none';});
+}
+async function pickFromContacts(nameId,phoneId){
+  if(!contactPickerSupported()){
+    alert('📇 Contact Picker is only available on Android Chrome.\nPlease enter the details manually.');
+    return;
+  }
+  try{
+    const props=['name','tel'];
+    const opts={multiple:false};
+    const contacts=await navigator.contacts.select(props,opts);
+    if(contacts&&contacts.length){
+      const c=contacts[0];
+      const nameEl=document.getElementById(nameId);
+      const phoneEl=document.getElementById(phoneId);
+      if(nameEl&&c.name&&c.name.length)nameEl.value=c.name[0];
+      if(phoneEl&&c.tel&&c.tel.length)phoneEl.value=c.tel[0].replace(/\D/g,'').slice(-10);
+    }
+  }catch(err){
+    if(err.name!=='AbortError')toast('Could not access contacts.');
+  }
+}
+// ===== CONTACT PICKER END =====
+
 function exportData(){
-  const keys=['gl_items','gl_cats3','gl_bills','gl_bills_reset','gl_contacts','gl_milkmen','gl_helpers','gl_txns','gl_todos','gl_hist','gl_sos'];
-  const data={_v:'2.1',_d:new Date().toISOString()};
+  const keys=['gl_items','gl_cats3','gl_bills','gl_bills_reset','gl_contacts','gl_milkmen','gl_helpers','gl_txns','gl_todos','gl_hist','gl_sos','gl_notes','gl_medcons','gl_sup_fruitwala','gl_sup_dhobi'];
+  const data={_v:'2.2',_d:new Date().toISOString()};
   keys.forEach(k=>{const v=localStorage.getItem(k);if(v)data[k]=JSON.parse(v);});
-  // Also export dynamic milkman/helper keys
+  // Also export dynamic milkman/helper/supplier keys
   Object.keys(localStorage).forEach(k=>{
-    if(k.startsWith('gl_mdel_')||k.startsWith('gl_mpay_')||k.startsWith('gl_att_')||k.startsWith('gl_adv_'))
+    if(k.startsWith('gl_mdel_')||k.startsWith('gl_mpay_')||k.startsWith('gl_att_')||k.startsWith('gl_adv_')||k.startsWith('gl_supdel_')||k.startsWith('gl_suppay_'))
       data[k]=JSON.parse(localStorage.getItem(k));
   });
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
@@ -2237,6 +2775,18 @@ function shareText(text){
     copyToClip(text);
   }
 }
+function sendFeedback(){
+  const type=document.getElementById('fb-type').value;
+  const body=document.getElementById('fb-body').value.trim();
+  if(!body){alert('Please describe the issue or suggestion');return;}
+  const lines=[`${type} — GrihaLaxmi App`,`Version: v${APP_VERSION} (${APP_BUILD})`,``,body];
+  shareText(lines.join('\n'));
+  document.getElementById('fb-body').value='';
+  closeM('m-feedback');
+}
+function forceSyncNow(){
+  toast('☁️ Sync isn\'t set up yet — coming soon!');
+}
 function copyToClip(text){
   if(navigator.clipboard){
     navigator.clipboard.writeText(text).then(()=>toast('✅ Copied! Paste in WhatsApp')).catch(()=>fallbackCopy(text));
@@ -2271,7 +2821,10 @@ function shareShoppingList(){
       const si=broadItems.filter(i=>i.sub===sub);
       if(!si.length)return;
       lines.push(`  _${sub}_`);
-      si.forEach(i=>{lines.push(`  • ${i.name}${i.low?' 🔵':''}`);hasItems=true;});
+      si.forEach(i=>{
+        const qtyLabel=i.qty!=null&&i.qty!==''?` (${i.qty}${i.unit?' '+i.unit:''})`:'';
+        lines.push(`  • ${i.name}${qtyLabel}${i.low?' 🔵':''}`);hasItems=true;
+      });
     });
     lines.push('');
   });
@@ -2285,12 +2838,14 @@ function shareCart(){
   const cart=Object.values(items).filter(i=>i.inCart);
   if(!cart.length){toast('Cart is empty!');return;}
   const now=new Date();
-  let lines=[`🛒 *Shopping Cart — GrihaLaxmi*`,`📅 ${now.getDate()} ${MN[now.getMonth()]} ${now.getFullYear()}`,``];
+  let lines=[`📅 ${now.getDate()} ${MN[now.getMonth()]} ${now.getFullYear()}`,``];
   const pending=cart.filter(i=>!i.purchased);
   const bought=cart.filter(i=>i.purchased);
   if(pending.length){
-    lines.push(`*🔲 To Buy (${pending.length})*`);
-    pending.forEach(i=>lines.push(`  • ${i.name}`));
+    pending.forEach(i=>{
+      const qtyLabel=i.qty!=null&&i.qty!==''?` (${i.qty}${i.unit?' '+i.unit:''})`:'';
+      lines.push(`  • ${i.name}${qtyLabel}`);
+    });
     lines.push('');
   }
   if(bought.length){
@@ -2298,7 +2853,7 @@ function shareCart(){
     bought.forEach(i=>lines.push(`  ✓ ${i.name}`));
     lines.push('');
   }
-  lines.push(`_Shared from GrihaLaxmi App_ 🪔`);
+  lines.push(`🛒 *Shopping Cart — GrihaLaxmi*`);
   shareText(lines.join('\n'));
 }
 
@@ -2484,9 +3039,41 @@ function shareCash(){
   if(changed){sv('gl_items',newItems);}
   localStorage.setItem(VER,'1');
 })();
+
+// v2.3 — bulk-fill default units for existing items (sub-category aware, runs once)
+(function fixUnitsV23(){
+  const VER='gl_data_v23_units';
+  if(localStorage.getItem(VER))return;
+  const items=ld('gl_items',{});
+  if(!Object.keys(items).length){localStorage.setItem(VER,'1');return;}
+  // Sub-category → sensible default unit. Anything not listed falls back to 'Kg'.
+  const SUB_UNIT={
+    'Atta, Rice & Dal':'Kg','Oils & Ghee':'Litre','Spices & Masala':'Gram','Sugar, Salt & Tea':'Kg','Packaged & Canned':'Bottle',
+    'Milk & Curd':'Litre','Paneer & Cheese':'Gram','Butter & Cream':'Gram','Eggs':'Piece','Bread & Bakery':'Packet',
+    'Daily Vegetables':'Kg','Leafy & Seasonal Veggies':'Kg','Exotic Vegetables':'Kg','Everyday Fruits':'Kg','Seasonal Fruits':'Kg',
+    'Instant & Ready Food':'Packet','Namkeen & Snacks':'Packet','Sweets & Chocolates':'Box','Cold Drinks & Juices':'Bottle',
+    'Bath & Body':'Piece','Hair Care':'Bottle','Oral Care':'Piece','Skin Care':'Piece','Feminine & Hygiene':'Packet',
+    'Floor & Surface':'Bottle','Dishwash':'Bottle','Laundry':'Packet','Toilet & Bathroom':'Piece','Garbage & Storage':'Packet',
+    'Baby Food':'Packet','Diapers & Wipes':'Packet','Baby Toiletries':'Bottle','Kids Snacks':'Piece',
+    'Medicines (OTC)':'Piece','Vitamins & Supplements':'Bottle','First Aid':'Piece',
+    'Kitchen Needs':'Piece','Stationery & Office':'Piece','Puja & Festive':'Packet','Pet Care':'Kg',
+  };
+  let changed=false;
+  Object.keys(items).forEach(k=>{
+    const it=items[k];
+    if(!it.unit){
+      it.unit=SUB_UNIT[it.sub]||'Kg';
+      changed=true;
+    }
+  });
+  if(changed)sv('gl_items',items);
+  localStorage.setItem(VER,'1');
+})();
 const _n=new Date();
 document.getElementById('tdate').textContent=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][_n.getDay()]+', '+_n.getDate()+' '+MN[_n.getMonth()]+' '+_n.getFullYear();
-init();renderShop();setupNotifs();setTimeout(checkNotifs,2000);
+document.getElementById('ver-badge').textContent='v'+APP_VERSION;
+document.getElementById('about-ver-line').textContent='Version '+APP_VERSION+' • '+APP_BUILD;
+init();renderShop();setupNotifs();setTimeout(checkNotifs,2000);toggleContactPickerButtons();
 </script>
 </body>
 </html>
