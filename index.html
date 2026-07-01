@@ -11,6 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
+/* ===== THEME SYSTEM ===== */
 :root{
   --p1:#1a3a8c;--p2:#0071e3;--p3:#40a9ff;--pl:#e8f0fe;--pd:#0051a8;
   --teal:#00B4A2;--tl:#E0F7F5;
@@ -20,27 +21,66 @@
   --red:#E74C3C;--rl:#FDEDEC;
   --text:#1a2440;--tm:#6b7a99;--border:#dde4f0;--bg:#f0f4ff;
   --shadow:0 2px 14px rgba(26,58,140,0.10);--radius:16px;--rsm:10px;
+  --cat-a:#eef3ff;--cat-b:#e6eeff;   /* alternating category row colours */
+  --font-body:-apple-system,'Nunito',sans-serif;
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{font-family:-apple-system,'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:72px;}
-h1,h2{font-family:-apple-system,sans-serif;font-weight:700;}
+/* Dark theme */
+body.theme-dark{
+  --p1:#1a3a8c;--p2:#4d9fff;--pl:#1a2a4a;--pd:#0051a8;
+  --text:#e8eaf6;--tm:#8899cc;--border:#2a3a5e;--bg:#0f1a30;
+  --shadow:0 2px 14px rgba(0,0,0,0.4);
+  --cat-a:#182040;--cat-b:#1c2548;
+}
+/* Green theme */
+body.theme-green{
+  --p1:#1a6b3a;--p2:#27ae60;--pl:#e8f8f0;--pd:#145c2f;
+  --cat-a:#edfaf3;--cat-b:#e4f7ec;
+}
+/* Warm theme */
+body.theme-warm{
+  --p1:#7a3000;--p2:#e07020;--pl:#fff3e8;--pd:#5a2000;
+  --bg:#fff8f0;--cat-a:#fff3e8;--cat-b:#ffeedd;
+}
+/* Fonts */
+body.font-rounded{--font-body:'Nunito',sans-serif;}
+body.font-serif{--font-body:Georgia,'Times New Roman',serif;}
+body.font-mono{--font-body:'Courier New',Courier,monospace;}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+button,.cath,.ir,.lb,.pdb,.dub,.ovb,.ic,.ti,.it,.nb,.mb,.ac,.mc{transition:transform 0.08s ease,opacity 0.08s ease;}
+button:active,.cath:active,.lb:active,.pdb:active,.it:active,.nb:active,.mb:active,.ac:active:not(.fut),.mc:active:not(.fut){transform:scale(0.96);opacity:0.85;}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:72px;}
+h1,h2{font-family:var(--font-body);font-weight:700;}
 
 /* TOPBAR */
-.topbar{background:linear-gradient(135deg,var(--p1),var(--p2));color:white;padding:14px 16px 12px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(26,58,140,0.3);}
-.topbar h1{font-size:20px;font-weight:800;letter-spacing:0.3px;}
-.topbar-sub{font-size:10px;opacity:.8;margin-top:1px;}
+.topbar{background:linear-gradient(135deg,var(--p1),var(--p2));color:white;padding:12px 16px 10px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(26,58,140,0.3);}
+.topbar h1{font-size:19px;font-weight:800;letter-spacing:0.3px;}
+.topbar-sub{font-size:9.5px;opacity:.8;margin-top:1px;}
 
-/* BOTTOM NAV */
-.bnav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);display:flex;z-index:100;box-shadow:0 -2px 12px rgba(26,58,140,0.08);}
-.nb{flex:1;display:flex;flex-direction:column;align-items:center;padding:6px 1px 5px;border:none;background:none;cursor:pointer;font-family:inherit;color:var(--tm);font-size:8.5px;font-weight:700;gap:2px;transition:color 0.2s;}
+/* BOTTOM NAV — taller, clearer active state */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:2px solid var(--border);display:flex;z-index:100;box-shadow:0 -3px 16px rgba(26,58,140,0.12);}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;padding:7px 1px 6px;border:none;background:none;cursor:pointer;font-family:inherit;color:var(--tm);font-size:8.5px;font-weight:700;gap:2px;transition:color 0.15s;position:relative;}
 .nb.active{color:var(--p2);}
-.nb.active .ni{filter:drop-shadow(0 1px 3px rgba(0,113,227,0.3));}
-.ni{font-size:20px;}
+.nb.active::before{content:'';position:absolute;top:0;left:15%;right:15%;height:3px;background:var(--p2);border-radius:0 0 3px 3px;}
+.nb.active .ni{filter:drop-shadow(0 1px 4px rgba(0,113,227,0.4));}
+.ni{font-size:21px;}
 
 /* TABS */
 .tab{display:none;padding:14px;}
 .tab.active{display:block;}
 .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;}
+.st{font-size:19px;font-weight:800;color:var(--p1);}
+.ab{background:linear-gradient(135deg,var(--p1),var(--p2));color:white;border:none;border-radius:22px;padding:8px 16px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,113,227,0.3);}
+.card{background:white;border-radius:var(--radius);padding:14px;margin-bottom:12px;box-shadow:var(--shadow);}
+
+/* INNER TABS — more prominent */
+.itabs{display:flex;background:var(--bg);border-radius:var(--rsm);padding:3px;margin-bottom:13px;gap:3px;border:1.5px solid var(--border);}
+.it{flex:1;text-align:center;padding:8px 4px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;border:none;background:none;font-family:inherit;color:var(--tm);}
+.it.active{background:linear-gradient(135deg,var(--p1),var(--p2));color:white;box-shadow:0 2px 8px rgba(0,113,227,0.25);}
+
+/* ALTERNATING CATEGORY ROWS — subtle zebra on shopping list */
+.cat-row-a{background:var(--cat-a);}
+.cat-row-b{background:var(--cat-b);}
 .st{font-size:19px;font-weight:800;color:var(--p1);}
 .ab{background:linear-gradient(135deg,var(--p1),var(--p2));color:white;border:none;border-radius:22px;padding:8px 16px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,113,227,0.3);}
 .card{background:white;border-radius:var(--radius);padding:14px;margin-bottom:12px;box-shadow:var(--shadow);}
@@ -164,9 +204,12 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <h1>🪔 GrihaLaxmi</h1>
     <div class="topbar-sub" id="tdate"></div>
   </div>
-  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
-    <button onclick="openM('m-about')" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:0.3px;">ℹ️ About</button>
-    <span id="ver-badge" style="font-size:9px;color:rgba(255,255,255,0.65);font-weight:600;letter-spacing:0.3px;"></span>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button onclick="openSOS()" style="background:rgba(231,76,60,0.85);border:none;color:white;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:0.3px;animation:sosPulse 2.5s infinite;">🆘 SOS</button>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
+      <button onclick="openM('m-about')" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;">ℹ️ About</button>
+      <span id="ver-badge" style="font-size:9px;color:rgba(255,255,255,0.65);font-weight:600;letter-spacing:0.3px;"></span>
+    </div>
   </div>
 </div>
 
@@ -836,6 +879,8 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
         </div>
         <div style="font-size:11px;opacity:0.5;margin-top:8px;">Designed together with its user</div>
       </div>
+      <!-- Appearance Settings -->
+      <button onclick="closeM('m-about');openM('m-settings');" style="width:100%;background:linear-gradient(135deg,var(--purple),#9b59b6);color:white;border:none;border-radius:var(--rsm);padding:12px;font-size:14px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:10px;">⚙️ Theme & Font Settings</button>
       <!-- Sync (placeholder for Session 3b) -->
       <div style="background:var(--pl);border-radius:var(--rsm);padding:14px;border:1.5px solid var(--p2);margin-bottom:10px;text-align:left;">
         <div style="font-size:13px;font-weight:800;color:var(--p1);margin-bottom:4px;">☁️ Sync Across Devices</div>
@@ -868,6 +913,31 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
   </div>
 </div>
 
+<!-- Settings: Theme & Font -->
+<div class="mo" id="m-settings">
+  <div class="md"><button class="mc2" onclick="closeM('m-settings')">✕</button><h2>⚙️ Appearance</h2>
+    <div class="fg">
+      <label class="fl">Theme</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
+        <button onclick="setTheme('')" class="theme-btn" data-theme="" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--p2);background:linear-gradient(135deg,#1a3a8c,#0071e3);color:white;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer;">🔵 Classic Blue</button>
+        <button onclick="setTheme('dark')" class="theme-btn" data-theme="dark" style="padding:10px;border-radius:var(--rsm);border:2px solid #333;background:linear-gradient(135deg,#0f1a30,#1a3a8c);color:white;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer;">🌙 Dark</button>
+        <button onclick="setTheme('green')" class="theme-btn" data-theme="green" style="padding:10px;border-radius:var(--rsm);border:2px solid #27ae60;background:linear-gradient(135deg,#1a6b3a,#27ae60);color:white;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer;">🌿 Nature Green</button>
+        <button onclick="setTheme('warm')" class="theme-btn" data-theme="warm" style="padding:10px;border-radius:var(--rsm);border:2px solid #e07020;background:linear-gradient(135deg,#7a3000,#e07020);color:white;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer;">🔥 Warm Saffron</button>
+      </div>
+    </div>
+    <div class="fg" style="margin-top:14px;">
+      <label class="fl">Font Style</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
+        <button onclick="setFont('')" class="font-btn" data-font="" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--p2);background:white;color:var(--p1);font-family:-apple-system,sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa System</button>
+        <button onclick="setFont('rounded')" class="font-btn" data-font="rounded" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--text);font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Rounded</button>
+        <button onclick="setFont('serif')" class="font-btn" data-font="serif" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--text);font-family:Georgia,serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Serif</button>
+        <button onclick="setFont('mono')" class="font-btn" data-font="mono" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--text);font-family:'Courier New',monospace;font-weight:700;font-size:12px;cursor:pointer;">Aa Mono</button>
+      </div>
+    </div>
+    <button class="sb2" onclick="closeM('m-settings')" style="margin-top:16px;">✓ Done</button>
+  </div>
+</div>
+
 <!-- Feedback / Bug Report -->
 <div class="mo" id="m-feedback">
   <div class="md"><button class="mc2" onclick="closeM('m-feedback')">✕</button><h2>💬 Feedback / Bug Report</h2>
@@ -879,8 +949,8 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.3.0';
-const APP_BUILD='30 Jun 2026';
+const APP_VERSION='2.4.0';
+const APP_BUILD='01 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
 const CLR=['#1a3a8c','#00B4A2','#7C5CBF','#E74C3C','#27AE60','#F39C12','#0071e3'];
@@ -1123,10 +1193,11 @@ function renderShop(){
   });
 
   let html='';
+  let anyMatch=false;
+  let catIdx=0;
   cats3.forEach(bcat=>{
     const broad=bcat.broad;
     const subMap=grp[broad]||{};
-    // Count only items in defined subs for this broad category
     let totalItems=0,lowCount=0;
     bcat.subs.forEach(s=>{
       const si=subMap[s]||[];
@@ -1134,17 +1205,18 @@ function renderShop(){
       lowCount+=si.filter(i=>i.low).length;
     });
     if(q&&!totalItems)return;
+    if(totalItems)anyMatch=true;
 
     const bid='b_'+broad.replace(/[^a-z0-9]/gi,'_');
     const besc=esc(broad);
-    html+=`<div style="margin-bottom:14px;">
-      <div style="display:flex;align-items:center;gap:5px;margin-bottom:6px;">
+    const rowCls=catIdx%2===0?'cat-row-a':'cat-row-b'; catIdx++;
+    html+=`<div class="${rowCls}" style="margin-bottom:10px;border-radius:var(--rsm);padding:8px;">
+      <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px;">
         <div onclick="toggleC('${bid}')" style="flex:1;background:linear-gradient(135deg,var(--p1),var(--p2));color:white;border-radius:var(--rsm);padding:10px 13px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;">
           <span style="font-weight:800;font-size:13px;">${broad} <span style="background:rgba(255,255,255,0.25);border-radius:10px;padding:1px 7px;font-size:11px;">${totalItems}</span></span>
           <div style="display:flex;align-items:center;gap:6px;">${lowCount?`<span style="background:white;color:var(--p1);border-radius:10px;padding:1px 7px;font-size:11px;font-weight:800;">${lowCount} low</span>`:''}<span style="font-size:12px;">${q||lowCount?'▼':'▶'}</span></div>
         </div>
-        <button onclick="openAddSub('${besc}')" title="Add sub-category" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:50%;width:30px;height:30px;font-size:16px;font-weight:700;cursor:pointer;flex-shrink:0;line-height:1;">+</button>
-        <button onclick="openEditBroad('${besc}')" title="Edit broad category" style="background:white;border:1.5px solid var(--p2);color:var(--p2);border-radius:50%;width:30px;height:30px;font-size:14px;cursor:pointer;flex-shrink:0;line-height:1;">✏️</button>
+        <button onclick="openEditBroad('${besc}')" title="Edit/Delete broad category" style="background:white;border:1.5px solid var(--p2);color:var(--p2);border-radius:50%;width:30px;height:30px;font-size:14px;cursor:pointer;flex-shrink:0;line-height:1;">✏️</button>
       </div>
       <div id="${bid}" style="display:${q||lowCount?'block':'none'};padding-left:6px;">`;
 
@@ -1160,16 +1232,20 @@ function renderShop(){
             <span style="font-weight:700;font-size:12px;color:var(--p1)">${sub} <span style="background:white;border-radius:10px;padding:1px 6px;font-size:11px;color:var(--tm);">${si.length}</span></span>
             <div style="display:flex;align-items:center;gap:5px;">${lc?`<span style="background:var(--p2);color:white;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700;">${lc} low</span>`:''}<span style="font-size:11px;color:var(--tm);">${q||lc?'▼':'▶'}</span></div>
           </div>
-          <button onclick="openAddItemInSub('${besc}','${sesc}')" title="Add item" style="background:var(--pl);border:1.5px solid var(--p2);color:var(--p2);border-radius:50%;width:28px;height:28px;font-size:15px;font-weight:700;cursor:pointer;flex-shrink:0;line-height:1;">+</button>
-          <button onclick="openEditSub('${besc}','${sesc}')" title="Edit sub-category" style="background:none;border:none;font-size:14px;cursor:pointer;color:var(--p2);padding:2px;flex-shrink:0;">✏️</button>
+          <button onclick="openAddItemInSub('${besc}','${sesc}')" title="Add item to this sub-category" style="background:var(--pl);border:1.5px solid var(--p2);color:var(--p2);border-radius:50%;width:28px;height:28px;font-size:15px;font-weight:700;cursor:pointer;flex-shrink:0;line-height:1;">+</button>
+          <button onclick="openEditSub('${besc}','${sesc}')" title="Edit/Delete sub-category" style="background:none;border:none;font-size:14px;cursor:pointer;color:var(--p2);padding:2px;flex-shrink:0;">✏️</button>
         </div>
         <div id="${sid}" style="display:${q||lc?'block':'none'}">`;
       si.sort((a,b2)=>a.name.localeCompare(b2.name)).forEach(item=>{
         const k=esc(item._actualKey);
-        const qtyLabel=item.qty!=null&&item.qty!==''?`<span style="font-size:11px;color:var(--tm);font-weight:600;margin-left:6px;">${item.qty}${item.unit?' '+item.unit:''}</span>`:'';
-        html+=`<div class="ir${item.low?' low':''}">
-          <span class="iname">${item.name}${qtyLabel}</span>
-          <button class="lb${item.low?' mk':''}" onclick="togLow('${k}')">${item.low?'🔵 Low':'📉 Low?'}</button>
+        const kAttr=k.replace(/"/g,'&quot;');
+        const qtyVal=item.qty!=null&&item.qty!==''?item.qty:'';
+        const unitVal=item.unit||'Kg';
+        html+=`<div class="ir${item.low?' low':''}" id="row_${item._actualKey.replace(/[^a-zA-Z0-9]/g,'_')}">
+          <span class="iname">${item.name}</span>
+          <input type="number" step="0.5" min="0" class="qty-inline" data-key="${kAttr}" value="${qtyVal}" placeholder="qty" style="width:48px;padding:5px 4px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;text-align:center;font-family:inherit;font-weight:700;color:var(--p1);" onchange="setItemQty('${k}',this.value)"/>
+          <span style="font-size:11px;color:var(--tm);font-weight:600;min-width:34px;">${unitVal}</span>
+          <button class="lb${item.low?' mk':''}" onclick="togLow('${k}',this)">${item.low?'🔵 Low':'📉 Low?'}</button>
           <button onclick="openEditItem3('${k}')" style="background:none;border:none;font-size:14px;cursor:pointer;color:var(--p2);padding:2px;">✏️</button>
           <button class="db" onclick="delItem('${k}')">🗑</button>
         </div>`;
@@ -1178,9 +1254,27 @@ function renderShop(){
     });
     html+=`</div></div>`;
   });
-  if(!html)html=`<div class="es"><div style="font-size:40px">🔍</div><div>No items found</div></div>`;
+  if(!html||!anyMatch){
+    if(q){
+      html=`<div class="es"><div style="font-size:40px">🔍</div><div style="margin-bottom:14px;">No item named "<strong>${q.replace(/</g,'&lt;')}</strong>" found.</div>
+        <button onclick="quickAddFromSearch()" style="background:linear-gradient(135deg,var(--p1),var(--p2));color:white;border:none;border-radius:22px;padding:11px 20px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">+ Add "${q.replace(/</g,'&lt;')}" as new item</button>
+      </div>`;
+    } else {
+      html=`<div class="es"><div style="font-size:40px">🔍</div><div>No items found</div></div>`;
+    }
+  }
   document.getElementById('shop-list').innerHTML=html;
   updCart();
+}
+function setItemQty(k,val){
+  const rk=unesc(k);const it=ld('gl_items',{});
+  if(it[rk])it[rk].qty=val===''?null:parseFloat(val);
+  sv('gl_items',it);
+}
+function quickAddFromSearch(){
+  const q=(document.getElementById('srch')||{}).value||'';
+  document.getElementById('ni-name').value=q;
+  openM('m-additem');
 }
 function esc(s){return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
 function toggleC(id){const el=document.getElementById(id);if(el)el.style.display=el.style.display==='none'?'block':'none';}
@@ -1202,14 +1296,34 @@ function openAddItemInSub(broad,sub){
   const cats3=ld('gl_cats3',[]);
   const bSel=document.getElementById('ni-broad');
   bSel.innerHTML=cats3.map(b=>`<option${b.broad===broad?' selected':''}>${b.broad}</option>`).join('');
-  // Update subs for this broad, then set the correct sub
   const bc=cats3.find(b=>b.broad===broad);
   const subs=bc?bc.subs:[];
   document.getElementById('ni-sub').innerHTML=subs.map(s=>`<option${s===sub?' selected':''}>${s}</option>`).join('');
   document.getElementById('ni-name').value='';
+  populateUnitSelect('ni-unit','');
   openM('m-additem');
 }
-function togLow(k){const rk=unesc(k);const it=ld('gl_items',{});if(it[rk]){it[rk].low=!it[rk].low;it[rk].inCart=it[rk].low;}sv('gl_items',it);renderShop();}
+// Surgical togLow — updates just the row without rebuilding all 260 items
+function togLow(k,btn){
+  const rk=unesc(k);const it=ld('gl_items',{});
+  if(!it[rk])return;
+  it[rk].low=!it[rk].low;
+  it[rk].inCart=it[rk].low;
+  sv('gl_items',it);
+  // Update the row class and button text in-place
+  const rowId='row_'+rk.replace(/[^a-zA-Z0-9]/g,'_');
+  const row=document.getElementById(rowId);
+  if(row){
+    row.className='ir'+(it[rk].low?' low':'');
+    if(btn){btn.className='lb'+(it[rk].low?' mk':'');btn.textContent=it[rk].low?'🔵 Low':'📉 Low?';}
+    // Focus the qty input so user can immediately type quantity
+    const qtyInput=row.querySelector('.qty-inline');
+    if(qtyInput){qtyInput.focus();qtyInput.select();}
+  } else {
+    renderShop(); // fallback if row not found
+  }
+  updCart();
+}
 function togCart(k,v){const rk=unesc(k);const it=ld('gl_items',{});if(it[rk])it[rk].inCart=v;sv('gl_items',it);updCart();}
 function updCart(){const n=Object.values(ld('gl_items',{})).filter(i=>i.inCart).length;const el=document.getElementById('cart-count');if(el)el.textContent=n+' item'+(n!==1?'s':'');}
 function clearCart(){const it=ld('gl_items',{});Object.keys(it).forEach(k=>{it[k].inCart=false;it[k].low=false;});sv('gl_items',it);renderShop();}
@@ -2787,6 +2901,31 @@ function sendFeedback(){
 function forceSyncNow(){
   toast('☁️ Sync isn\'t set up yet — coming soon!');
 }
+// ===== THEME & FONT =====
+function setTheme(theme){
+  document.body.classList.remove('theme-dark','theme-green','theme-warm');
+  if(theme)document.body.classList.add('theme-'+theme);
+  localStorage.setItem('gl_theme',theme);
+  document.querySelectorAll('.theme-btn').forEach(b=>{
+    const isActive=b.dataset.theme===theme;
+    b.style.outline=isActive?'3px solid white':'none';
+    b.style.outlineOffset=isActive?'-4px':'0';
+  });
+}
+function setFont(font){
+  document.body.classList.remove('font-rounded','font-serif','font-mono');
+  if(font)document.body.classList.add('font-'+font);
+  localStorage.setItem('gl_font',font);
+  document.querySelectorAll('.font-btn').forEach(b=>{
+    b.style.border=b.dataset.font===font?'2px solid var(--p2)':'2px solid var(--border)';
+  });
+}
+function applyStoredThemeFont(){
+  const t=localStorage.getItem('gl_theme')||'';
+  const f=localStorage.getItem('gl_font')||'';
+  setTheme(t);setFont(f);
+}
+// ===== THEME & FONT END =====
 function copyToClip(text){
   if(navigator.clipboard){
     navigator.clipboard.writeText(text).then(()=>toast('✅ Copied! Paste in WhatsApp')).catch(()=>fallbackCopy(text));
@@ -3069,11 +3208,19 @@ function shareCash(){
   if(changed)sv('gl_items',items);
   localStorage.setItem(VER,'1');
 })();
-const _n=new Date();
-document.getElementById('tdate').textContent=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][_n.getDay()]+', '+_n.getDate()+' '+MN[_n.getMonth()]+' '+_n.getFullYear();
+function updateDateTime(){
+  const n=new Date();
+  const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const hr=n.getHours().toString().padStart(2,'0');
+  const mn=n.getMinutes().toString().padStart(2,'0');
+  const el=document.getElementById('tdate');
+  if(el)el.textContent=days[n.getDay()]+', '+n.getDate()+' '+MN[n.getMonth()]+' '+n.getFullYear()+' • '+hr+':'+mn;
+}
+updateDateTime();
+setInterval(updateDateTime,60000);
 document.getElementById('ver-badge').textContent='v'+APP_VERSION;
 document.getElementById('about-ver-line').textContent='Version '+APP_VERSION+' • '+APP_BUILD;
-init();renderShop();setupNotifs();setTimeout(checkNotifs,2000);toggleContactPickerButtons();
+init();applyStoredThemeFont();renderShop();setupNotifs();setTimeout(checkNotifs,2000);toggleContactPickerButtons();
 </script>
 </body>
 </html>
