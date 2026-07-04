@@ -213,11 +213,22 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .fab{position:fixed;bottom:80px;right:16px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--p2),var(--gold));color:white;border:none;font-size:26px;cursor:pointer;box-shadow:0 4px 20px rgba(108,63,197,0.5);z-index:90;display:flex;align-items:center;justify-content:center;line-height:1;}
 .hero{background:linear-gradient(135deg,var(--p1),var(--p2));border-radius:var(--radius);padding:16px;margin-bottom:14px;color:white;box-shadow:0 4px 20px rgba(108,63,197,0.3);}
 
-/* ===== SHOP SUB-TABS (Nano Banana style pills) ===== */
-.shop-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:9px 4px;border-radius:24px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;font-family:inherit;font-size:10px;font-weight:700;color:var(--tm);transition:all 0.18s;}
-.shop-tab.active{background:linear-gradient(135deg,var(--p2),var(--p3));border-color:transparent;color:white;box-shadow:0 3px 12px rgba(108,63,197,0.45);}
-.shop-tab.active::after{content:'';display:block;width:100%;height:2px;background:var(--gold);border-radius:1px;position:absolute;bottom:-4px;}
-.stab-label{font-size:9.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+/* ===== NANO BANANA SUB-TABS (glowing underline style) ===== */
+.nb-stab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:10px 4px 8px;border:none;background:transparent;cursor:pointer;font-family:inherit;color:var(--tm);position:relative;border-right:1px solid var(--border);}
+.nb-stab:last-child{border-right:none;}
+.nb-stab-main{font-size:10px;font-weight:800;letter-spacing:0.8px;color:inherit;}
+.nb-stab-sub{font-size:9px;font-weight:600;color:inherit;opacity:0.8;}
+.nb-stab.active{color:var(--p3);}
+.nb-stab.active::after{content:'';position:absolute;bottom:0;left:15%;right:15%;height:2.5px;background:linear-gradient(90deg,var(--p3),var(--teal));border-radius:2px 2px 0 0;box-shadow:0 0 8px var(--p3);}
+
+/* ===== NANO BANANA PILL BUTTONS (glowing border) ===== */
+.nb-pill-btn{border-radius:20px;padding:8px 11px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;white-space:nowrap;background:transparent;transition:all 0.15s;}
+.nb-pill-btn.teal{border:1.5px solid var(--teal);color:var(--teal);box-shadow:0 0 8px rgba(0,180,162,0.25);}
+.nb-pill-btn.teal:active{background:rgba(0,180,162,0.15);}
+.nb-pill-btn.gold{border:1.5px solid var(--gold);color:var(--gold);box-shadow:0 0 8px rgba(245,200,66,0.25);}
+.nb-pill-btn.gold:active{background:rgba(245,200,66,0.15);}
+.nb-pill-btn.blue{border:1.5px solid var(--p3);color:var(--p3);box-shadow:0 0 8px rgba(167,139,250,0.25);}
+.nb-pill-btn.blue:active{background:rgba(167,139,250,0.15);}
 
 /* ===== CATEGORY ROW CARDS (Nano Banana style) ===== */
 .cat-card{border-radius:14px;margin-bottom:8px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;min-height:52px;border:1px solid rgba(255,255,255,0.08);}
@@ -265,50 +276,75 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 
 <!-- SHOPPING -->
 <div class="tab active" id="tab-shopping">
-  <!-- Sub-tab pills styled like Nano Banana -->
-  <div style="display:flex;gap:8px;margin-bottom:14px;padding:4px 0;">
-    <button class="shop-tab active" id="stab-items" onclick="shopView('items',this)" data-v="items">
-      <span style="font-size:16px;">🗂️</span><span class="stab-label">Items | वस्तू</span>
+
+  <!-- SUB-TABS: Nano Banana style — flat with glowing underline on active -->
+  <div style="display:flex;background:var(--card);border-radius:12px 12px 0 0;border:1px solid var(--border);border-bottom:none;margin-bottom:0;overflow:hidden;">
+    <button class="nb-stab active" id="stab-items" onclick="shopView('items',this)">
+      <span style="font-size:13px;">🗂️</span>
+      <span class="nb-stab-main">ITEMS</span>
+      <span class="nb-stab-sub">वस्तू</span>
     </button>
-    <button class="shop-tab" id="stab-cart" onclick="shopView('cart',this)" data-v="cart">
-      <span style="font-size:16px;">🛒</span><span class="stab-label">Cart | कार्ट</span>
+    <button class="nb-stab" id="stab-cart" onclick="shopView('cart',this)">
+      <span style="font-size:13px;">🛒</span>
+      <span class="nb-stab-main">CART</span>
+      <span class="nb-stab-sub">कार्ट</span>
     </button>
-    <button class="shop-tab" id="stab-history" onclick="shopView('history',this)" data-v="history">
-      <span style="font-size:16px;">🕐</span><span class="stab-label">History | इतिहास</span>
+    <button class="nb-stab" id="stab-history" onclick="shopView('history',this)">
+      <span style="font-size:13px;">🕐</span>
+      <span class="nb-stab-main">HISTORY</span>
+      <span class="nb-stab-sub">इतिहास</span>
     </button>
   </div>
 
-  <!-- ITEMS VIEW -->
-  <div id="sv-items">
-    <!-- Search + action row -->
-    <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center;">
-      <div style="flex:1;position:relative;">
-        <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;">🔍</span>
-        <input class="si" id="srch" placeholder="Search items..." oninput="renderShop()" style="padding-left:38px;"/>
+  <!-- Content panel with top border glow -->
+  <div style="background:var(--card);border-radius:0 0 12px 12px;border:1px solid var(--border);border-top:2px solid var(--p3);padding:12px;margin-bottom:12px;">
+
+    <!-- ITEMS VIEW -->
+    <div id="sv-items">
+      <!-- Search + action buttons row — exactly like Nano Banana -->
+      <div style="display:flex;gap:7px;margin-bottom:12px;align-items:center;">
+        <!-- Search bar with subtle pattern on right -->
+        <div style="flex:1;position:relative;overflow:hidden;border-radius:22px;border:1.5px solid var(--border);background:var(--bg);">
+          <span style="position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;z-index:2;">🔍</span>
+          <input id="srch" placeholder="Search items..." oninput="renderShop()"
+            style="width:100%;padding:9px 80px 9px 36px;background:transparent;border:none;outline:none;font-size:13px;font-family:inherit;color:var(--text);font-weight:600;position:relative;z-index:2;"/>
+          <!-- Decorative pattern on right of search -->
+          <div style="position:absolute;right:0;top:0;bottom:0;width:75px;background:linear-gradient(90deg,transparent,var(--bg2));z-index:1;pointer-events:none;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;">
+            <svg width="55" height="28" viewBox="0 0 55 28" fill="none" opacity="0.4">
+              <path d="M14 14L27.5 2L41 14L27.5 26Z" stroke="#a78bfa" stroke-width="1.2" fill="none"/>
+              <path d="M20 14L27.5 7L35 14L27.5 21Z" stroke="#a78bfa" stroke-width="1" fill="none"/>
+              <circle cx="27.5" cy="14" r="3" fill="#a78bfa" opacity="0.6"/>
+              <path d="M5 14L9 10L13 14L9 18Z" stroke="#6c3fc5" stroke-width="1" fill="none"/>
+              <path d="M42 14L46 10L50 14L46 18Z" stroke="#6c3fc5" stroke-width="1" fill="none"/>
+            </svg>
+          </div>
+        </div>
+        <!-- Glowing pill buttons exactly like Nano Banana -->
+        <button onclick="shareShoppingList()" class="nb-pill-btn teal" data-asset="share">📤 Share</button>
+        <button onclick="openAddBroad()" class="nb-pill-btn gold" data-asset="category">+ Category</button>
+        <button onclick="openM('m-additem')" class="nb-pill-btn blue" data-asset="item">+ Item</button>
       </div>
-      <button onclick="shareShoppingList()" style="background:transparent;border:1.5px solid var(--teal);color:var(--teal);border-radius:20px;padding:8px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;white-space:nowrap;">📤 Share</button>
-      <button onclick="openAddBroad()" style="background:transparent;border:1.5px solid var(--gold);color:var(--gold);border-radius:20px;padding:8px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;white-space:nowrap;">+ Category</button>
-      <button class="ab" onclick="openM('m-additem')" style="white-space:nowrap;">+ Item</button>
+      <div id="shop-list"></div>
     </div>
-    <div id="shop-list"></div>
-  </div>
 
-  <!-- CART VIEW -->
-  <div id="sv-cart" style="display:none;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-      <div style="font-size:18px;font-weight:800;color:var(--gold);">🛒 My Cart</div>
-      <div style="display:flex;gap:8px;">
-        <button onclick="shareCart()" style="background:transparent;border:1.5px solid var(--teal);color:var(--teal);border-radius:20px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
-        <button class="ab" onclick="saveCart()">💾 Save as Template</button>
+    <!-- CART VIEW -->
+    <div id="sv-cart" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div style="font-size:17px;font-weight:800;color:var(--gold);">🛒 My Cart</div>
+        <div style="display:flex;gap:7px;">
+          <button onclick="shareCart()" class="nb-pill-btn teal">📤 Share</button>
+          <button onclick="saveCart()" class="nb-pill-btn blue">💾 Save List</button>
+        </div>
       </div>
+      <div id="cart-list"></div>
     </div>
-    <div id="cart-list"></div>
-  </div>
 
-  <!-- HISTORY VIEW -->
-  <div id="sv-history" style="display:none;">
-    <div style="font-size:18px;font-weight:800;color:var(--gold);margin-bottom:14px;">📋 Saved Lists</div>
-    <div id="hist-list"></div>
+    <!-- HISTORY VIEW -->
+    <div id="sv-history" style="display:none;">
+      <div style="font-size:17px;font-weight:800;color:var(--gold);margin-bottom:14px;">📋 Saved Lists</div>
+      <div id="hist-list"></div>
+    </div>
+
   </div>
 </div>
 
@@ -944,6 +980,14 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
         </div>
         <div style="font-size:11px;opacity:0.5;margin-top:8px;">Designed together with its user</div>
       </div>
+      <!-- GitHub Assets Setup -->
+      <div style="background:var(--card);border-radius:var(--rsm);padding:14px;border:1.5px solid var(--gold);margin-bottom:10px;text-align:left;">
+        <div style="font-size:13px;font-weight:800;color:var(--gold);margin-bottom:4px;">🖼️ GitHub Assets Setup</div>
+        <div style="font-size:11px;color:var(--tm);margin-bottom:10px;">Paste your GitHub raw base URL to load all Nano Banana assets in one shot.</div>
+        <div style="font-size:10px;color:var(--tm);margin-bottom:6px;font-family:monospace;background:var(--bg);padding:6px 8px;border-radius:6px;word-break:break-all;" id="asset-current-url">No assets loaded yet</div>
+        <input class="fi" id="asset-github-url" placeholder="https://raw.githubusercontent.com/USER/REPO/main/assets/" style="margin-bottom:8px;font-size:12px;"/>
+        <button onclick="wireAssets(document.getElementById('asset-github-url').value.trim())" style="width:100%;background:linear-gradient(135deg,var(--gold),var(--amber));color:#1a0a3a;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:800;cursor:pointer;">⚡ Load All Assets</button>
+      </div>
       <!-- Appearance Settings -->
       <button onclick="closeM('m-about');openM('m-settings');" style="width:100%;background:linear-gradient(135deg,var(--purple),#9b59b6);color:white;border:none;border-radius:var(--rsm);padding:12px;font-size:14px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:10px;">⚙️ Theme & Font Settings</button>
       <!-- Sync (placeholder for Session 3b) -->
@@ -1171,7 +1215,7 @@ function showTab(n,btn){
 }
 function shopView(v,btn){
   ['items','cart','history'].forEach(x=>document.getElementById('sv-'+x).style.display=x===v?'block':'none');
-  document.querySelectorAll('.shop-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nb-stab').forEach(t=>t.classList.remove('active'));
   const activeTab=document.getElementById('stab-'+v);
   if(activeTab)activeTab.classList.add('active');
   if(v==='cart')renderCart();
@@ -1243,52 +1287,19 @@ function renderShop(){
   const items=ld('gl_items',{});
   const q=(document.getElementById('srch')||{}).value||'';
   const cats3=ld('gl_cats3',[]);
+  const ASSETS=ld('gl_assets',{});// image slot store: {broad: url}
 
-  // Category colour gradients + SVG patterns - each category gets its own identity
-  const CAT_STYLE={
-    'Grocery & Staples':{g:'#1a4a8c,#2d6dd4',p:'grocery'},
-    'Dairy, Bread & Eggs':{g:'#1a6b5a,#27ae89',p:'dairy'},
-    'Fruits & Vegetables':{g:'#2d7a1a,#4caf50',p:'fruits'},
-    'Snacks & Beverages':{g:'#7a3d00,#e07820',p:'snacks'},
-    'Personal Care':{g:'#6a1a7a,#b039d4',p:'personal'},
-    'Home & Cleaning':{g:'#005f7a,#00b4d8',p:'home'},
-    'Baby & Kids':{g:'#7a5c00,#d4a017',p:'baby'},
-    'Health & Wellness':{g:'#7a0000,#e53935',p:'health'},
-    'Household Essentials':{g:'#1a3a6a,#3a6ae0',p:'household'},
-  };
-  const DEFAULT_STYLE={g:'#2d1a6a,#6c3fc5',p:'default'};
-
-  // Inline SVG patterns per category type
-  function getPattern(type,w,h){
-    const c='rgba(255,255,255,0.18)';
-    const patterns={
-      grocery:`<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg"><rect width="${w}" height="${h}" fill="none"/><circle cx="20" cy="20" r="18" fill="none" stroke="${c}" stroke-width="1.5"/><circle cx="20" cy="20" r="10" fill="none" stroke="${c}" stroke-width="1"/><circle cx="60" cy="10" r="12" fill="none" stroke="${c}" stroke-width="1.5"/><circle cx="80" cy="35" r="16" fill="none" stroke="${c}" stroke-width="1"/><line x1="0" y1="0" x2="${w}" y2="${h}" stroke="${c}" stroke-width="0.8"/><line x1="${w}" y1="0" x2="0" y2="${h}" stroke="${c}" stroke-width="0.8"/></svg>`,
-      dairy:`<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg"><path d="M10,${h/2} Q${w/4},10 ${w/2},${h/2} Q${3*w/4},${h-10} ${w},${h/2}" fill="none" stroke="${c}" stroke-width="2"/><path d="M0,${h/3} Q${w/4},0 ${w/2},${h/3} Q${3*w/4},${2*h/3} ${w},${h/3}" fill="none" stroke="${c}" stroke-width="1.5"/><circle cx="${w/2}" cy="${h/2}" r="20" fill="none" stroke="${c}" stroke-width="1"/></svg>`,
-      fruits:`<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="25" rx="20" ry="18" fill="none" stroke="${c}" stroke-width="1.5"/><ellipse cx="70" cy="35" rx="22" ry="16" fill="none" stroke="${c}" stroke-width="1.5"/><line x1="30" y1="7" x2="35" y2="0" stroke="${c}" stroke-width="2"/><line x1="70" y1="19" x2="75" y2="10" stroke="${c}" stroke-width="2"/><circle cx="50" cy="${h-10}" r="8" fill="none" stroke="${c}" stroke-width="1"/></svg>`,
-      snacks:`<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="35" height="35" rx="5" fill="none" stroke="${c}" stroke-width="1.5"/><rect x="15" y="15" width="20" height="20" rx="3" fill="none" stroke="${c}" stroke-width="1"/><rect x="55" y="10" width="30" height="28" rx="4" fill="none" stroke="${c}" stroke-width="1.5"/><line x1="0" y1="${h}" x2="${w}" y2="0" stroke="${c}" stroke-width="0.8"/></svg>`,
-      personal:`<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg"><polygon points="${w/2},5 ${w-5},${h/2} ${w/2},${h-5} 5,${h/2}" fill="none" stroke="${c}" stroke-width="1.5"/><polygon points="${w/2},15 ${w-15},${h/2} ${w/2},${h-15} 15,${h/2}" fill="none" stroke="${c}" stroke-width="1"/><circle cx="${w/2}" cy="${h/2}" r="12" fill="none" stroke="${c}" stroke-width="1"/></svg>`,
-      home:`<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg"><polygon points="${w/2},5 ${w-5},${h/2} ${w-5},${h-5} 5,${h-5} 5,${h/2}" fill="none" stroke="${c}" stroke-width="1.5"/><rect x="35" y="${h/2}" width="20" height="${h-5-h/2}" fill="none" stroke="${c}" stroke-width="1"/><line x1="${w/2}" y1="5" x2="${w/2}" y2="25" stroke="${c}" stroke-width="2"/></svg>`,
-      baby:`<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg"><circle cx="${w/2}" cy="${h/2}" r="22" fill="none" stroke="${c}" stroke-width="1.5"/><circle cx="${w/2}" cy="${h/2}" r="12" fill="none" stroke="${c}" stroke-width="1"/><circle cx="${w/2}" cy="${h/2}" r="4" fill="${c}"/><line x1="${w/2}" y1="0" x2="${w/2}" y2="${h}" stroke="${c}" stroke-width="0.8"/><line x1="0" y1="${h/2}" x2="${w}" y2="${h/2}" stroke="${c}" stroke-width="0.8"/></svg>`,
-      health:`<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg"><line x1="${w/2}" y1="5" x2="${w/2}" y2="${h-5}" stroke="${c}" stroke-width="4" stroke-linecap="round"/><line x1="5" y1="${h/2}" x2="${w-5}" y2="${h/2}" stroke="${c}" stroke-width="4" stroke-linecap="round"/><circle cx="${w/2}" cy="${h/2}" r="20" fill="none" stroke="${c}" stroke-width="1.5"/></svg>`,
-      household:`<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="5" width="${w-10}" height="${h-10}" rx="4" fill="none" stroke="${c}" stroke-width="1.5"/><rect x="15" y="15" width="${w-30}" height="${h-30}" rx="3" fill="none" stroke="${c}" stroke-width="1"/><line x1="5" y1="5" x2="${w-5}" y2="${h-5}" stroke="${c}" stroke-width="0.8"/><line x1="${w-5}" y1="5" x2="5" y2="${h-5}" stroke="${c}" stroke-width="0.8"/></svg>`,
-      default:`<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="${h/2}" r="25" fill="none" stroke="${c}" stroke-width="1.5"/><circle cx="50" cy="${h/2}" r="15" fill="none" stroke="${c}" stroke-width="1"/></svg>`,
-    };
-    return patterns[type]||patterns.default;
-  }
-
-  // Group items: broad → sub → [items]
   const grp={};
   cats3.forEach(b=>{grp[b.broad]={};b.subs.forEach(s=>grp[b.broad][s]=[]);});
   Object.entries(items).forEach(([actualKey,item])=>{
     const b=item.broad||'🛒 Grocery & Staples';
     const s=item.sub||'Other';
     if(q&&!item.name.toLowerCase().includes(q.toLowerCase()))return;
-    if(!grp[b])grp[b]={};
-    if(!grp[b][s])grp[b][s]=[];
+    if(!grp[b])grp[b]={};if(!grp[b][s])grp[b][s]=[];
     grp[b][s].push({...item,_actualKey:actualKey});
   });
 
-  let html='';let anyMatch=false;
+  let html='';let anyMatch=false;let catIdx=0;
   cats3.forEach(bcat=>{
     const broad=bcat.broad;
     const subMap=grp[broad]||{};
@@ -1299,29 +1310,27 @@ function renderShop(){
 
     const bid='b_'+broad.replace(/[^a-z0-9]/gi,'_');
     const besc=esc(broad);
+    // Alternating dark navy shades - uniform blue theme
+    const bg=catIdx%2===0?'#1a0e38':'#221550';
+    const imgUrl=ASSETS[broad]||'';
+    const patternStyle=imgUrl
+      ?`background:${bg} url('${imgUrl}') right center/auto 100% no-repeat`
+      :`background:${bg}`;
+    catIdx++;
 
-    // Find matching style by checking if broad name contains any key
-    let style=DEFAULT_STYLE;
-    for(const [k,v] of Object.entries(CAT_STYLE)){
-      if(broad.includes(k)){style=v;break;}
-    }
-    const grad=`linear-gradient(135deg,#${style.g.split(',')[0].replace('#','')} 0%,#${style.g.split(',')[1].replace('#','')} 100%)`;
-    const ptype=style.p;
-
-    html+=`<div class="cat-card" style="background:${grad};margin-bottom:10px;" onclick="toggleC('${bid}')">
+    html+=`<div class="cat-card" style="${patternStyle};margin-bottom:8px;" onclick="toggleC('${bid}')">
       <div class="cat-card-text">
         <div class="cat-card-title">${broad}
           <span class="cat-card-count">${totalItems}</span>
           ${lowCount?`<span class="cat-card-low">⚠ ${lowCount} low</span>`:''}
         </div>
       </div>
-      <div class="cat-card-pattern">${getPattern(ptype,100,52)}</div>
       <div class="cat-card-actions" onclick="event.stopPropagation()">
-        <button class="cat-card-btn" onclick="openEditBroad('${besc}')" title="Edit category">✏️</button>
-        <button class="cat-card-btn" onclick="openAddSub('${besc}')" title="Add sub-category" style="background:rgba(255,255,255,0.25);">+</button>
+        <button class="cat-card-btn" onclick="openEditBroad('${besc}')" title="Edit">✏️</button>
+        <button class="cat-card-btn" onclick="openAddSub('${besc}')" title="Add sub" style="background:rgba(255,255,255,0.25);">+</button>
       </div>
     </div>
-    <div id="${bid}" style="display:${q||lowCount?'block':'none'};margin-bottom:6px;padding:0 4px;">`;
+    <div id="${bid}" style="display:${q||lowCount?'block':'none'};margin-bottom:4px;padding:0 2px;">`;
 
     bcat.subs.forEach(sub=>{
       const si=subMap[sub]||[];
@@ -1331,16 +1340,16 @@ function renderShop(){
       const sesc=esc(sub);
       html+=`<div class="sub-card" onclick="toggleC('${sid}')">
         <div class="sub-card-text">${sub}
-          <span style="background:var(--border);border-radius:10px;padding:1px 7px;font-size:10px;color:var(--tm);margin-left:6px;">${si.length}</span>
+          <span style="background:rgba(255,255,255,0.12);border-radius:10px;padding:1px 7px;font-size:10px;color:var(--tm);margin-left:6px;">${si.length}</span>
           ${lc?`<span style="background:var(--gold);color:#1a0a3a;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:800;margin-left:4px;">${lc} low</span>`:''}
         </div>
         <div class="sub-card-actions" onclick="event.stopPropagation()">
-          <button style="background:var(--p2);color:white;border:none;border-radius:50%;width:24px;height:24px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;" onclick="openAddItemInSub('${besc}','${sesc}')">+</button>
+          <button style="background:var(--p2);color:white;border:none;border-radius:50%;width:24px;height:24px;font-size:13px;cursor:pointer;font-weight:700;line-height:1;" onclick="openAddItemInSub('${besc}','${sesc}')">+</button>
           <button style="background:none;border:none;font-size:13px;cursor:pointer;color:var(--p3);" onclick="openEditSub('${besc}','${sesc}')">✏️</button>
         </div>
-        <span style="padding-right:8px;font-size:12px;color:var(--tm);">${q||lc?'▼':'▶'}</span>
+        <span style="padding-right:10px;font-size:11px;color:var(--tm);">${q||lc?'▼':'▶'}</span>
       </div>
-      <div id="${sid}" style="display:${q||lc?'block':'none'};padding:3px 0 6px 6px;">`;
+      <div id="${sid}" style="display:${q||lc?'block':'none'};padding:3px 0 5px 4px;">`;
 
       si.sort((a,b2)=>a.name.localeCompare(b2.name)).forEach(item=>{
         const k=esc(item._actualKey);
@@ -1350,11 +1359,11 @@ function renderShop(){
         const rowId='row_'+item._actualKey.replace(/[^a-zA-Z0-9]/g,'_');
         html+=`<div class="item-row${item.low?' low':''}" id="${rowId}">
           <span class="item-name">${item.name}</span>
-          <input type="number" step="0.5" min="0" class="qty-box" data-key="${kAttr}" value="${qtyVal}" placeholder="#" onchange="setItemQty('${k}',this.value)" onclick="event.stopPropagation()"/>
+          <input type="number" step="0.5" min="0" class="qty-box" value="${qtyVal}" placeholder="#" onchange="setItemQty('${k}',this.value)" onclick="event.stopPropagation()"/>
           <span class="unit-tag">${unitVal}</span>
           <button class="low-btn${item.low?' active':''}" onclick="togLow('${k}',this)">${item.low?'🔵':'Low?'}</button>
-          <button onclick="openEditItem3('${k}')" style="background:none;border:none;font-size:12px;cursor:pointer;color:var(--p3);padding:2px;flex-shrink:0;">✏️</button>
-          <button onclick="delItem('${k}')" style="background:none;border:none;font-size:12px;cursor:pointer;color:var(--tm);padding:2px;flex-shrink:0;">🗑</button>
+          <button onclick="openEditItem3('${k}')" style="background:none;border:none;font-size:12px;cursor:pointer;color:var(--p3);padding:2px;">✏️</button>
+          <button onclick="delItem('${k}')" style="background:none;border:none;font-size:12px;cursor:pointer;color:var(--tm);padding:2px;">🗑</button>
         </div>`;
       });
       html+=`</div>`;
@@ -1363,15 +1372,13 @@ function renderShop(){
   });
 
   if(!html||!anyMatch){
-    if(q){
-      const qSafe=q.replace(/</g,'&lt;');
-      html=`<div class="es"><div style="font-size:44px">🔍</div>
-        <div style="margin-bottom:14px;color:var(--tm);">No item named "<strong style="color:var(--text);">${qSafe}</strong>" found.</div>
-        <button onclick="quickAddFromSearch()" style="background:linear-gradient(135deg,var(--p2),var(--p3));color:white;border:none;border-radius:22px;padding:12px 22px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;box-shadow:0 3px 12px rgba(108,63,197,0.4);">+ Add "${qSafe}" as new item</button>
-      </div>`;
-    } else {
-      html=`<div class="es"><div style="font-size:44px">🛒</div><div>No items yet.<br>Tap "+ Item" to start!</div></div>`;
-    }
+    const qSafe=q.replace(/</g,'&lt;');
+    html=q
+      ?`<div class="es"><div style="font-size:44px">🔍</div>
+          <div style="margin-bottom:14px;">No item "<strong style="color:var(--text);">${qSafe}</strong>" found.</div>
+          <button onclick="quickAddFromSearch()" class="ab">+ Add "${qSafe}" as new item</button>
+        </div>`
+      :`<div class="es"><div style="font-size:44px">🛒</div><div>No items yet.<br>Tap "+ Item" to start!</div></div>`;
   }
   document.getElementById('shop-list').innerHTML=html;
   updCart();
@@ -3035,6 +3042,108 @@ function sendFeedback(){
 function forceSyncNow(){
   toast('☁️ Sync isn\'t set up yet — coming soon!');
 }
+
+// ===== ASSET WIRING SYSTEM =====
+// Call wireAssets('https://raw.githubusercontent.com/USER/REPO/main/assets/')
+// and all 22 assets snap into place from GitHub
+function wireAssets(baseUrl){
+  const base=baseUrl.endsWith('/')?baseUrl:baseUrl+'/';
+  const CATEGORY_MAP={
+    '🛒 Grocery & Staples':'cat_grocery.png',
+    '🥛 Dairy, Bread & Eggs':'cat_dairy.png',
+    '🥦 Fruits & Vegetables':'cat_fruits.png',
+    '🍜 Snacks & Beverages':'cat_snacks.png',
+    '🧴 Personal Care':'cat_personal.png',
+    '🧹 Home & Cleaning':'cat_home.png',
+    '👶 Baby & Kids':'cat_baby.png',
+    '💊 Health & Wellness':'cat_health.png',
+    '🏠 Household Essentials':'cat_household.png',
+  };
+  // Store category image URLs
+  const assets={};
+  Object.entries(CATEGORY_MAP).forEach(([broad,file])=>{assets[broad]=base+file;});
+  sv('gl_assets',assets);
+  // Store UI asset URLs
+  sv('gl_ui_assets',{
+    tabs_bg:       base+'cart_tabs_bg.png',
+    search_bar:    base+'search_bar.png',
+    btn_share:     base+'btn_share.png',
+    btn_category:  base+'btn_category.png',
+    btn_item:      base+'btn_item.png',
+    btn_sos:       base+'btn_sos.png',
+    nav_cart:      base+'nav_cart.png',
+    nav_organiser: base+'nav_organiser.png',
+    nav_cashbook:  base+'nav_cashbook.png',
+    nav_household: base+'nav_household.png',
+    logo_header:   base+'logo_header.png',
+    topbar_bg:     base+'topbar_bg.png',
+    icon:          base+'icon.png',
+  });
+  sv('gl_asset_base',base);
+  applyUIAssets();
+  renderShop();
+  toast('✅ All assets loaded from GitHub!');
+}
+
+function applyUIAssets(){
+  const ui=ld('gl_ui_assets',{});
+  if(!ui.tabs_bg&&!ui.topbar_bg)return;
+
+  // Topbar background
+  if(ui.topbar_bg){
+    const tb=document.querySelector('.topbar');
+    if(tb)tb.style.backgroundImage=`url('${ui.topbar_bg}')`;
+  }
+  // Header logo — replace emoji+text with image if provided
+  if(ui.logo_header){
+    const h1=document.querySelector('.topbar h1');
+    if(h1)h1.innerHTML=`<img src="${ui.logo_header}" style="height:36px;vertical-align:middle;" alt="GrihaLaxmi"/>`;
+  }
+  // Sub-tab bar background
+  if(ui.tabs_bg){
+    const tabBar=document.querySelector('.nb-stab')?.parentElement;
+    if(tabBar){tabBar.style.backgroundImage=`url('${ui.tabs_bg}')`;tabBar.style.backgroundSize='cover';tabBar.style.backgroundPosition='center';}
+  }
+  // Search bar background
+  if(ui.search_bar){
+    const srchWrap=document.getElementById('srch')?.parentElement;
+    if(srchWrap){srchWrap.style.backgroundImage=`url('${ui.search_bar}')`;srchWrap.style.backgroundSize='cover';}
+  }
+  // Action buttons — replace text buttons with image buttons
+  ['share','category','item','sos'].forEach(name=>{
+    if(ui['btn_'+name]){
+      document.querySelectorAll(`.nb-pill-btn[data-asset="${name}"]`).forEach(btn=>{
+        btn.style.backgroundImage=`url('${ui['btn_'+name]}')`;
+        btn.style.backgroundSize='100% 100%';
+        btn.style.color='transparent';
+        btn.style.border='none';
+        btn.style.width='90px';btn.style.height='38px';
+        btn.style.padding='0';
+      });
+    }
+  });
+  // SOS button
+  if(ui.btn_sos){
+    document.querySelectorAll('[data-sos-btn]').forEach(btn=>{
+      btn.style.backgroundImage=`url('${ui.btn_sos}')`;
+      btn.style.backgroundSize='100% 100%';
+      btn.style.color='transparent';
+      btn.style.border='none';
+    });
+  }
+  // Nav icons
+  ['cart','organiser','cashbook','household'].forEach((name,i)=>{
+    if(ui['nav_'+name]){
+      const navBtns=document.querySelectorAll('.nb');
+      if(navBtns[i]){
+        const ni=navBtns[i].querySelector('.ni');
+        if(ni)ni.innerHTML=`<img src="${ui['nav_'+name]}" style="width:24px;height:24px;object-fit:contain;" alt="${name}"/>`;
+      }
+    }
+  });
+}
+// ===== ASSET WIRING END =====
+
 // ===== THEME & FONT =====
 function setTheme(theme){
   document.body.classList.remove('theme-dark','theme-green','theme-warm');
@@ -3356,7 +3465,10 @@ updateDateTime();
 setInterval(updateDateTime,60000);
 document.getElementById('ver-badge').textContent='v'+APP_VERSION;
 document.getElementById('about-ver-line').textContent='Version '+APP_VERSION+' • '+APP_BUILD;
-init();applyStoredThemeFont();renderShop();setupNotifs();setTimeout(checkNotifs,2000);toggleContactPickerButtons();
+init();applyStoredThemeFont();applyUIAssets();renderShop();setupNotifs();setTimeout(checkNotifs,2000);toggleContactPickerButtons();
+// Show stored asset base URL in About
+const _storedBase=ld('gl_asset_base','');
+if(_storedBase){const el=document.getElementById('asset-current-url');if(el)el.textContent='Loaded: '+_storedBase;}
 </script>
 </body>
 </html>
