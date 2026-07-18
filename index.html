@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.10.1 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.10.3 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -247,12 +247,12 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .cat-card-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;border-radius:50%;width:26px;height:26px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 
 /* Sub-category row */
-.sub-card{border-radius:10px;margin-bottom:2px;overflow:hidden;display:flex;align-items:center;min-height:34px;background:rgba(14,30,58,0.8);border:1px solid rgba(255,255,255,0.06);}
+.sub-card{border-radius:10px;margin-bottom:2px;overflow:hidden;display:flex;align-items:center;min-height:34px;background:rgba(60,100,160,0.2);border:1px solid rgba(100,150,220,0.15);}
 .sub-card-text{flex:1;padding:6px 12px;font-size:12px;font-weight:700;color:var(--text);}
 .sub-card-actions{display:flex;gap:4px;padding:4px 8px 4px 0;flex-shrink:0;}
 
 /* Item rows inside sub-category */
-.item-row{display:flex;align-items:center;gap:6px;padding:6px 10px;background:rgba(10,22,46,0.7);border-radius:8px;margin-bottom:2px;border:1px solid rgba(255,255,255,0.04);}
+.item-row{display:flex;align-items:center;gap:6px;padding:6px 10px;background:rgba(80,130,200,0.12);border-radius:8px;margin-bottom:2px;border:1px solid rgba(100,150,220,0.1);}
 .item-row.low{border-color:var(--gold);background:rgba(245,200,66,0.07);}
 .item-name{flex:1;font-size:13px;font-weight:600;color:var(--text);}
 .item-row.low .item-name{color:var(--gold);}
@@ -300,22 +300,22 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       </button>
     </div>
     <!-- Search row - Items view only -->
-    <div style="background:var(--card);border-left:1px solid var(--border);border-right:1px solid var(--border);border-top:1px solid var(--border);padding:6px 10px;" id="shop-search-sticky">
-      <div style="display:flex;gap:5px;align-items:stretch;height:32px;">
-        <div style="flex:1;position:relative;border-radius:8px;border:1px solid var(--border);background:var(--bg);">
-          <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;pointer-events:none;opacity:0.5;">🔍</span>
+    <div style="background:var(--card);border-left:1px solid var(--border);border-right:1px solid var(--border);border-top:1px solid var(--border);padding:5px 10px;" id="shop-search-sticky">
+      <div style="display:flex;gap:5px;align-items:center;">
+        <div style="flex:1;min-width:0;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;overflow:hidden;">
+          <span style="flex-shrink:0;padding:0 6px 0 10px;font-size:12px;opacity:0.5;">🔍</span>
           <input id="srch" placeholder="Search items..." oninput="renderShop()"
-            style="width:100%;height:100%;padding:0 10px 0 30px;background:transparent;border:none;outline:none;font-size:11px;font-family:inherit;color:var(--text);font-weight:600;box-sizing:border-box;"/>
+            style="flex:1;min-width:0;height:100%;padding:0 8px 0 0;background:transparent;border:none;outline:none;font-size:11px;font-family:inherit;color:var(--text);font-weight:600;"/>
         </div>
-        <button onclick="shareShoppingList()" title="Share List" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📤 Share</button>
-        <button onclick="printShoppingList()" title="Save PDF & share via WhatsApp" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📄 PDF</button>
-        <button onclick="openAddBroad()" title="Add Category" style="border:1px solid rgba(245,200,66,0.2);color:var(--gold);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;margin-left:auto;">+ Category</button>
+        <button onclick="shareShoppingList()" title="Share List" style="flex-shrink:0;height:32px;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📤 Share</button>
+        <button onclick="printShoppingList()" title="Save PDF &amp; share via WhatsApp" style="flex-shrink:0;height:32px;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📄 PDF</button>
+        <button onclick="openAddBroad()" title="Add Category" style="flex-shrink:0;height:32px;border:1px solid rgba(245,200,66,0.2);color:var(--gold);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">+ Category</button>
       </div>
     </div>
   </div><!-- end shop-sticky -->
 
   <!-- Content panel -->
-  <div style="background:var(--card);border-radius:0 0 12px 12px;border:1px solid var(--border);border-top:none;padding:6px 10px 10px;margin-bottom:12px;">
+  <div style="background:var(--card);border-radius:0 0 12px 12px;border:1px solid var(--border);border-top:none;padding:4px 10px 10px;margin-bottom:12px;">
 
     <!-- ITEMS VIEW -->
     <div id="sv-items">
@@ -1048,7 +1048,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.10.1';
+const APP_VERSION='2.10.3';
 const APP_BUILD='20 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
