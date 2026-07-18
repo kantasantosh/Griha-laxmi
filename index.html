@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.5.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.6.1 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -92,6 +92,7 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 .nb.active{color:var(--gold);}
 .nb.active::before{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:linear-gradient(90deg,var(--gold),var(--p3));border-radius:0 0 2px 2px;}
 .ni{font-size:20px;line-height:1;}
+.ni img{mix-blend-mode:screen;}
 
 /* ===== TABS ===== */
 .tab{display:none;padding:12px;}
@@ -231,7 +232,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .nb-pill-btn.blue:active{background:rgba(167,139,250,0.15);}
 
 /* ===== CATEGORY ROW CARDS (Nano Banana style) ===== */
-.cat-card{border-radius:14px;margin-bottom:8px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;min-height:52px;border:1px solid rgba(255,255,255,0.08);}
+.cat-card{border-radius:14px;margin-bottom:8px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;height:64px;border:1px solid rgba(255,255,255,0.08);background-size:cover !important;background-position:center !important;}
 .cat-card-text{flex:1;padding:12px 14px;z-index:2;position:relative;}
 .cat-card-title{font-size:14px;font-weight:800;color:white;line-height:1.2;}
 .cat-card-count{display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.2);border-radius:20px;padding:1px 9px;font-size:11px;font-weight:700;color:white;margin-left:7px;}
@@ -277,38 +278,33 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 <!-- SHOPPING -->
 <div class="tab active" id="tab-shopping">
 
-  <!-- SUB-TABS: Nano Banana style — flat with glowing underline on active -->
-  <div style="display:flex;background:var(--card);border-radius:12px 12px 0 0;border:1px solid var(--border);border-bottom:none;margin-bottom:0;overflow:hidden;">
-    <button class="nb-stab active" id="stab-items" onclick="shopView('items',this)">
-      <span style="font-size:13px;">🗂️</span>
-      <span class="nb-stab-main">ITEMS</span>
-      <span class="nb-stab-sub">वस्तू</span>
-    </button>
-    <button class="nb-stab" id="stab-cart" onclick="shopView('cart',this)">
-      <span style="font-size:13px;">🛒</span>
-      <span class="nb-stab-main">CART</span>
-      <span class="nb-stab-sub">कार्ट</span>
-    </button>
-    <button class="nb-stab" id="stab-history" onclick="shopView('history',this)">
-      <span style="font-size:13px;">🕐</span>
-      <span class="nb-stab-main">HISTORY</span>
-      <span class="nb-stab-sub">इतिहास</span>
-    </button>
-  </div>
-
-  <!-- Content panel with top border glow -->
-  <div style="background:var(--card);border-radius:0 0 12px 12px;border:1px solid var(--border);border-top:2px solid var(--p3);padding:12px;margin-bottom:12px;">
-
-    <!-- ITEMS VIEW -->
-    <div id="sv-items">
-      <!-- Search + action buttons row — exactly like Nano Banana -->
-      <div style="display:flex;gap:7px;margin-bottom:12px;align-items:center;">
-        <!-- Search bar with subtle pattern on right -->
+  <!-- STICKY: Sub-tabs + Search -->
+  <div id="shop-sticky" style="position:sticky;top:52px;z-index:90;background:var(--bg);padding-top:4px;">
+    <!-- SUB-TABS -->
+    <div style="display:flex;background:var(--card);border-radius:12px 12px 0 0;border:1px solid var(--border);border-bottom:none;margin-bottom:0;overflow:hidden;">
+      <button class="nb-stab active" id="stab-items" onclick="shopView('items',this)">
+        <span style="font-size:13px;">🗂️</span>
+        <span class="nb-stab-main">ITEMS</span>
+        <span class="nb-stab-sub">वस्तू</span>
+      </button>
+      <button class="nb-stab" id="stab-cart" onclick="shopView('cart',this)">
+        <span style="font-size:13px;">🛒</span>
+        <span class="nb-stab-main">CART</span>
+        <span class="nb-stab-sub">कार्ट</span>
+      </button>
+      <button class="nb-stab" id="stab-history" onclick="shopView('history',this)">
+        <span style="font-size:13px;">🕐</span>
+        <span class="nb-stab-main">HISTORY</span>
+        <span class="nb-stab-sub">इतिहास</span>
+      </button>
+    </div>
+    <!-- Search row inside sticky -->
+    <div style="background:var(--card);border-left:1px solid var(--border);border-right:1px solid var(--border);border-top:2px solid var(--p3);padding:10px 12px 8px;" id="shop-search-sticky">
+      <div style="display:flex;gap:7px;align-items:center;">
         <div style="flex:1;position:relative;overflow:hidden;border-radius:22px;border:1.5px solid var(--border);background:var(--bg);">
           <span style="position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;z-index:2;">🔍</span>
           <input id="srch" placeholder="Search items..." oninput="renderShop()"
             style="width:100%;padding:9px 80px 9px 36px;background:transparent;border:none;outline:none;font-size:13px;font-family:inherit;color:var(--text);font-weight:600;position:relative;z-index:2;"/>
-          <!-- Decorative pattern on right of search -->
           <div style="position:absolute;right:0;top:0;bottom:0;width:75px;background:linear-gradient(90deg,transparent,var(--bg2));z-index:1;pointer-events:none;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;">
             <svg width="55" height="28" viewBox="0 0 55 28" fill="none" opacity="0.4">
               <path d="M14 14L27.5 2L41 14L27.5 26Z" stroke="#a78bfa" stroke-width="1.2" fill="none"/>
@@ -319,11 +315,18 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
             </svg>
           </div>
         </div>
-        <!-- Glowing pill buttons exactly like Nano Banana -->
         <button onclick="shareShoppingList()" class="nb-pill-btn teal" data-asset="share">📤 Share</button>
         <button onclick="openAddBroad()" class="nb-pill-btn gold" data-asset="category">+ Category</button>
         <button onclick="openM('m-additem')" class="nb-pill-btn blue" data-asset="item">+ Item</button>
       </div>
+    </div>
+  </div><!-- end shop-sticky -->
+
+  <!-- Content panel -->
+  <div style="background:var(--card);border-radius:0 0 12px 12px;border:1px solid var(--border);border-top:none;padding:12px;margin-bottom:12px;">
+
+    <!-- ITEMS VIEW -->
+    <div id="sv-items">
       <div id="shop-list"></div>
     </div>
 
@@ -962,31 +965,38 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
           ✅ To Do List
         </div>
       </div>
-      <!-- Claude branding -->
-      <div style="padding:14px 16px;background:#1a1a1a;border-radius:var(--rsm);color:white;margin-bottom:14px;">
-        <div style="font-size:11px;opacity:0.6;margin-bottom:8px;letter-spacing:0.5px;">BUILT WITH ❤️ BY</div>
-        <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
-          <!-- Claude asterisk logo in SVG -->
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <line x1="14" y1="2" x2="14" y2="26" stroke="#D4694A" stroke-width="2.8" stroke-linecap="round"/>
-            <line x1="2" y1="14" x2="26" y2="14" stroke="#D4694A" stroke-width="2.8" stroke-linecap="round"/>
-            <line x1="5.51" y1="5.51" x2="22.49" y2="22.49" stroke="#D4694A" stroke-width="2.8" stroke-linecap="round"/>
-            <line x1="22.49" y1="5.51" x2="5.51" y2="22.49" stroke="#D4694A" stroke-width="2.8" stroke-linecap="round"/>
-          </svg>
-          <div style="text-align:left;">
-            <div style="font-size:18px;font-weight:700;font-family:Georgia,serif;letter-spacing:0.3px;">Claude</div>
-            <div style="font-size:10px;opacity:0.55;letter-spacing:1.5px;font-weight:600;">BY ANTHROPIC</div>
+      <!-- Credits & Tech Stack -->
+      <div style="padding:16px;background:#1a1a1a;border-radius:var(--rsm);color:white;margin-bottom:14px;">
+        <div style="font-size:11px;opacity:0.6;margin-bottom:10px;letter-spacing:0.5px;">BUILT WITH ❤️ USING</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <!-- Claude -->
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border-radius:10px;padding:10px;">
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none"><line x1="14" y1="2" x2="14" y2="26" stroke="#D4694A" stroke-width="2.8" stroke-linecap="round"/><line x1="2" y1="14" x2="26" y2="14" stroke="#D4694A" stroke-width="2.8" stroke-linecap="round"/><line x1="5.51" y1="5.51" x2="22.49" y2="22.49" stroke="#D4694A" stroke-width="2.8" stroke-linecap="round"/><line x1="22.49" y1="5.51" x2="5.51" y2="22.49" stroke="#D4694A" stroke-width="2.8" stroke-linecap="round"/></svg>
+            <div><div style="font-size:13px;font-weight:700;font-family:Georgia,serif;">Claude</div><div style="font-size:8px;opacity:0.5;letter-spacing:1px;">ANTHROPIC</div></div>
+          </div>
+          <!-- GitHub -->
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border-radius:10px;padding:10px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <div><div style="font-size:13px;font-weight:700;">GitHub</div><div style="font-size:8px;opacity:0.5;letter-spacing:1px;">SOURCE CODE</div></div>
+          </div>
+          <!-- Cloudflare -->
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border-radius:10px;padding:10px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16.5 18H5.2c-.1 0-.2-.1-.2-.1l-.1-.2c-.3-1 .1-2 1-2.5l.5-.2-.1-.5c0-.2-.1-.3-.1-.5 0-1.8 1.5-3.2 3.3-3.2.5 0 1 .1 1.5.3l.5.2.3-.4c1-1.6 2.8-2.6 4.7-2.6 3 0 5.5 2.4 5.5 5.4v.5l-.1.5.6.1c1.1.3 1.8 1.3 1.8 2.4 0 .3-.3.5-.6.5h-7.2" stroke="#F6821F" stroke-width="1.5" stroke-linecap="round"/><path d="M8 18l-.5-5.5c0-.3.2-.5.5-.6l8.5-1c.2 0 .3 0 .4.1.1.1.1.2.1.3L16.5 18" stroke="#FBAD41" stroke-width="1.5"/></svg>
+            <div><div style="font-size:13px;font-weight:700;">Cloudflare</div><div style="font-size:8px;opacity:0.5;letter-spacing:1px;">HOSTING</div></div>
+          </div>
+          <!-- Gemini / Nano Banana -->
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border-radius:10px;padding:10px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 8 8 8 12s1.8 7 4 10c2.2-3 4-6 4-10s-4-10-4-10z" fill="#4285F4"/><path d="M12 2C12 2 16 8 16 12s-1.8 7-4 10c-2.2-3-4-6-4-10s4-10 4-10z" fill="#34A853" opacity="0.7"/></svg>
+            <div><div style="font-size:13px;font-weight:700;">Gemini</div><div style="font-size:8px;opacity:0.5;letter-spacing:1px;">ASSET DESIGN</div></div>
+          </div>
+          <!-- Firebase -->
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border-radius:10px;padding:10px;grid-column:span 2;justify-content:center;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4.53 18.64L6.56 2.66c.05-.38.56-.48.75-.15l2.13 3.8-4.91 12.33z" fill="#FFA000"/><path d="M12.07 10.15l1.87-3.52L11.81 2.4c-.17-.32-.63-.3-.78.03L4.53 18.64l7.54-8.49z" fill="#F57C00"/><path d="M17.47 6.57c.24-.24.66-.06.66.28l1.33 11.79-5.7 3.43c-.28.17-.63.17-.91 0L7.3 18.83l10.17-12.26z" fill="#FFCA28"/><path d="M12.07 10.15L7.3 18.83l5.55-15.34c.15-.33.61-.35.78-.03l-1.56 6.69z" fill="#FFA000"/></svg>
+            <div><div style="font-size:13px;font-weight:700;">Firebase</div><div style="font-size:8px;opacity:0.5;letter-spacing:1px;">SYNC · COMING SOON</div></div>
           </div>
         </div>
-        <div style="font-size:11px;opacity:0.5;margin-top:8px;">Designed together with its user</div>
-      </div>
-      <!-- GitHub Assets Setup -->
-      <div style="background:var(--card);border-radius:var(--rsm);padding:14px;border:1.5px solid var(--gold);margin-bottom:10px;text-align:left;">
-        <div style="font-size:13px;font-weight:800;color:var(--gold);margin-bottom:4px;">🖼️ GitHub Assets Setup</div>
-        <div style="font-size:11px;color:var(--tm);margin-bottom:10px;">Paste your GitHub raw base URL to load all Nano Banana assets in one shot.</div>
-        <div style="font-size:10px;color:var(--tm);margin-bottom:6px;font-family:monospace;background:var(--bg);padding:6px 8px;border-radius:6px;word-break:break-all;" id="asset-current-url">No assets loaded yet</div>
-        <input class="fi" id="asset-github-url" placeholder="https://raw.githubusercontent.com/kantasantosh/Griha-laxmi/main/assets/folder/" style="margin-bottom:8px;font-size:12px;"/>
-        <button onclick="wireAssets(document.getElementById('asset-github-url').value.trim())" style="width:100%;background:linear-gradient(135deg,var(--gold),var(--amber));color:#1a0a3a;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:800;cursor:pointer;">⚡ Load All Assets</button>
+        <div style="font-size:11px;opacity:0.45;margin-top:10px;">Designed & developed by SantKanta</div>
+        <div style="font-size:11px;color:var(--gold);margin-top:4px;font-weight:700;" id="about-ver-line"></div>
       </div>
       <!-- Appearance Settings -->
       <button onclick="closeM('m-about');openM('m-settings');" style="width:100%;background:linear-gradient(135deg,var(--purple),#9b59b6);color:white;border:none;border-radius:var(--rsm);padding:12px;font-size:14px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:10px;">⚙️ Theme & Font Settings</button>
@@ -1058,8 +1068,8 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.5.0';
-const APP_BUILD='02 Jul 2026';
+const APP_VERSION='2.6.1';
+const APP_BUILD='18 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
 const CLR=['#1a3a8c','#00B4A2','#7C5CBF','#E74C3C','#27AE60','#F39C12','#0071e3'];
@@ -1314,7 +1324,7 @@ function renderShop(){
     const bg=catIdx%2===0?'#1a0e38':'#221550';
     const imgUrl=ASSETS[broad]||'';
     const patternStyle=imgUrl
-      ?`background:${bg} url('${imgUrl}') right center/auto 100% no-repeat`
+      ?`background:url('${imgUrl}') center/cover no-repeat`
       :`background:${bg}`;
     catIdx++;
 
@@ -3044,10 +3054,9 @@ function forceSyncNow(){
 }
 
 // ===== ASSET WIRING SYSTEM =====
-// Call wireAssets('https://raw.githubusercontent.com/USER/REPO/main/assets/')
-// and all 22 assets snap into place from GitHub
+const ASSET_BASE='https://raw.githubusercontent.com/kantasantosh/Griha-laxmi/main/assets/folder/';
 function wireAssets(baseUrl){
-  const base=baseUrl.endsWith('/')?baseUrl:baseUrl+'/';
+  const base=baseUrl||ASSET_BASE;
   const CATEGORY_MAP={
     '🛒 Grocery & Staples':'cat_grocery.png',
     '🥛 Dairy, Bread & Eggs':'cat_dairy.png',
@@ -3097,7 +3106,7 @@ function applyUIAssets(){
   // Header logo — replace emoji+text with image if provided
   if(ui.logo_header){
     const h1=document.querySelector('.topbar h1');
-    if(h1)h1.innerHTML=`<img src="${ui.logo_header}" style="height:36px;vertical-align:middle;" alt="GrihaLaxmi"/>`;
+    if(h1)h1.innerHTML=`<img src="${ui.logo_header}" style="height:36px;vertical-align:middle;mix-blend-mode:screen;" alt="GrihaLaxmi"/>`;
   }
   // Sub-tab bar background
   if(ui.tabs_bg){
@@ -3465,10 +3474,7 @@ updateDateTime();
 setInterval(updateDateTime,60000);
 document.getElementById('ver-badge').textContent='v'+APP_VERSION;
 document.getElementById('about-ver-line').textContent='Version '+APP_VERSION+' • '+APP_BUILD;
-init();applyStoredThemeFont();applyUIAssets();renderShop();setupNotifs();setTimeout(checkNotifs,2000);toggleContactPickerButtons();
-// Show stored asset base URL in About
-const _storedBase=ld('gl_asset_base','');
-if(_storedBase){const el=document.getElementById('asset-current-url');if(el)el.textContent='Loaded: '+_storedBase;}
+init();applyStoredThemeFont();wireAssets();renderShop();setupNotifs();setTimeout(checkNotifs,2000);toggleContactPickerButtons();
 </script>
 </body>
 </html>
