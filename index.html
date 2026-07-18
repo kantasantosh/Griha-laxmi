@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.8.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.9.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -276,10 +276,13 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <div class="topbar-sub" id="tdate"></div>
   </div>
   <div id="tclock" style="display:flex;align-items:center;gap:1px;"></div>
-  <div style="display:flex;gap:4px;align-items:center;">
-      <button onclick="openSOS()" style="background:linear-gradient(135deg,#8b0000,#e74c3c);border:none;color:white;border-radius:16px;padding:5px 8px;font-size:10px;font-weight:800;cursor:pointer;animation:sosPulse 2.5s infinite;">🆘 SOS</button>
-      <button onclick="forceSyncNow()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;border-radius:14px;padding:4px 8px;font-size:10px;font-weight:700;cursor:pointer;">☁️</button>
-      <button onclick="openM('m-about')" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;border-radius:14px;padding:4px 8px;font-size:10px;font-weight:700;cursor:pointer;">⚙️</button>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
+    <div style="display:flex;gap:4px;align-items:center;">
+      <button onclick="openSOS()" style="background:linear-gradient(135deg,#8b0000,#e74c3c);border:none;color:white;border-radius:14px;padding:4px 8px;font-size:10px;font-weight:800;cursor:pointer;animation:sosPulse 2.5s infinite;">🆘 SOS</button>
+      <button onclick="forceSyncNow()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;border-radius:14px;padding:4px 8px;font-size:10px;font-weight:700;cursor:pointer;" title="Sync">☁️</button>
+      <button onclick="openM('m-about')" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;border-radius:14px;padding:4px 8px;font-size:10px;font-weight:700;cursor:pointer;" title="About">⚙️</button>
+    </div>
+    <span id="ver-badge" style="font-size:8px;color:rgba(245,200,66,0.6);font-weight:700;"></span>
   </div>
 </div>
 
@@ -325,11 +328,12 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 
     <!-- CART VIEW -->
     <div id="sv-cart" style="display:none;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-        <div style="font-size:17px;font-weight:800;color:var(--gold);">🛒 My Cart</div>
-        <div style="display:flex;gap:7px;">
-          <button onclick="shareCart()" class="nb-pill-btn teal">📤 Share</button>
-          <button onclick="saveCart()" class="nb-pill-btn blue">💾 Save List</button>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-size:15px;font-weight:800;color:var(--gold);">🛒 My Cart</div>
+        <div style="display:flex;gap:5px;">
+          <button onclick="shareCart()" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="Share Cart">📤 Share</button>
+          <button onclick="printShoppingList()" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="Print List">🖨 Print</button>
+          <button onclick="saveCart()" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="Save List">💾 Save</button>
         </div>
       </div>
       <div id="cart-list"></div>
@@ -487,7 +491,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 
 <!-- MEDICAL -->
 <!-- Floating Action Button -->
-<button class="fab" id="fab-btn" onclick="fabAction()" title="Add new entry">＋</button>
+<button class="fab" id="fab-btn" onclick="fabAction()" title="Add new item">＋</button>
 
 <!-- BOTTOM NAV -->
 <nav class="bnav">
@@ -1027,10 +1031,10 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <div class="fg" style="margin-top:14px;">
       <label class="fl">Font Style</label>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
-        <button onclick="setFont('system')" class="font-btn" data-font="system" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--p2);background:white;color:var(--p1);font-family:-apple-system,sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa System</button>
-        <button onclick="setFont('rounded')" class="font-btn" data-font="rounded" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--text);font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Rounded</button>
-        <button onclick="setFont('serif')" class="font-btn" data-font="serif" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--text);font-family:Georgia,serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Serif</button>
-        <button onclick="setFont('mono')" class="font-btn" data-font="mono" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--text);font-family:'Courier New',monospace;font-weight:700;font-size:12px;cursor:pointer;">Aa Mono</button>
+        <button onclick="setFont('system')" class="font-btn" data-font="system" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#1a0a3a;font-family:-apple-system,sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa System</button>
+        <button onclick="setFont('rounded')" class="font-btn" data-font="rounded" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#1a0a3a;font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Rounded</button>
+        <button onclick="setFont('serif')" class="font-btn" data-font="serif" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#1a0a3a;font-family:Georgia,serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Serif</button>
+        <button onclick="setFont('mono')" class="font-btn" data-font="mono" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#1a0a3a;font-family:'Courier New',monospace;font-weight:700;font-size:12px;cursor:pointer;">Aa Mono</button>
       </div>
     </div>
     <button class="sb2" onclick="closeM('m-settings')" style="margin-top:16px;">✓ Done</button>
@@ -1048,7 +1052,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.8.0';
+const APP_VERSION='2.9.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1443,7 +1447,7 @@ function addItem(){
   const sub=document.getElementById('ni-sub').value;
   const qty=document.getElementById('ni-qty').value.trim();
   const unit=document.getElementById('ni-unit').value;
-  if(!name){alert('Enter item name');return;}
+  if(!name){toast('Enter item name');return;}
   const it=ld('gl_items',{});
   const k=broad+'||'+sub+'::'+name;
   it[k]={name,broad,sub,low:false,inCart:false,qty:qty?parseFloat(qty):null,unit:unit||''};
@@ -1471,7 +1475,7 @@ function saveEditItem(){
   const newSub=document.getElementById('ei-sub').value;
   const newQty=document.getElementById('ei-qty').value.trim();
   const newUnit=document.getElementById('ei-unit').value;
-  if(!newName){alert('Enter item name');return;}
+  if(!newName){toast('Enter item name');return;}
   const items=ld('gl_items',{});
   const oldItem=items[oldKey];if(!oldItem)return;
   delete items[oldKey];
@@ -1518,7 +1522,7 @@ function removeFromCart(k){const rk=unesc(k);const it=ld('gl_items',{});if(it[rk
 function saveCart(){
   const items=ld('gl_items',{});
   const cart=Object.values(items).filter(i=>i.inCart);
-  if(!cart.length){alert('No items in cart!');return;}
+  if(!cart.length){toast('No items in cart!');return;}
   const name=prompt('Save this list as a template?\nGive it a name (e.g. "Weekly Veggies", "Festival Shopping"):','');
   if(name===null)return; // cancelled
   const h=ld('gl_hist',[]);
@@ -1580,10 +1584,10 @@ function openAddBroad(){
 }
 function addCat(){
   const name=document.getElementById('nc-name').value.trim();
-  if(!name){alert('Enter category name');return;}
+  if(!name){toast('Enter category name');return;}
   const cats3=ld('gl_cats3',[]);
   const full=selEmoji+' '+name;
-  if(cats3.find(b=>b.broad===full)){alert('Already exists!');return;}
+  if(cats3.find(b=>b.broad===full)){toast('Already exists!');return;}
   cats3.push({broad:full,subs:[]});
   sv('gl_cats3',cats3);closeM('m-addcat');document.getElementById('nc-name').value='';renderShop();
 }
@@ -1598,7 +1602,7 @@ function openEditBroad(broad){
 function saveEditCat(){
   const oldBroad=document.getElementById('ecat-old').value;
   const newName=document.getElementById('ecat-name').value.trim();
-  if(!newName){alert('Enter category name');return;}
+  if(!newName){toast('Enter category name');return;}
   const newBroad=selCatEmoji+' '+newName;
   const cats3=ld('gl_cats3',[]);
   const idx=cats3.findIndex(b=>b.broad===oldBroad);if(idx===-1)return;
@@ -1644,7 +1648,7 @@ function saveEditSub(){
   const oldSub=document.getElementById('esub-old').value;
   const newSub=document.getElementById('esub-name').value.trim();
   const broad=_editSubBroad;
-  if(!newSub){alert('Enter sub-category name');return;}
+  if(!newSub){toast('Enter sub-category name');return;}
   const cats3=ld('gl_cats3',[]);
   const bc=cats3.find(b=>b.broad===broad);if(!bc)return;
   if(oldSub){
@@ -1661,7 +1665,7 @@ function saveEditSub(){
     sv('gl_items',newItems);
   } else {
     // Add new sub
-    if(bc.subs.includes(newSub)){alert('Sub-category already exists!');return;}
+    if(bc.subs.includes(newSub)){toast('Sub-category already exists!');return;}
     bc.subs.push(newSub);sv('gl_cats3',cats3);
   }
   closeM('m-editsub');renderShop();
@@ -1774,7 +1778,7 @@ function editBill(id){
 
 function saveBill(){
   const name=document.getElementById('b-name').value.trim();
-  if(!name){alert('Enter bill name');return;}
+  if(!name){toast('Enter bill name');return;}
   const editId=document.getElementById('b-edit-id').value;
   const b=ld('gl_bills',[]);
   if(editId){
@@ -1902,7 +1906,7 @@ function saveMilkEntry(){
   const key=document.getElementById('me-key').value;
   const mid=document.getElementById('me-mid').value;
   const qty=parseFloat(document.getElementById('me-qty').value);
-  if(isNaN(qty)||qty<0){alert('Enter valid quantity');return;}
+  if(isNaN(qty)||qty<0){toast('Enter valid quantity');return;}
   const del=ld('gl_mdel_'+mid,{});if(!del[key])del[key]={};del[key][d]=qty;
   sv('gl_mdel_'+mid,del);closeM('m-milkentry');renderMilk();
 }
@@ -1921,7 +1925,7 @@ function saveMilkPay(){
   const amt=parseFloat(document.getElementById('mp-amt').value);
   const raw=document.getElementById('mp-date').value;
   const note=document.getElementById('mp-note').value.trim();
-  if(!amt||!raw){alert('Enter amount and date');return;}
+  if(!amt||!raw){toast('Enter amount and date');return;}
   const pays=ld('gl_mpay_'+mid,[]);pays.push({amt,date:fmt(raw),raw,note});
   sv('gl_mpay_'+mid,pays);closeM('m-milkpay');renderMilk();
 }
@@ -1930,7 +1934,7 @@ function addMilkman(){
   const phone=document.getElementById('mm-phone').value.trim();
   const qty=parseFloat(document.getElementById('mm-qty').value)||2;
   const rate=parseFloat(document.getElementById('mm-rate').value)||60;
-  if(!name){alert('Enter milkman name');return;}
+  if(!name){toast('Enter milkman name');return;}
   const milkmen=ld('gl_milkmen',[]);
   milkmen.push({id:Date.now().toString(),name,phone,qty,rate});
   sv('gl_milkmen',milkmen);closeM('m-addmilkman');
@@ -2060,7 +2064,7 @@ function saveSupplierEntry(){
   const vid=document.getElementById('se-vid').value;
   const type=document.getElementById('se-type').value;
   const amt=parseFloat(document.getElementById('se-amt').value);
-  if(isNaN(amt)||amt<0){alert('Enter valid amount');return;}
+  if(isNaN(amt)||amt<0){toast('Enter valid amount');return;}
   const del=ld('gl_supdel_'+type+'_'+vid,{});if(!del[key])del[key]={};del[key][d]=amt;
   sv('gl_supdel_'+type+'_'+vid,del);closeM('m-supentry');renderSupplier(type);
 }
@@ -2081,7 +2085,7 @@ function saveSupplierPay(){
   const amt=parseFloat(document.getElementById('sp-amt').value);
   const raw=document.getElementById('sp-date').value;
   const note=document.getElementById('sp-note').value.trim();
-  if(!amt||!raw){alert('Enter amount and date');return;}
+  if(!amt||!raw){toast('Enter amount and date');return;}
   const pays=ld('gl_suppay_'+type+'_'+vid,[]);pays.push({amt,date:fmt(raw),raw,note});
   sv('gl_suppay_'+type+'_'+vid,pays);closeM('m-suppay');renderSupplier(type);
 }
@@ -2298,7 +2302,7 @@ function saveAdv(){
   const id=document.getElementById('adv-id').value;
   const amt=parseFloat(document.getElementById('adv-amt').value);
   const raw=document.getElementById('adv-date').value;
-  if(!amt||amt<=0||!raw){alert('Enter valid amount and date');return;}
+  if(!amt||amt<=0||!raw){toast('Enter valid amount and date');return;}
   const advs=ld('gl_adv_'+id,[]);advs.push({amt,date:fmt(raw),raw});
   sv('gl_adv_'+id,advs);closeM('m-adv');renderHelp();
 }
@@ -2492,12 +2496,12 @@ function addTxn(){
   const type=document.getElementById('t-type').value;
   const amt=parseFloat(document.getElementById('t-amt').value);
   const raw=document.getElementById('t-date').value;
-  if(!amt||!raw){alert('Please fill amount and date');return;}
+  if(!amt||!raw){toast('Please fill amount and date');return;}
   const ts=ld('gl_txns',[]);
   if(type==='contra'){
     const from=document.getElementById('t-confrom').value;
     const to=document.getElementById('t-conto').value;
-    if(from===to){alert('From and To cannot be same!');return;}
+    if(from===to){toast('From and To cannot be the same!');return;}
     const fromLabel=from==='bank'?'🏦 Bank/UPI':'💵 Cash';
     const toLabel=to==='bank'?'🏦 Bank/UPI':'💵 Cash';
     ts.push({id:Date.now().toString(),desc:`🔄 Transfer: ${fromLabel} → ${toLabel}`,amt,type:'contra',cat:'🔄 Transfer',raw,date:fmt(raw),contraFrom:from,contraTo:to});
@@ -2505,7 +2509,7 @@ function addTxn(){
   }
   const desc=document.getElementById('t-desc').value.trim();
   const mode=document.getElementById('t-mode').value;
-  if(!desc){alert('Please enter a description');return;}
+  if(!desc){toast('Please enter a description');return;}
   ts.push({id:Date.now().toString(),desc,amt,type,cat:document.getElementById('t-cat').value,mode,raw,date:fmt(raw)});
   sv('gl_txns',ts);closeM('m-addtxn');
   document.getElementById('t-desc').value='';document.getElementById('t-amt').value='';
@@ -2554,7 +2558,7 @@ function delTodo(id){
 function clearDone(){
   const all=ld('gl_todos',[]);
   const remaining=all.filter(t=>!t.done);
-  if(all.length===remaining.length){alert('No completed tasks to clear!');return;}
+  if(all.length===remaining.length){toast('No completed tasks to clear!');return;}
   sv('gl_todos',remaining);renderTodo();
 }
 
@@ -2581,7 +2585,7 @@ function renderNotes(){
 function addNote(){
   const title=document.getElementById('note-title').value.trim();
   const body=document.getElementById('note-body').value.trim();
-  if(!title&&!body){alert('Write something first!');return;}
+  if(!title&&!body){toast('Write something first!');return;}
   const notes=ld('gl_notes',[]);
   notes.push({title,body,ts:Date.now()});
   sv('gl_notes',notes);closeM('m-addnote');
@@ -2656,7 +2660,7 @@ function renderSOSSet(){
   toggleContactPickerButtons();
 }
 function addSOSField(){
-  const cs=ld('gl_sos',[]);if(cs.length>=3){alert('Max 3 emergency contacts');return;}
+  const cs=ld('gl_sos',[]);if(cs.length>=3){toast('Max 3 emergency contacts');return;}
   cs.push({name:'',phone:'',rel:''});sv('gl_sos',cs);renderSOSSet();
 }
 function remSOS(i){const cs=ld('gl_sos',[]);cs.splice(i,1);sv('gl_sos',cs);renderSOSSet();}
@@ -2755,7 +2759,7 @@ function saveEditTxn(){
   const desc=document.getElementById('etx-desc').value.trim();
   const amt=parseFloat(document.getElementById('etx-amt').value);
   const raw=document.getElementById('etx-date').value;
-  if(!desc||!amt||!raw){alert('Please fill all fields');return;}
+  if(!desc||!amt||!raw){toast('Please fill all fields');return;}
   const ts=ld('gl_txns',[]);const t=ts.find(x=>x.id===id);
   if(t){t.desc=desc;t.amt=amt;t.type=document.getElementById('etx-type').value;t.cat=document.getElementById('etx-cat').value;t.raw=raw;t.date=fmt(raw);}
   sv('gl_txns',ts);closeM('m-edittxn');renderCash();
@@ -3218,29 +3222,36 @@ function printShoppingList(){
   let html='<html><head><title>GrihaLaxmi Shopping List</title><style>body{font-family:sans-serif;padding:20px;max-width:600px;margin:0 auto;}h1{font-size:18px;text-align:center;border-bottom:2px solid #333;padding-bottom:8px;}h2{font-size:14px;background:#f0f0f0;padding:6px 10px;margin:12px 0 4px;border-radius:6px;}ul{margin:0;padding:0 0 0 20px;}li{padding:2px 0;font-size:13px;}.low{color:#c0392b;font-weight:700;} @media print{body{padding:10px;}}</style></head><body>';
   html+='<h1>🪔 GrihaLaxmi — Shopping List</h1>';
   html+='<p style="text-align:center;font-size:11px;color:#888;">'+new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'</p>';
+  let hasAny=false;
   cats.forEach(bcat=>{
     const broad=bcat.name;
-    let hasItems=false;
     let catHtml='<h2>'+broad+'</h2><ul>';
+    let hasItems=false;
     bcat.subs.forEach(sub=>{
-      const subItems=Object.values(items).filter(i=>i.broad===broad&&i.sub===sub);
-      if(subItems.length){
-        subItems.forEach(i=>{
-          const qty=i.qty!=null&&i.qty!==''?' ('+i.qty+(i.unit?' '+i.unit:'')+')':'';
-          const low=i.low?' <span class="low">⚠ LOW</span>':'';
-          catHtml+='<li>'+i.name+qty+low+'</li>';
-          hasItems=true;
-        });
-      }
+      Object.values(items).filter(i=>i.broad===broad&&i.sub===sub).forEach(i=>{
+        const qty=i.qty!=null&&i.qty!==''?' ('+i.qty+(i.unit?' '+i.unit:'')+')':'';
+        const low=i.low?' <span class="low">⚠ LOW</span>':'';
+        catHtml+='<li>'+i.name+qty+low+'</li>';
+        hasItems=true;
+      });
     });
     catHtml+='</ul>';
-    if(hasItems)html+=catHtml;
+    if(hasItems){html+=catHtml;hasAny=true;}
   });
+  if(!hasAny){toast('No items to print!');return;}
   html+='<p style="text-align:center;font-size:10px;color:#aaa;margin-top:20px;">Generated by GrihaLaxmi App</p></body></html>';
-  const w=window.open('','_blank');
-  w.document.write(html);
-  w.document.close();
-  w.print();
+  // Use share API on mobile, fallback to blob download
+  if(navigator.share){
+    const blob=new Blob([html],{type:'text/html'});
+    const file=new File([blob],'GrihaLaxmi_Shopping_List.html',{type:'text/html'});
+    navigator.share({title:'GrihaLaxmi Shopping List',files:[file]}).catch(()=>{});
+  } else {
+    const blob=new Blob([html],{type:'text/html'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download='GrihaLaxmi_Shopping_List.html';a.click();
+    URL.revokeObjectURL(url);
+    toast('📄 List downloaded!');
+  }
 }
 function shareShoppingList(){
   const items=ld('gl_items',{});
@@ -3553,7 +3564,20 @@ function updateDateTime(){
 updateDateTime();
 setInterval(updateDateTime,1000);
 document.getElementById('about-ver-line').textContent='v'+APP_VERSION+' • '+APP_BUILD;
+const _vb=document.getElementById('ver-badge');if(_vb)_vb.textContent='v'+APP_VERSION;
 init();applyStoredThemeFont();wireAssets();renderShop();setupNotifs();setTimeout(checkNotifs,2000);toggleContactPickerButtons();
+// Force SW update check on every load
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').then(reg=>{
+    reg.addEventListener('updatefound',()=>{
+      const nw=reg.installing;
+      nw.addEventListener('statechange',()=>{
+        if(nw.state==='activated'){location.reload();}
+      });
+    });
+    reg.update();
+  });
+}
 </script>
 </body>
 </html>
