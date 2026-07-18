@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.10.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.10.1 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -85,16 +85,10 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 .topbar h1{font-size:18px;font-weight:900;letter-spacing:0.5px;background:linear-gradient(90deg,white,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .topbar-sub{font-size:9px;opacity:.75;margin-top:1px;-webkit-text-fill-color:rgba(255,255,255,0.75);}
 .topbar-clock{font-size:22px;font-weight:900;color:var(--gold);letter-spacing:1px;text-align:center;line-height:1;}
-.flip-digit{display:inline-flex;flex-direction:column;align-items:center;position:relative;width:16px;height:22px;perspective:200px;}
-.flip-digit .fd-top,.flip-digit .fd-bot{width:100%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;font-family:'Courier New',monospace;color:var(--gold);overflow:hidden;position:absolute;left:0;right:0;background:rgba(8,16,35,0.9);border:1px solid rgba(245,200,66,0.12);border-radius:3px;}
-.flip-digit .fd-top{top:0;height:50%;align-items:flex-end;line-height:22px;}
-.flip-digit .fd-bot{bottom:0;height:50%;align-items:flex-start;line-height:0;}
-.flip-digit .fd-top::after{content:'';position:absolute;bottom:0;left:2px;right:2px;height:1px;background:rgba(0,0,0,0.5);}
-.flip-colon{font-size:14px;font-weight:900;color:var(--gold);line-height:22px;margin:0 1px;opacity:0.5;font-family:'Courier New',monospace;}
-@keyframes flipTop{0%{transform:rotateX(0)}100%{transform:rotateX(-90deg)}}
-@keyframes flipBot{0%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
-.flip-digit.flipping .fd-top{animation:flipTop 0.3s ease-in forwards;}
-.flip-digit.flipping .fd-bot{animation:flipBot 0.3s 0.15s ease-out forwards;}
+.clock-wrap{display:flex;align-items:center;gap:2px;}
+.clock-digit{background:rgba(8,16,35,0.9);border:1px solid rgba(245,200,66,0.15);border-radius:3px;width:18px;height:24px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;font-family:'Courier New',monospace;color:var(--gold);position:relative;}
+.clock-digit::after{content:'';position:absolute;left:2px;right:2px;top:50%;height:1px;background:rgba(0,0,0,0.4);}
+.clock-colon{font-size:14px;font-weight:900;color:var(--gold);opacity:0.4;font-family:'Courier New',monospace;margin:0 1px;}
 .topbar-date-small{font-size:8px;opacity:.7;text-align:center;margin-top:1px;}
 
 /* ===== BOTTOM NAV ===== */
@@ -268,6 +262,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .low-btn{background:transparent;border:1.5px solid var(--p3);color:var(--p3);border-radius:16px;padding:3px 8px;font-size:10px;font-family:inherit;font-weight:700;cursor:pointer;white-space:nowrap;}
 .low-btn.active{background:var(--gold);border-color:var(--gold);color:#0a1a38;}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -294,13 +289,13 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
   <div id="shop-sticky" style="position:sticky;top:40px;z-index:90;background:var(--bg);">
     <!-- SUB-TABS -->
     <div style="display:flex;background:var(--card);border-radius:12px 12px 0 0;border:1px solid var(--border);border-bottom:none;margin-bottom:0;overflow:hidden;">
-      <button class="nb-stab active" id="stab-items" onclick="shopView('items',this)">
+      <button class="nb-stab active" id="stab-items" onclick="shopView('items',this)" title="Browse all items by category">
         <span class="nb-stab-main">🗂️ ITEMS</span>
       </button>
-      <button class="nb-stab" id="stab-cart" onclick="shopView('cart',this)">
+      <button class="nb-stab" id="stab-cart" onclick="shopView('cart',this)" title="View items added to cart">
         <span class="nb-stab-main">🛒 CART</span>
       </button>
-      <button class="nb-stab" id="stab-history" onclick="shopView('history',this)">
+      <button class="nb-stab" id="stab-history" onclick="shopView('history',this)" title="View saved shopping lists">
         <span class="nb-stab-main">🕐 HISTORY</span>
       </button>
     </div>
@@ -313,7 +308,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
             style="width:100%;height:100%;padding:0 10px 0 30px;background:transparent;border:none;outline:none;font-size:11px;font-family:inherit;color:var(--text);font-weight:600;box-sizing:border-box;"/>
         </div>
         <button onclick="shareShoppingList()" title="Share List" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📤 Share</button>
-        <button onclick="printShoppingList()" title="Print/Download List" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">🖨 Print</button>
+        <button onclick="printShoppingList()" title="Save PDF & share via WhatsApp" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📄 PDF</button>
         <button onclick="openAddBroad()" title="Add Category" style="border:1px solid rgba(245,200,66,0.2);color:var(--gold);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;margin-left:auto;">+ Category</button>
       </div>
     </div>
@@ -333,7 +328,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
         <div style="font-size:15px;font-weight:800;color:var(--gold);">🛒 My Cart</div>
         <div style="display:flex;gap:5px;">
           <button onclick="shareCart()" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="Share Cart">📤 Share</button>
-          <button onclick="printShoppingList()" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="Print List">🖨 Print</button>
+          <button onclick="printShoppingList()" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="Save PDF & share via WhatsApp">📄 PDF</button>
           <button onclick="saveCart()" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="Save List">💾 Save</button>
         </div>
       </div>
@@ -1053,7 +1048,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.10.0';
+const APP_VERSION='2.10.1';
 const APP_BUILD='20 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -3100,7 +3095,9 @@ function applyUIAssets(){
   // Search bar background
   if(ui.search_bar){
     const srchWrap=document.getElementById('srch')?.parentElement;
-    if(srchWrap){srchWrap.style.backgroundImage=`url('${ui.search_bar}')`;srchWrap.style.backgroundSize='cover';}
+    if(srchWrap){srchWrap.style.backgroundImage=`url('${ui.search_bar}')`;srchWrap.style.backgroundSize='100% 100%';srchWrap.style.backgroundRepeat='no-repeat';srchWrap.style.border='none';}
+    const srchInput=document.getElementById('srch');
+    if(srchInput)srchInput.placeholder='';
   }
   // Action buttons — replace text buttons with image buttons
   ['share','category','item','sos'].forEach(name=>{
@@ -3191,38 +3188,90 @@ function toast(msg){
 function printShoppingList(){
   const cats=ld('gl_cats',DEF_CATS);
   const items=ld('gl_items',{});
-  let html='<html><head><title>GrihaLaxmi Shopping List</title><style>body{font-family:sans-serif;padding:20px;max-width:600px;margin:0 auto;}h1{font-size:18px;text-align:center;border-bottom:2px solid #333;padding-bottom:8px;}h2{font-size:14px;background:#f0f0f0;padding:6px 10px;margin:12px 0 4px;border-radius:6px;}ul{margin:0;padding:0 0 0 20px;}li{padding:2px 0;font-size:13px;}.low{color:#c0392b;font-weight:700;} @media print{body{padding:10px;}}</style></head><body>';
-  html+='<h1>🪔 GrihaLaxmi — Shopping List</h1>';
-  html+='<p style="text-align:center;font-size:11px;color:#888;">'+new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'</p>';
-  let hasAny=false;
+  const dateStr=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  // Build list data
+  const sections=[];
   cats.forEach(bcat=>{
     const broad=bcat.name;
-    let catHtml='<h2>'+broad+'</h2><ul>';
-    let hasItems=false;
+    const catItems=[];
     bcat.subs.forEach(sub=>{
       Object.values(items).filter(i=>i.broad===broad&&i.sub===sub).forEach(i=>{
-        const qty=i.qty!=null&&i.qty!==''?' ('+i.qty+(i.unit?' '+i.unit:'')+')':'';
-        const low=i.low?' <span class="low">⚠ LOW</span>':'';
-        catHtml+='<li>'+i.name+qty+low+'</li>';
-        hasItems=true;
+        const qty=i.qty!=null&&i.qty!==''?` (${i.qty}${i.unit?' '+i.unit:''})`:''  ;
+        const low=i.low?' ⚠ LOW':'';
+        catItems.push(i.name+qty+low);
       });
     });
-    catHtml+='</ul>';
-    if(hasItems){html+=catHtml;hasAny=true;}
+    if(catItems.length) sections.push({name:broad,items:catItems});
   });
-  if(!hasAny){toast('No items to print!');return;}
-  html+='<p style="text-align:center;font-size:10px;color:#aaa;margin-top:20px;">Generated by GrihaLaxmi App</p></body></html>';
-  // Use share API on mobile, fallback to blob download
-  if(navigator.share){
-    const blob=new Blob([html],{type:'text/html'});
-    const file=new File([blob],'GrihaLaxmi_Shopping_List.html',{type:'text/html'});
-    navigator.share({title:'GrihaLaxmi Shopping List',files:[file]}).catch(()=>{});
-  } else {
-    const blob=new Blob([html],{type:'text/html'});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');a.href=url;a.download='GrihaLaxmi_Shopping_List.html';a.click();
-    URL.revokeObjectURL(url);
-    toast('📄 List downloaded!');
+
+  if(!sections.length){toast('No items to share!');return;}
+
+  // Generate PDF using jsPDF
+  try{
+    const{jsPDF}=window.jspdf;
+    const doc=new jsPDF({unit:'mm',format:'a4'});
+    let y=20;
+
+    // Title
+    doc.setFontSize(18);
+    doc.setFont('helvetica','bold');
+    doc.text('GrihaLaxmi — Shopping List',105,y,{align:'center'});
+    y+=8;
+    doc.setFontSize(10);
+    doc.setFont('helvetica','normal');
+    doc.text(dateStr,105,y,{align:'center'});
+    y+=12;
+
+    // Categories and items
+    sections.forEach(sec=>{
+      if(y>270){doc.addPage();y=20;}
+      doc.setFontSize(13);
+      doc.setFont('helvetica','bold');
+      doc.setFillColor(230,240,255);
+      doc.rect(15,y-5,180,8,'F');
+      doc.text(sec.name,18,y);
+      y+=8;
+      doc.setFontSize(11);
+      doc.setFont('helvetica','normal');
+      sec.items.forEach(item=>{
+        if(y>275){doc.addPage();y=20;}
+        doc.text('•  '+item,22,y);
+        y+=6;
+      });
+      y+=4;
+    });
+
+    // Footer
+    doc.setFontSize(8);
+    doc.setTextColor(150);
+    doc.text('Generated by GrihaLaxmi App',105,290,{align:'center'});
+
+    // Save PDF as blob and share
+    const pdfBlob=doc.output('blob');
+    const pdfFile=new File([pdfBlob],'GrihaLaxmi_Shopping_List.pdf',{type:'application/pdf'});
+
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[pdfFile]})){
+      navigator.share({title:'GrihaLaxmi Shopping List',files:[pdfFile]}).catch(()=>{});
+    } else {
+      // Fallback: download PDF
+      doc.save('GrihaLaxmi_Shopping_List.pdf');
+      toast('📄 PDF saved!');
+    }
+  }catch(e){
+    // Fallback if jsPDF not loaded: share as text via WhatsApp
+    let text='🪔 *GrihaLaxmi Shopping List*\n'+dateStr+'\n\n';
+    sections.forEach(sec=>{
+      text+='*'+sec.name+'*\n';
+      sec.items.forEach(item=>{text+='  • '+item+'\n';});
+      text+='\n';
+    });
+    if(navigator.share){
+      navigator.share({title:'Shopping List',text:text}).catch(()=>{});
+    } else {
+      // Direct WhatsApp link
+      window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
+    }
   }
 }
 function shareShoppingList(){
@@ -3497,40 +3546,13 @@ function updateDateTime(){
   const clockEl=document.getElementById('tclock');
   if(dateEl)dateEl.textContent=days[n.getDay()]+', '+n.getDate()+' '+MN[n.getMonth()]+' '+n.getFullYear();
   if(clockEl){
-    const digits=hr+mn+sec;
-    if(!clockEl._prev){
-      // First render — build structure
-      clockEl.innerHTML='';
-      for(let i=0;i<6;i++){
-        if(i===2||i===4){
-          const colon=document.createElement('span');
-          colon.className='flip-colon';
-          colon.textContent=':';
-          clockEl.appendChild(colon);
-        }
-        const d=document.createElement('span');
-        d.className='flip-digit';
-        d.dataset.idx=i;
-        d.innerHTML=`<span class="fd-top">${digits[i]}</span><span class="fd-bot">${digits[i]}</span>`;
-        clockEl.appendChild(d);
-      }
-      clockEl._prev=digits;
-    } else {
-      // Update only changed digits with flip
-      const prev=clockEl._prev;
-      const allDigits=clockEl.querySelectorAll('.flip-digit');
-      allDigits.forEach((el,idx)=>{
-        if(digits[idx]!==prev[idx]){
-          el.classList.add('flipping');
-          setTimeout(()=>{
-            el.querySelector('.fd-top').textContent=digits[idx];
-            el.querySelector('.fd-bot').textContent=digits[idx];
-            el.classList.remove('flipping');
-          },300);
-        }
-      });
-      clockEl._prev=digits;
-    }
+    clockEl.className='clock-wrap';
+    clockEl.innerHTML=
+      `<span class="clock-digit">${hr[0]}</span><span class="clock-digit">${hr[1]}</span>`+
+      `<span class="clock-colon">:</span>`+
+      `<span class="clock-digit">${mn[0]}</span><span class="clock-digit">${mn[1]}</span>`+
+      `<span class="clock-colon">:</span>`+
+      `<span class="clock-digit">${sec[0]}</span><span class="clock-digit">${sec[1]}</span>`;
   }
 }
 updateDateTime();
