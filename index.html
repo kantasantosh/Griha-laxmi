@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.6.1 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.7.2 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -62,6 +62,7 @@ body.theme-warm{
   --cat-a:#fff3e8;--cat-b:#ffeedd;
   --input-bg:white;--input-border:#f0c090;--input-text:#2a1000;
 }
+body.font-system{--font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
 body.font-rounded{--font-body:'Nunito',sans-serif;}
 body.font-serif{--font-body:Georgia,'Times New Roman',serif;}
 body.font-mono{--font-body:'Courier New',Courier,monospace;}
@@ -74,16 +75,26 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 
 /* ===== TOPBAR ===== */
 .topbar{
-  background:linear-gradient(135deg,var(--p1) 0%,var(--p2) 100%);
+  background:linear-gradient(135deg,#1a0e38 0%,#221550 100%);
   color:white;padding:10px 14px 9px;position:sticky;top:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
-  box-shadow:0 3px 16px rgba(108,63,197,0.4);
+  box-shadow:0 3px 16px rgba(26,14,56,0.6);
   border-bottom:1px solid rgba(245,200,66,0.2);
 }
 .topbar-brand{display:flex;flex-direction:column;}
 .topbar h1{font-size:18px;font-weight:900;letter-spacing:0.5px;background:linear-gradient(90deg,white,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .topbar-sub{font-size:9px;opacity:.75;margin-top:1px;-webkit-text-fill-color:rgba(255,255,255,0.75);}
 .topbar-clock{font-size:22px;font-weight:900;color:var(--gold);letter-spacing:1px;text-align:center;line-height:1;}
+.flip-digit{display:inline-flex;flex-direction:column;align-items:center;position:relative;width:22px;height:30px;perspective:200px;}
+.flip-digit .fd-top,.flip-digit .fd-bot{width:100%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;font-family:'Courier New',monospace;color:var(--gold);overflow:hidden;position:absolute;left:0;right:0;background:linear-gradient(180deg,rgba(26,14,56,0.95),rgba(34,21,80,0.95));border:1px solid rgba(245,200,66,0.2);}
+.flip-digit .fd-top{top:0;height:50%;border-radius:4px 4px 0 0;border-bottom:1px solid rgba(245,200,66,0.35);align-items:flex-end;padding-bottom:0;line-height:30px;}
+.flip-digit .fd-bot{bottom:0;height:50%;border-radius:0 0 4px 4px;align-items:flex-start;padding-top:0;line-height:0;}
+.flip-digit .fd-top::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:rgba(0,0,0,0.4);}
+.flip-colon{font-size:20px;font-weight:900;color:var(--gold);line-height:30px;margin:0 1px;opacity:0.8;font-family:'Courier New',monospace;}
+@keyframes flipTop{0%{transform:rotateX(0)}100%{transform:rotateX(-90deg)}}
+@keyframes flipBot{0%{transform:rotateX(90deg)}100%{transform:rotateX(0)}}
+.flip-digit.flipping .fd-top{animation:flipTop 0.3s ease-in forwards;}
+.flip-digit.flipping .fd-bot{animation:flipBot 0.3s 0.15s ease-out forwards;}
 .topbar-date-small{font-size:8px;opacity:.7;text-align:center;margin-top:1px;}
 
 /* ===== BOTTOM NAV ===== */
@@ -92,7 +103,6 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 .nb.active{color:var(--gold);}
 .nb.active::before{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:linear-gradient(90deg,var(--gold),var(--p3));border-radius:0 0 2px 2px;}
 .ni{font-size:20px;line-height:1;}
-.ni img{mix-blend-mode:screen;}
 
 /* ===== TABS ===== */
 .tab{display:none;padding:12px;}
@@ -232,7 +242,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .nb-pill-btn.blue:active{background:rgba(167,139,250,0.15);}
 
 /* ===== CATEGORY ROW CARDS (Nano Banana style) ===== */
-.cat-card{border-radius:14px;margin-bottom:8px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;height:64px;border:1px solid rgba(255,255,255,0.08);background-size:cover !important;background-position:center !important;}
+.cat-card{border-radius:14px;margin-bottom:8px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;height:64px;border:none;background-size:cover !important;background-position:center !important;}
 .cat-card-text{flex:1;padding:12px 14px;z-index:2;position:relative;}
 .cat-card-title{font-size:14px;font-weight:800;color:white;line-height:1.2;}
 .cat-card-count{display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.2);border-radius:20px;padding:1px 9px;font-size:11px;font-weight:700;color:white;margin-left:7px;}
@@ -265,11 +275,12 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <h1>🪔 GrihaLaxmi</h1>
     <div class="topbar-sub" id="tdate"></div>
   </div>
-  <div class="topbar-clock" id="tclock" style="font-size:22px;font-weight:900;color:var(--gold);letter-spacing:1px;">--:--</div>
+  <div id="tclock" style="display:flex;align-items:center;gap:2px;"></div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
     <div style="display:flex;gap:5px;align-items:center;">
       <button onclick="openSOS()" style="background:linear-gradient(135deg,#8b0000,#e74c3c);border:none;color:white;border-radius:16px;padding:5px 10px;font-size:11px;font-weight:800;cursor:pointer;animation:sosPulse 2.5s infinite;">🆘 SOS</button>
-      <button onclick="openM('m-about')" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;border-radius:16px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;">ℹ️ About</button>
+      <button onclick="forceSyncNow()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;border-radius:16px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;">☁️ Sync</button>
+      <button onclick="openM('m-about')" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;border-radius:16px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;">⚙️ About</button>
     </div>
     <span id="ver-badge" style="font-size:9px;color:rgba(245,200,66,0.8);font-weight:700;"></span>
   </div>
@@ -301,23 +312,14 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <!-- Search row inside sticky -->
     <div style="background:var(--card);border-left:1px solid var(--border);border-right:1px solid var(--border);border-top:2px solid var(--p3);padding:10px 12px 8px;" id="shop-search-sticky">
       <div style="display:flex;gap:7px;align-items:center;">
-        <div style="flex:1;position:relative;overflow:hidden;border-radius:22px;border:1.5px solid var(--border);background:var(--bg);">
+        <div style="flex:1;position:relative;overflow:hidden;border-radius:22px;border:1.5px solid var(--gold);background:var(--bg);">
           <span style="position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;z-index:2;">🔍</span>
           <input id="srch" placeholder="Search items..." oninput="renderShop()"
-            style="width:100%;padding:9px 80px 9px 36px;background:transparent;border:none;outline:none;font-size:13px;font-family:inherit;color:var(--text);font-weight:600;position:relative;z-index:2;"/>
-          <div style="position:absolute;right:0;top:0;bottom:0;width:75px;background:linear-gradient(90deg,transparent,var(--bg2));z-index:1;pointer-events:none;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;">
-            <svg width="55" height="28" viewBox="0 0 55 28" fill="none" opacity="0.4">
-              <path d="M14 14L27.5 2L41 14L27.5 26Z" stroke="#a78bfa" stroke-width="1.2" fill="none"/>
-              <path d="M20 14L27.5 7L35 14L27.5 21Z" stroke="#a78bfa" stroke-width="1" fill="none"/>
-              <circle cx="27.5" cy="14" r="3" fill="#a78bfa" opacity="0.6"/>
-              <path d="M5 14L9 10L13 14L9 18Z" stroke="#6c3fc5" stroke-width="1" fill="none"/>
-              <path d="M42 14L46 10L50 14L46 18Z" stroke="#6c3fc5" stroke-width="1" fill="none"/>
-            </svg>
-          </div>
+            style="width:100%;padding:9px 14px 9px 36px;background:transparent;border:none;outline:none;font-size:13px;font-family:inherit;color:var(--text);font-weight:600;position:relative;z-index:2;"/>
         </div>
-        <button onclick="shareShoppingList()" class="nb-pill-btn teal" data-asset="share">📤 Share</button>
-        <button onclick="openAddBroad()" class="nb-pill-btn gold" data-asset="category">+ Category</button>
-        <button onclick="openM('m-additem')" class="nb-pill-btn blue" data-asset="item">+ Item</button>
+        <button onclick="shareShoppingList()" class="nb-pill-btn gold" data-asset="share" style="border-color:var(--gold);color:var(--gold);">📤 Share</button>
+        <button onclick="openAddBroad()" class="nb-pill-btn gold" data-asset="category" style="border-color:var(--gold);color:var(--gold);">+ Category</button>
+        <button onclick="printShoppingList()" class="nb-pill-btn gold" data-asset="print" style="border-color:var(--gold);color:var(--gold);">🖨 Print</button>
       </div>
     </div>
   </div><!-- end shop-sticky -->
@@ -951,20 +953,10 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
   <div class="md">
     <button class="mc2" onclick="closeM('m-about')">✕</button>
     <div style="text-align:center;padding:10px 0 6px;">
-      <div style="font-size:60px;margin-bottom:10px;">🪔</div>
-      <div style="font-size:24px;font-weight:800;color:var(--p1);">GrihaLaxmi</div>
-      <div style="font-size:13px;color:var(--tm);margin-top:4px;">Your Complete Home Manager</div>
-      <div style="margin:16px 0 12px;padding:14px;background:var(--bg);border-radius:var(--rsm);text-align:left;">
-        <div style="font-size:13px;color:var(--text);line-height:2.1;">
-          🛒 Smart Shopping List<br>
-          💡 Bills &amp; Reminders<br>
-          🥛 Milkman Account<br>
-          🧹 House Help &amp; Salary<br>
-          🔧 Services &amp; SOS<br>
-          💰 Cash Book<br>
-          ✅ To Do List
-        </div>
-      </div>
+      <div style="font-size:42px;margin-bottom:6px;">🪔</div>
+      <div style="font-size:22px;font-weight:800;color:var(--gold);">GrihaLaxmi</div>
+      <div style="font-size:12px;color:var(--tm);margin-top:3px;">Your Complete Home Manager</div>
+    </div>
       <!-- Credits & Tech Stack -->
       <div style="padding:16px;background:#1a1a1a;border-radius:var(--rsm);color:white;margin-bottom:14px;">
         <div style="font-size:11px;opacity:0.6;margin-bottom:10px;letter-spacing:0.5px;">BUILT WITH ❤️ USING</div>
@@ -989,8 +981,13 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 8 8 8 12s1.8 7 4 10c2.2-3 4-6 4-10s-4-10-4-10z" fill="#4285F4"/><path d="M12 2C12 2 16 8 16 12s-1.8 7-4 10c-2.2-3-4-6-4-10s4-10 4-10z" fill="#34A853" opacity="0.7"/></svg>
             <div><div style="font-size:13px;font-weight:700;">Gemini</div><div style="font-size:8px;opacity:0.5;letter-spacing:1px;">ASSET DESIGN</div></div>
           </div>
+          <!-- Canva -->
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border-radius:10px;padding:10px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#7D2AE8"/><circle cx="12" cy="12" r="5" fill="#00C4CC"/><circle cx="12" cy="12" r="2" fill="white"/></svg>
+            <div><div style="font-size:13px;font-weight:700;">Canva</div><div style="font-size:8px;opacity:0.5;letter-spacing:1px;">ASSET DESIGN</div></div>
+          </div>
           <!-- Firebase -->
-          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border-radius:10px;padding:10px;grid-column:span 2;justify-content:center;">
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border-radius:10px;padding:10px;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4.53 18.64L6.56 2.66c.05-.38.56-.48.75-.15l2.13 3.8-4.91 12.33z" fill="#FFA000"/><path d="M12.07 10.15l1.87-3.52L11.81 2.4c-.17-.32-.63-.3-.78.03L4.53 18.64l7.54-8.49z" fill="#F57C00"/><path d="M17.47 6.57c.24-.24.66-.06.66.28l1.33 11.79-5.7 3.43c-.28.17-.63.17-.91 0L7.3 18.83l10.17-12.26z" fill="#FFCA28"/><path d="M12.07 10.15L7.3 18.83l5.55-15.34c.15-.33.61-.35.78-.03l-1.56 6.69z" fill="#FFA000"/></svg>
             <div><div style="font-size:13px;font-weight:700;">Firebase</div><div style="font-size:8px;opacity:0.5;letter-spacing:1px;">SYNC · COMING SOON</div></div>
           </div>
@@ -1000,31 +997,23 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       </div>
       <!-- Appearance Settings -->
       <button onclick="closeM('m-about');openM('m-settings');" style="width:100%;background:linear-gradient(135deg,var(--purple),#9b59b6);color:white;border:none;border-radius:var(--rsm);padding:12px;font-size:14px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:10px;">⚙️ Theme & Font Settings</button>
-      <!-- Sync (placeholder for Session 3b) -->
-      <div style="background:var(--pl);border-radius:var(--rsm);padding:14px;border:1.5px solid var(--p2);margin-bottom:10px;text-align:left;">
-        <div style="font-size:13px;font-weight:800;color:var(--p1);margin-bottom:4px;">☁️ Sync Across Devices</div>
-        <div style="font-size:11px;color:var(--tm);margin-bottom:11px;" id="sync-status-text">Not set up yet — coming soon. For now, use Export/Import to move data between devices.</div>
-        <button onclick="forceSyncNow()" style="width:100%;background:var(--p2);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">🔄 Force Sync Now</button>
-      </div>
       <!-- Data Backup -->
-      <div style="background:var(--bg);border-radius:var(--rsm);padding:14px;border:1.5px solid var(--border);margin-bottom:10px;text-align:left;">
-        <div style="font-size:13px;font-weight:800;color:var(--p1);margin-bottom:4px;">💾 Data Backup</div>
-        <div style="font-size:11px;color:var(--tm);margin-bottom:11px;">Export saves all your data as a file. Import restores it on any device.</div>
+      <div style="background:var(--card);border-radius:var(--rsm);padding:14px;border:1px solid var(--border);margin-bottom:10px;text-align:left;">
+        <div style="font-size:13px;font-weight:800;color:var(--gold);margin-bottom:8px;">💾 Data Backup</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
           <button onclick="exportData()" style="background:linear-gradient(135deg,var(--teal),#007a6e);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">⬇️ Export</button>
           <label style="background:linear-gradient(135deg,var(--purple),#9b59b6);color:white;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;text-align:center;display:block;">⬆️ Import<input type="file" accept=".json" onchange="importData(this)" style="display:none;"/></label>
         </div>
       </div>
       <!-- Feedback / Bug Report -->
-      <div style="background:var(--al);border-radius:var(--rsm);padding:14px;border:1.5px solid var(--amber);margin-bottom:10px;text-align:left;">
-        <div style="font-size:13px;font-weight:800;color:#a06800;margin-bottom:4px;">💬 Feedback / Bug Report</div>
-        <div style="font-size:11px;color:var(--tm);margin-bottom:11px;">Found a bug or have a suggestion? Send it across.</div>
+      <div style="background:var(--card);border-radius:var(--rsm);padding:14px;border:1px solid var(--border);margin-bottom:10px;text-align:left;">
+        <div style="font-size:13px;font-weight:800;color:var(--gold);margin-bottom:8px;">💬 Feedback / Bug Report</div>
         <button onclick="openM('m-feedback')" style="width:100%;background:var(--amber);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">💬 Send Feedback</button>
       </div>
       <!-- Reset Shopping -->
-      <div style="background:var(--rl);border-radius:var(--rsm);padding:14px;border:1.5px solid var(--red);margin-bottom:10px;text-align:left;">
+      <div style="background:var(--card);border-radius:var(--rsm);padding:14px;border:1px solid var(--border);margin-bottom:10px;text-align:left;">
         <div style="font-size:13px;font-weight:800;color:var(--red);margin-bottom:4px;">🔄 Fix Shopping List</div>
-        <div style="font-size:11px;color:var(--tm);margin-bottom:11px;">If shopping list or cart is not working, tap this to reset shopping data to defaults. Your other data (bills, milk, staff etc.) is safe.</div>
+        <div style="font-size:11px;color:var(--tm);margin-bottom:8px;">Resets shopping data to defaults. Other data is safe.</div>
         <button onclick="resetShoppingData()" style="width:100%;background:var(--red);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">🔄 Reset Shopping Data</button>
       </div>
       <div style="font-size:11px;color:#c0c8d8;margin-top:6px;" id="about-ver-line"></div>
@@ -1047,7 +1036,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <div class="fg" style="margin-top:14px;">
       <label class="fl">Font Style</label>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
-        <button onclick="setFont('')" class="font-btn" data-font="" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--p2);background:white;color:var(--p1);font-family:-apple-system,sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa System</button>
+        <button onclick="setFont('system')" class="font-btn" data-font="system" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--p2);background:white;color:var(--p1);font-family:-apple-system,sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa System</button>
         <button onclick="setFont('rounded')" class="font-btn" data-font="rounded" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--text);font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Rounded</button>
         <button onclick="setFont('serif')" class="font-btn" data-font="serif" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--text);font-family:Georgia,serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Serif</button>
         <button onclick="setFont('mono')" class="font-btn" data-font="mono" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:var(--text);font-family:'Courier New',monospace;font-weight:700;font-size:12px;cursor:pointer;">Aa Mono</button>
@@ -1068,7 +1057,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.6.1';
+const APP_VERSION='2.7.2';
 const APP_BUILD='18 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -3103,11 +3092,7 @@ function applyUIAssets(){
     const tb=document.querySelector('.topbar');
     if(tb)tb.style.backgroundImage=`url('${ui.topbar_bg}')`;
   }
-  // Header logo — replace emoji+text with image if provided
-  if(ui.logo_header){
-    const h1=document.querySelector('.topbar h1');
-    if(h1)h1.innerHTML=`<img src="${ui.logo_header}" style="height:36px;vertical-align:middle;mix-blend-mode:screen;" alt="GrihaLaxmi"/>`;
-  }
+  // Header logo — disabled until transparent PNG available
   // Sub-tab bar background
   if(ui.tabs_bg){
     const tabBar=document.querySelector('.nb-stab')?.parentElement;
@@ -3140,16 +3125,50 @@ function applyUIAssets(){
       btn.style.border='none';
     });
   }
-  // Nav icons
+  // Nav icons — remove white bg via canvas then apply
   ['cart','organiser','cashbook','household'].forEach((name,i)=>{
     if(ui['nav_'+name]){
       const navBtns=document.querySelectorAll('.nb');
       if(navBtns[i]){
         const ni=navBtns[i].querySelector('.ni');
-        if(ni)ni.innerHTML=`<img src="${ui['nav_'+name]}" style="width:24px;height:24px;object-fit:contain;" alt="${name}"/>`;
+        if(ni) stripWhiteBG(ui['nav_'+name],24,24,url=>{ni.innerHTML=`<img src="${url}" style="width:24px;height:24px;object-fit:contain;" alt="${name}"/>`;});
       }
     }
   });
+  // Logo header — remove white bg via canvas then apply
+  if(ui.logo_header){
+    const h1=document.querySelector('.topbar h1');
+    if(h1) stripWhiteBG(ui.logo_header,280,48,url=>{h1.innerHTML=`<img src="${url}" style="height:36px;vertical-align:middle;" alt="GrihaLaxmi"/>`;});
+  }
+}
+
+// Remove white/light background from PNG using Canvas API
+function stripWhiteBG(src,w,h,cb){
+  const img=new Image();
+  img.crossOrigin='anonymous';
+  img.onload=function(){
+    const c=document.createElement('canvas');
+    c.width=img.naturalWidth||w;
+    c.height=img.naturalHeight||h;
+    const ctx=c.getContext('2d');
+    ctx.drawImage(img,0,0,c.width,c.height);
+    const d=ctx.getImageData(0,0,c.width,c.height);
+    const px=d.data;
+    for(let i=0;i<px.length;i+=4){
+      const r=px[i],g=px[i+1],b=px[i+2];
+      // If pixel is near-white/light grey, make transparent
+      if(r>180&&g>180&&b>180){
+        const brightness=(r+g+b)/3;
+        // Gradual: very white = fully transparent, greyish = semi-transparent
+        const alpha=Math.max(0,Math.min(255,(220-brightness)*4));
+        px[i+3]=Math.min(px[i+3],alpha);
+      }
+    }
+    ctx.putImageData(d,0,0);
+    cb(c.toDataURL('image/png'));
+  };
+  img.onerror=function(){};
+  img.src=src;
 }
 // ===== ASSET WIRING END =====
 
@@ -3165,7 +3184,7 @@ function setTheme(theme){
   });
 }
 function setFont(font){
-  document.body.classList.remove('font-rounded','font-serif','font-mono');
+  document.body.classList.remove('font-system','font-rounded','font-serif','font-mono');
   if(font)document.body.classList.add('font-'+font);
   localStorage.setItem('gl_font',font);
   document.querySelectorAll('.font-btn').forEach(b=>{
@@ -3198,6 +3217,36 @@ function toast(msg){
   clearTimeout(t._to);t._to=setTimeout(()=>{t.style.opacity='0';},2500);
 }
 
+function printShoppingList(){
+  const cats=ld('gl_cats',DEF_CATS);
+  const items=ld('gl_items',{});
+  let html='<html><head><title>GrihaLaxmi Shopping List</title><style>body{font-family:sans-serif;padding:20px;max-width:600px;margin:0 auto;}h1{font-size:18px;text-align:center;border-bottom:2px solid #333;padding-bottom:8px;}h2{font-size:14px;background:#f0f0f0;padding:6px 10px;margin:12px 0 4px;border-radius:6px;}ul{margin:0;padding:0 0 0 20px;}li{padding:2px 0;font-size:13px;}.low{color:#c0392b;font-weight:700;} @media print{body{padding:10px;}}</style></head><body>';
+  html+='<h1>🪔 GrihaLaxmi — Shopping List</h1>';
+  html+='<p style="text-align:center;font-size:11px;color:#888;">'+new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'</p>';
+  cats.forEach(bcat=>{
+    const broad=bcat.name;
+    let hasItems=false;
+    let catHtml='<h2>'+broad+'</h2><ul>';
+    bcat.subs.forEach(sub=>{
+      const subItems=Object.values(items).filter(i=>i.broad===broad&&i.sub===sub);
+      if(subItems.length){
+        subItems.forEach(i=>{
+          const qty=i.qty!=null&&i.qty!==''?' ('+i.qty+(i.unit?' '+i.unit:'')+')':'';
+          const low=i.low?' <span class="low">⚠ LOW</span>':'';
+          catHtml+='<li>'+i.name+qty+low+'</li>';
+          hasItems=true;
+        });
+      }
+    });
+    catHtml+='</ul>';
+    if(hasItems)html+=catHtml;
+  });
+  html+='<p style="text-align:center;font-size:10px;color:#aaa;margin-top:20px;">Generated by GrihaLaxmi App</p></body></html>';
+  const w=window.open('','_blank');
+  w.document.write(html);
+  w.document.close();
+  w.print();
+}
 function shareShoppingList(){
   const items=ld('gl_items',{});
   const cats3=ld('gl_cats3',[]);
@@ -3465,13 +3514,49 @@ function updateDateTime(){
   const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const hr=n.getHours().toString().padStart(2,'0');
   const mn=n.getMinutes().toString().padStart(2,'0');
+  const sec=n.getSeconds().toString().padStart(2,'0');
   const dateEl=document.getElementById('tdate');
   const clockEl=document.getElementById('tclock');
   if(dateEl)dateEl.textContent=days[n.getDay()]+', '+n.getDate()+' '+MN[n.getMonth()]+' '+n.getFullYear();
-  if(clockEl)clockEl.textContent=hr+':'+mn;
+  if(clockEl){
+    const digits=hr+mn+sec;
+    if(!clockEl._prev){
+      // First render — build structure
+      clockEl.innerHTML='';
+      for(let i=0;i<6;i++){
+        if(i===2||i===4){
+          const colon=document.createElement('span');
+          colon.className='flip-colon';
+          colon.textContent=':';
+          clockEl.appendChild(colon);
+        }
+        const d=document.createElement('span');
+        d.className='flip-digit';
+        d.dataset.idx=i;
+        d.innerHTML=`<span class="fd-top">${digits[i]}</span><span class="fd-bot">${digits[i]}</span>`;
+        clockEl.appendChild(d);
+      }
+      clockEl._prev=digits;
+    } else {
+      // Update only changed digits with flip
+      const prev=clockEl._prev;
+      const allDigits=clockEl.querySelectorAll('.flip-digit');
+      allDigits.forEach((el,idx)=>{
+        if(digits[idx]!==prev[idx]){
+          el.classList.add('flipping');
+          setTimeout(()=>{
+            el.querySelector('.fd-top').textContent=digits[idx];
+            el.querySelector('.fd-bot').textContent=digits[idx];
+            el.classList.remove('flipping');
+          },300);
+        }
+      });
+      clockEl._prev=digits;
+    }
+  }
 }
 updateDateTime();
-setInterval(updateDateTime,60000);
+setInterval(updateDateTime,1000);
 document.getElementById('ver-badge').textContent='v'+APP_VERSION;
 document.getElementById('about-ver-line').textContent='Version '+APP_VERSION+' • '+APP_BUILD;
 init();applyStoredThemeFont();wireAssets();renderShop();setupNotifs();setTimeout(checkNotifs,2000);toggleContactPickerButtons();
