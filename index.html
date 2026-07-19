@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.13.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.14.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -75,7 +75,7 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 
 /* ===== TOPBAR ===== */
 .topbar{
-  background:linear-gradient(135deg,#0a1226 0%,#122240 100%);
+  background:linear-gradient(135deg,#0a1226 0%,#122240 100%);background-color:#0a1226;
   color:white;padding:8px 12px;position:sticky;top:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
   box-shadow:0 3px 16px rgba(10,18,38,0.6);
@@ -83,7 +83,7 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 }
 .topbar-brand{display:flex;flex-direction:column;}
 .topbar h1{font-size:18px;font-weight:900;letter-spacing:0.5px;background:linear-gradient(90deg,white,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.topbar-sub{font-size:9px;opacity:.75;margin-top:1px;-webkit-text-fill-color:rgba(255,255,255,0.75);}
+.topbar-sub{font-size:9px;opacity:.85;margin-top:2px;margin-left:2px;-webkit-text-fill-color:rgba(255,255,255,0.75);}
 .topbar-clock{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;flex-shrink:0;}
 .clock-hm{font-size:20px;font-weight:900;color:var(--gold);letter-spacing:1px;font-family:'Courier New',monospace;line-height:1.05;}
 
@@ -233,7 +233,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .nb-pill-btn.blue:active{background:rgba(167,139,250,0.15);}
 
 /* ===== CATEGORY ROW CARDS (Nano Banana style) ===== */
-.cat-card{border-radius:12px;margin-bottom:6px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;height:56px;border:none;background-size:cover !important;background-position:center !important;width:100%;box-sizing:border-box;}
+.cat-card{border-radius:12px;margin-bottom:5px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;height:56px;border:1px solid #2a5490;background-color:#122b52;background-size:cover !important;background-position:center !important;width:100%;box-sizing:border-box;}
 .cat-card-text{flex:1;padding:10px 8px 10px 14px;z-index:2;position:relative;min-width:0;overflow:hidden;}
 .cat-card-title{font-size:14px;font-weight:800;color:white;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cat-card-count{display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.2);border-radius:20px;padding:1px 9px;font-size:11px;font-weight:700;color:white;margin-left:7px;}
@@ -255,7 +255,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .qty-box{width:44px;padding:4px 3px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;text-align:center;font-family:inherit;font-weight:700;color:var(--text);background:var(--input-bg);outline:none;}
 .qty-box:focus{border-color:var(--gold);}
 .unit-tag{font-size:10px;color:#12305e;font-weight:600;min-width:26px;}
-.low-btn{background:transparent;border:1.5px solid var(--p3);color:var(--p3);border-radius:16px;padding:3px 8px;font-size:10px;font-family:inherit;font-weight:700;cursor:pointer;white-space:nowrap;}
+.low-btn{background:rgba(255,255,255,0.5);border:1.5px solid #12305e;color:#12305e;border-radius:16px;padding:3px 8px;font-size:10px;font-family:inherit;font-weight:700;cursor:pointer;white-space:nowrap;}
 .low-btn.active{background:var(--gold);border-color:var(--gold);color:#0a1a38;}
 </style>
 </head>
@@ -275,7 +275,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       <button onclick="forceSyncNow()" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.2);color:white;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Sync">☁️</button>
       <button onclick="openM('m-about')" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.2);color:white;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Settings">⚙️</button>
     </div>
-    <span id="ver-badge" style="font-size:7px;color:rgba(245,200,66,0.5);font-weight:700;"></span>
+    <span id="ver-badge" style="font-size:10px;color:rgba(245,200,66,0.75);font-weight:700;"></span>
   </div>
 </div>
 
@@ -323,7 +323,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
         <div style="font-size:15px;font-weight:800;color:var(--gold);">🛒 My Cart</div>
         <div style="display:flex;gap:5px;">
-          <button onclick="printShoppingList()" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="Save PDF & share via WhatsApp">📄 PDF</button>
+          <button onclick="printCart()" style="border:1px solid var(--border);color:#c8d8f0;border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="PDF of cart items only">📄 PDF</button>
           <button onclick="saveCart()" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="Save List">💾 Save</button>
         </div>
       </div>
@@ -1043,7 +1043,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.13.0';
+const APP_VERSION='2.14.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1338,7 +1338,7 @@ function renderShop(){
       const sesc=esc(sub);
       html+=`<div class="sub-card" onclick="toggleC('${sid}')">
         <div class="sub-card-text">${sub}
-          <span style="background:rgba(255,255,255,0.12);border-radius:10px;padding:1px 7px;font-size:10px;color:var(--tm);margin-left:6px;">${si.length}</span>
+          <span style="background:rgba(0,0,0,0.3);border-radius:10px;padding:1px 7px;font-size:10px;color:#fff;font-weight:700;margin-left:6px;">${si.length}</span>
           ${lc?`<span style="background:var(--gold);color:#0a1a38;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:800;margin-left:4px;">${lc} low</span>`:''}
         </div>
         <div class="sub-card-actions" onclick="event.stopPropagation()">
@@ -1737,7 +1737,7 @@ function renderBills(){
       statusBadge=`<span style="font-size:11px;color:var(--tm)">Due: ${b.dueDay}th</span>`;
     }
 
-    html+=`<div style="background:${bgCol};border:2px solid ${borderCol};border-radius:10px;padding:9px 11px;margin-bottom:6px;"
+    html+=`<div style="background:${bgCol};border:1px solid var(--border);border-left:4px solid ${borderCol};border-radius:10px;padding:7px 10px;margin-bottom:6px;"
       ondblclick="editBill(${b.id})" title="Double tap to edit">
       <div style="display:flex;align-items:center;gap:10px;">
         <div style="font-size:21px">${b.icon}</div>
@@ -1754,13 +1754,23 @@ function renderBills(){
           <button onclick="event.stopPropagation();delBill(${b.id})" style="background:none;border:none;font-size:11px;cursor:pointer;color:#c0c8d8">🗑</button>
         </div>
       </div>
-      <div style="font-size:10px;color:#c0c8d8;margin-top:6px;text-align:right">Tap ✏️ Edit or double-tap card to update amount</div>
+      
     </div>`;
   });
   document.getElementById('bills-list').innerHTML=html;
 }
 
-function markPaid(id){const b=ld('gl_bills',[]);const x=b.find(v=>v.id===id);if(x)x.paid=true;sv('gl_bills',b);renderBills();}
+function markPaid(id){
+  const b=ld('gl_bills',[]);const x=b.find(v=>v.id===id);if(!x)return;
+  x.paid=true;sv('gl_bills',b);
+  // reflect in CashBook as expense
+  const ts=ld('gl_txns',[]);
+  const now=new Date();const raw=now.toISOString().slice(0,10);
+  ts.push({id:Date.now().toString(),desc:`${x.icon||'💡'} ${x.name} (Bill)`,amt:x.amount||0,type:'expense',cat:'💡 Bills & Utilities',mode:'bank',raw,date:fmt(raw)});
+  sv('gl_txns',ts);
+  toast(x.amount?`Paid ₹${x.amount} — added to CashBook`:'Marked paid — set amount to record in CashBook');
+  renderBills();
+}
 function markUnpaid(id){const b=ld('gl_bills',[]);const x=b.find(v=>v.id===id);if(x)x.paid=false;sv('gl_bills',b);renderBills();}
 function delBill(id){sv('gl_bills',ld('gl_bills',[]).filter(v=>v.id!==id));renderBills();}
 
@@ -3204,6 +3214,22 @@ function printShoppingList(){
   if(!body){toast('No items to print!');return;}
   openPrintWin('Shopping List',`<p style="text-align:center;color:#555">${dateStr}</p>${body}`);
 }
+function printCart(){
+  const cats3=ld('gl_cats3',[]);
+  const items=ld('gl_items',{});
+  const dateStr=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  let body='';
+  cats3.forEach(bcat=>{
+    let rows='';
+    Object.values(items).filter(i=>i.broad===bcat.broad&&i.inCart).forEach(i=>{
+      const qty=i.qty!=null&&i.qty!==''?` (${i.qty}${i.unit?' '+i.unit:''})`:'';
+      rows+=`<li>${i.purchased?'✅ ':'⬜ '}${i.name}${qty}</li>`;
+    });
+    if(rows)body+=`<h3>${bcat.broad}</h3><ul>${rows}</ul>`;
+  });
+  if(!body){toast('Cart is empty!');return;}
+  openPrintWin('Cart — Shopping List',`<p style="text-align:center;color:#555">${dateStr}</p>${body}`);
+}
 function openPrintWin(title,innerHtml){
   const w=window.open('','_blank');
   if(!w){toast('Popup blocked! Allow popups for PDF.');return;}
@@ -3495,6 +3521,17 @@ function updateDateTime(){
 }
 updateDateTime();
 setInterval(updateDateTime,30000);
+
+// v2.14: measure topbar height so sticky row sits flush below it (no transparency gap)
+function fixStickyTop(){
+  const tb=document.querySelector('.topbar');
+  const st=document.getElementById('shop-sticky');
+  if(tb&&st)st.style.top=(tb.offsetHeight-1)+'px';
+}
+window.addEventListener('load',fixStickyTop);
+window.addEventListener('resize',fixStickyTop);
+setTimeout(fixStickyTop,600);
+
 
 // v2.13: back navigation — Esc (desktop) & left-swipe (mobile) return to previous tab
 let _tabHistory=[],_curTab='shopping';
