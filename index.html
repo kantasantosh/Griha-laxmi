@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.12.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.13.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -85,7 +85,7 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 .topbar h1{font-size:18px;font-weight:900;letter-spacing:0.5px;background:linear-gradient(90deg,white,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .topbar-sub{font-size:9px;opacity:.75;margin-top:1px;-webkit-text-fill-color:rgba(255,255,255,0.75);}
 .topbar-clock{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;flex-shrink:0;}
-.clock-hm{font-size:18px;font-weight:900;color:var(--gold);letter-spacing:1px;font-family:'Courier New',monospace;}
+.clock-hm{font-size:20px;font-weight:900;color:var(--gold);letter-spacing:1px;font-family:'Courier New',monospace;line-height:1.05;}
 
 /* ===== BOTTOM NAV ===== */
 .bnav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:100;box-shadow:0 -4px 20px rgba(10,26,46,0.4);}
@@ -112,7 +112,7 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 /* ===== INPUTS ===== */
 .sw{position:relative;margin-bottom:12px;}
 .si{width:100%;padding:10px 13px 10px 37px;border:1.5px solid var(--input-border);border-radius:24px;font-size:14px;font-family:inherit;outline:none;background:var(--input-bg);color:var(--input-text);font-weight:600;}
-.si::placeholder{color:var(--tm);font-weight:400;}
+.si::placeholder{color:#9ab2d6;font-weight:400;}
 .si:focus{border-color:var(--p3);box-shadow:0 0 0 3px rgba(26,90,173,0.2);}
 .sic{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;}
 .fg{margin-bottom:12px;}
@@ -216,7 +216,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .hero{background:linear-gradient(135deg,var(--p1),var(--p2));border-radius:var(--radius);padding:16px;margin-bottom:14px;color:white;box-shadow:0 4px 20px rgba(26,90,173,0.3);}
 
 /* ===== NANO BANANA SUB-TABS (glowing underline style) ===== */
-.nb-stab{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;padding:8px 4px;border:none;background:transparent;cursor:pointer;font-family:inherit;color:var(--tm);position:relative;border-right:1px solid var(--border);}
+.nb-stab{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;padding:8px 4px;border:none;background:transparent;cursor:pointer;font-family:inherit;color:#b8cce8;position:relative;border-right:1px solid var(--border);}
 .nb-stab:last-child{border-right:none;}
 .nb-stab-main{font-size:11px;font-weight:800;letter-spacing:0.5px;color:inherit;}
 .nb-stab-sub{font-size:9px;font-weight:600;color:inherit;opacity:0.8;}
@@ -235,7 +235,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 /* ===== CATEGORY ROW CARDS (Nano Banana style) ===== */
 .cat-card{border-radius:12px;margin-bottom:6px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;height:56px;border:none;background-size:cover !important;background-position:center !important;width:100%;box-sizing:border-box;}
 .cat-card-text{flex:1;padding:10px 8px 10px 14px;z-index:2;position:relative;min-width:0;overflow:hidden;}
-.cat-card-title{font-size:13px;font-weight:800;color:white;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cat-card-title{font-size:14px;font-weight:800;color:white;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cat-card-count{display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.2);border-radius:20px;padding:1px 9px;font-size:11px;font-weight:700;color:white;margin-left:7px;}
 .cat-card-low{background:var(--gold);color:#0a1a38;border-radius:20px;padding:1px 8px;font-size:10px;font-weight:800;margin-left:5px;}
 .cat-card-pattern{width:100px;flex-shrink:0;align-self:stretch;display:flex;align-items:center;justify-content:center;overflow:hidden;opacity:0.85;}
@@ -243,22 +243,21 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .cat-card-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;border-radius:50%;width:22px;height:22px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 
 /* Sub-category row — matches the blue from category card artwork */
-.sub-card{border-radius:10px;margin-bottom:2px;overflow:hidden;display:flex;align-items:center;min-height:34px;background:#2160b0;border:1px solid #2f74c8;}
-.sub-card-text{flex:1;padding:6px 12px;font-size:12px;font-weight:700;color:#d8e4f4;}
+.sub-card{border-radius:10px;margin-bottom:2px;overflow:hidden;display:flex;align-items:center;min-height:34px;background:#3a80d4;border:1px solid #4f94e4;}
+.sub-card-text{flex:1;padding:6px 12px;font-size:13px;font-weight:700;color:#d8e4f4;}
 .sub-card-actions{display:flex;gap:4px;padding:4px 8px 4px 0;flex-shrink:0;}
 
 /* Item rows — lighter than sub-card */
-.item-row{display:flex;align-items:center;gap:6px;padding:6px 10px;background:#3a80d4;border-radius:8px;margin-bottom:2px;border:1px solid #55a0e8;}
+.item-row{display:flex;align-items:center;gap:6px;padding:6px 10px;background:#6fa8e8;border-radius:8px;margin-bottom:2px;border:1px solid #8cbcf2;}
 .item-row.low{border-color:var(--gold);background:rgba(245,200,66,0.07);}
-.item-name{flex:1;font-size:13px;font-weight:600;color:var(--text);}
+.item-name{flex:1;font-size:14px;font-weight:700;color:#0a1a38;}
 .item-row.low .item-name{color:var(--gold);}
 .qty-box{width:44px;padding:4px 3px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;text-align:center;font-family:inherit;font-weight:700;color:var(--text);background:var(--input-bg);outline:none;}
 .qty-box:focus{border-color:var(--gold);}
-.unit-tag{font-size:10px;color:var(--tm);font-weight:600;min-width:26px;}
+.unit-tag{font-size:10px;color:#12305e;font-weight:600;min-width:26px;}
 .low-btn{background:transparent;border:1.5px solid var(--p3);color:var(--p3);border-radius:16px;padding:3px 8px;font-size:10px;font-family:inherit;font-weight:700;cursor:pointer;white-space:nowrap;}
 .low-btn.active{background:var(--gold);border-color:var(--gold);color:#0a1a38;}
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -268,7 +267,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <div class="topbar-sub" id="tdate"></div>
   </div>
   <div class="topbar-clock" id="tclock">
-    <span class="clock-hm" id="tclock-hm">--:--</span>
+    <span class="clock-hm" id="tclock-h">--</span><span class="clock-hm" id="tclock-m">--</span>
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
     <div style="display:flex;gap:4px;align-items:center;">
@@ -305,8 +304,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
           <input id="srch" oninput="renderShop()" placeholder="Search items..."
             style="flex:1;min-width:0;height:30px;line-height:30px;padding:0 6px 0 0;background:transparent;border:none;outline:none;font-size:11px;font-family:inherit;color:var(--text);font-weight:600;"/>
         </div>
-        <button onclick="shareShoppingList()" title="Share" style="flex:0 0 auto;height:32px;box-sizing:border-box;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📤 Share</button>
-        <button onclick="printShoppingList()" title="PDF" style="flex:0 0 auto;height:32px;box-sizing:border-box;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📄 PDF</button>
+        <button onclick="printShoppingList()" title="PDF" style="flex:0 0 auto;height:32px;box-sizing:border-box;border:1px solid var(--border);color:#c8d8f0;border-radius:8px;padding:0 8px;font-size:11px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📄 PDF</button>
         <button onclick="openAddBroad()" title="Add Category" style="flex:0 0 auto;height:32px;box-sizing:border-box;border:1px solid rgba(245,200,66,0.25);color:var(--gold);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">+ Category</button>
       </div>
     </div>
@@ -325,7 +323,6 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
         <div style="font-size:15px;font-weight:800;color:var(--gold);">🛒 My Cart</div>
         <div style="display:flex;gap:5px;">
-          <button onclick="shareCart()" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="Share Cart">📤 Share</button>
           <button onclick="printShoppingList()" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="Save PDF & share via WhatsApp">📄 PDF</button>
           <button onclick="saveCart()" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="Save List">💾 Save</button>
         </div>
@@ -361,7 +358,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <div class="sh">
       <div class="st">✅ To Do</div>
       <div style="display:flex;gap:6px;">
-        <button onclick="shareTodo()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+        <button onclick="pdfVia(()=>shareTodo())" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
         <button onclick="clearDone()" style="background:white;border:1.5px solid var(--border);color:var(--tm);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">🧹 Clear Done</button>
         <button class="ab" onclick="openM('m-addtodo')">+ Add</button>
       </div>
@@ -378,7 +375,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <div class="sh">
       <div class="st">🔧 Services</div>
       <div style="display:flex;gap:6px;">
-        <button onclick="shareServices()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+        <button onclick="pdfVia(()=>shareServices())" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
         <button class="ab" id="svc-add-btn" onclick="openM('m-addcon')">+ Add</button>
       </div>
     </div>
@@ -412,7 +409,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
   <div class="sh">
     <div class="st">💸 Expenses</div>
     <div style="display:flex;gap:6px;flex-wrap:wrap;">
-      <button onclick="shareCash()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+      <button onclick="pdfVia(()=>shareCash())" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
       <button class="ab" onclick="openM('m-addtxn')">+ Entry</button>
     </div>
   </div>
@@ -432,7 +429,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <div class="sh">
       <div class="st">👨‍👩‍👧 Staff</div>
       <div style="display:flex;gap:6px;">
-        <button onclick="shareStaff()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+        <button onclick="pdfVia(()=>shareStaff())" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
         <button class="ab" onclick="openM('m-addhelp')" style="background:linear-gradient(135deg,var(--purple),#9b59b6);">+ Add</button>
       </div>
     </div>
@@ -450,7 +447,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <div class="sh">
       <div class="st">🥛 Milkman</div>
       <div style="display:flex;gap:6px;">
-        <button onclick="shareMilk()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+        <button onclick="pdfVia(()=>shareMilk())" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
         <button class="ab" onclick="openM('m-addmilkman')">+ Add Milkman</button>
       </div>
     </div>
@@ -462,7 +459,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <div class="sh">
       <div class="st">🥦 Fruit/Tarkari Wala</div>
       <div style="display:flex;gap:6px;">
-        <button onclick="shareSupplier('fruitwala')" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+        <button onclick="pdfVia(()=>shareSupplier('fruitwala'))" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
         <button class="ab" onclick="openAddSupplier('fruitwala')">+ Add Vendor</button>
       </div>
     </div>
@@ -474,7 +471,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <div class="sh">
       <div class="st">👔 Dhobi / Dry Cleaner</div>
       <div style="display:flex;gap:6px;">
-        <button onclick="shareSupplier('dhobi')" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📤 Share</button>
+        <button onclick="pdfVia(()=>shareSupplier('dhobi'))" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
         <button class="ab" onclick="openAddSupplier('dhobi')">+ Add Vendor</button>
       </div>
     </div>
@@ -941,10 +938,10 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 <div class="mo" id="m-about">
   <div class="md">
     <button class="mc2" onclick="closeM('m-about')">✕</button>
-    <div style="text-align:center;padding:10px 0 6px;">
-      <div style="font-size:42px;margin-bottom:6px;">🪔</div>
-      <div style="font-size:22px;font-weight:800;color:var(--gold);">GrihaLaxmi</div>
-      <div style="font-size:12px;color:var(--tm);margin-top:3px;">Your Complete Home Manager</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:4px 0 6px;">
+      <span style="font-size:26px;">🪔</span>
+      <span style="font-size:19px;font-weight:800;color:var(--gold);">GrihaLaxmi</span>
+      <span style="font-size:11px;color:var(--tm);">· Your Complete Home Manager</span>
     </div>
       <!-- Credits & Tech Stack -->
       <div style="padding:16px;background:var(--card);border-radius:var(--rsm);color:white;margin-bottom:10px;border:1px solid var(--border);text-align:center;">
@@ -985,7 +982,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
         <div style="font-size:11px;color:var(--gold);margin-top:4px;font-weight:700;" id="about-ver-line"></div>
       </div>
       <!-- Appearance Settings -->
-      <button onclick="closeM('m-about');openM('m-settings');" style="width:100%;background:linear-gradient(135deg,var(--purple),#9b59b6);color:white;border:none;border-radius:var(--rsm);padding:12px;font-size:14px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:10px;">⚙️ Theme & Font Settings</button>
+      
       <!-- Data Backup -->
       <div style="background:var(--card);border-radius:var(--rsm);padding:14px;border:1px solid var(--border);margin-bottom:10px;text-align:left;">
         <div style="font-size:13px;font-weight:800;color:var(--gold);margin-bottom:8px;">💾 Data Backup</div>
@@ -994,10 +991,10 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
           <label style="background:linear-gradient(135deg,var(--purple),#9b59b6);color:white;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;text-align:center;display:block;">⬆️ Import<input type="file" accept=".json" onchange="importData(this)" style="display:none;"/></label>
         </div>
       </div>
-      <!-- Feedback / Bug Report -->
-      <div style="background:var(--card);border-radius:var(--rsm);padding:14px;border:1px solid var(--border);margin-bottom:10px;text-align:left;">
-        <div style="font-size:13px;font-weight:800;color:var(--gold);margin-bottom:8px;">💬 Feedback / Bug Report</div>
-        <button onclick="openM('m-feedback')" style="width:100%;background:var(--amber);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">💬 Send Feedback</button>
+      <!-- Theme + Feedback in one row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+        <button onclick="closeM('m-about');openM('m-settings');" style="background:#3a80d4;color:white;border:1px solid #4f94e4;border-radius:var(--rsm);padding:12px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">⚙️ Theme & Font</button>
+        <button onclick="openM('m-feedback')" style="background:#3a80d4;color:white;border:1px solid #4f94e4;border-radius:var(--rsm);padding:12px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">💬 Feedback</button>
       </div>
       <!-- Reset Shopping -->
       <div style="background:var(--card);border-radius:var(--rsm);padding:14px;border:1px solid var(--border);margin-bottom:10px;text-align:left;">
@@ -1046,7 +1043,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.12.0';
+const APP_VERSION='2.13.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1350,7 +1347,7 @@ function renderShop(){
         </div>
         <span style="padding-right:10px;font-size:11px;color:var(--tm);">${q||lc?'▼':'▶'}</span>
       </div>
-      <div id="${sid}" style="display:${q||lc?'block':'none'};padding:3px 0 5px 4px;">`;
+      <div id="${sid}" style="display:${q||lc?'block':'none'};padding:3px 0 5px 0;">`;
 
       si.sort((a,b2)=>a.name.localeCompare(b2.name)).forEach(item=>{
         const k=esc(item._actualKey);
@@ -1544,7 +1541,7 @@ function renderHist(){
     ?h.map((x,i)=>{
       // Support both old format (items as strings) and new format (items as objects)
       const itemNames=x.items.map(it=>typeof it==='string'?it:(it.name+(it.qty?' '+it.qty+(it.unit?' '+it.unit:''):'')));
-      return `<div style="background:var(--card);border-radius:var(--radius);padding:13px;margin-bottom:9px;box-shadow:var(--shadow);border-left:4px solid var(--p2);border:1px solid var(--border);border-left-width:4px;">
+      return `<div style="background:var(--card);border-radius:10px;padding:9px 11px;margin-bottom:6px;border-left:4px solid var(--p2);border:1px solid var(--border);border-left-width:4px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
           <div>
             <div style="font-size:14px;font-weight:800;color:var(--gold);">${x.name||'Order'}</div>
@@ -1727,25 +1724,25 @@ function renderBills(){
     // Colour status
     let borderCol,bgCol,statusBadge;
     if(b.paid){
-      borderCol='var(--green)';bgCol='#f0fdf4';
+      borderCol='var(--green)';bgCol='rgba(39,174,96,0.12)';
       statusBadge=`<span class="pdbg">✓ Paid</span>`;
     } else if(days<0){
-      borderCol='var(--red)';bgCol='#fff5f5';
+      borderCol='var(--red)';bgCol='rgba(231,76,60,0.12)';
       statusBadge=`<span class="ovb">⚠️ Overdue by ${Math.abs(days)}d</span>`;
     } else if(days<=3){
-      borderCol='var(--amber)';bgCol='#fffbeb';
+      borderCol='var(--amber)';bgCol='rgba(245,200,66,0.12)';
       statusBadge=`<span class="dub">🔔 Due in ${days}d</span>`;
     } else {
-      borderCol='var(--border)';bgCol='white';
+      borderCol='#4f94e4';bgCol='#3a80d4';
       statusBadge=`<span style="font-size:11px;color:var(--tm)">Due: ${b.dueDay}th</span>`;
     }
 
-    html+=`<div style="background:${bgCol};border:2px solid ${borderCol};border-radius:var(--radius);padding:13px;margin-bottom:9px;box-shadow:var(--shadow);"
+    html+=`<div style="background:${bgCol};border:2px solid ${borderCol};border-radius:10px;padding:9px 11px;margin-bottom:6px;"
       ondblclick="editBill(${b.id})" title="Double tap to edit">
       <div style="display:flex;align-items:center;gap:10px;">
-        <div style="font-size:26px">${b.icon}</div>
+        <div style="font-size:21px">${b.icon}</div>
         <div style="flex:1">
-          <div style="font-weight:800;font-size:14px;color:var(--p1)">${b.name}</div>
+          <div style="font-weight:800;font-size:13px;color:#eaf2ff">${b.name}</div>
           <div style="font-size:12px;color:var(--tm);margin-top:2px">${b.cycle} ${b.amount?'• ₹'+b.amount.toLocaleString('en-IN'):'• Tap twice to set amount'}</div>
           <div style="margin-top:5px">${statusBadge}</div>
         </div>
@@ -2323,7 +2320,7 @@ function renderCon(){
     return `<div class="cc">
       <div style="width:46px;height:46px;border-radius:50%;background:${col}20;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${c.role.split(' ')[0]}</div>
       <div style="flex:1;min-width:0">
-        <div style="font-weight:800;font-size:14px;color:var(--p1)">${c.name}</div>
+        <div style="font-weight:800;font-size:13px;color:#eaf2ff">${c.name}</div>
         <div style="font-size:11px;color:var(--tm);margin-top:1px">${c.role}</div>
         ${c.phone?`<div style="font-size:12px;color:var(--tm);margin-top:1px">📱 ${c.phone}</div>`:''}
         ${c.note?`<div style="font-size:11px;color:var(--tm);margin-top:1px">💬 ${c.note}</div>`:''}
@@ -2357,7 +2354,7 @@ function renderMedCon(){
     return `<div class="cc">
       <div style="width:46px;height:46px;border-radius:50%;background:${col}20;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${c.role.split(' ')[0]}</div>
       <div style="flex:1;min-width:0">
-        <div style="font-weight:800;font-size:14px;color:var(--p1)">${c.name}</div>
+        <div style="font-weight:800;font-size:13px;color:#eaf2ff">${c.name}</div>
         <div style="font-size:11px;color:var(--tm);margin-top:1px">${c.role}</div>
         ${c.phone?`<div style="font-size:12px;color:var(--tm);margin-top:1px">📱 ${c.phone}</div>`:''}
         ${c.note?`<div style="font-size:11px;color:var(--tm);margin-top:1px">💬 ${c.note}</div>`:''}
@@ -3025,6 +3022,7 @@ function importData(input){
 
 // ===== SHARING FUNCTIONS =====
 function shareText(text){
+  if(PDF_MODE){openPrintWin('Report','<pre>'+text.replace(/[*_]/g,'')+'</pre>');return;}
   if(navigator.share){
     navigator.share({text}).catch(()=>copyToClip(text));
   } else {
@@ -3192,92 +3190,37 @@ function printShoppingList(){
   const cats3=ld('gl_cats3',[]);
   const items=ld('gl_items',{});
   const dateStr=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-
-  // Build list data
-  const sections=[];
+  let body='';
   cats3.forEach(bcat=>{
-    const broad=bcat.broad;
-    const catItems=[];
+    let rows='';
     bcat.subs.forEach(sub=>{
-      Object.values(items).filter(i=>i.broad===broad&&i.sub===sub).forEach(i=>{
-        const qty=i.qty!=null&&i.qty!==''?` (${i.qty}${i.unit?' '+i.unit:''})`:''  ;
-        const low=i.low?' ⚠ LOW':'';
-        catItems.push(i.name+qty+low);
+      Object.values(items).filter(i=>i.broad===bcat.broad&&i.sub===sub).forEach(i=>{
+        const qty=i.qty!=null&&i.qty!==''?` (${i.qty}${i.unit?' '+i.unit:''})`:'';
+        rows+=`<li>${i.name}${qty}${i.low?' <b style="color:#b8860b">⚠ LOW</b>':''}</li>`;
       });
     });
-    if(catItems.length) sections.push({name:broad,items:catItems});
+    if(rows)body+=`<h3>${bcat.broad}</h3><ul>${rows}</ul>`;
   });
-
-  if(!sections.length){toast('No items to share!');return;}
-
-  // Generate PDF using jsPDF
-  try{
-    if(!window.jspdf) throw new Error('jsPDF not loaded');
-    const{jsPDF}=window.jspdf;
-    const doc=new jsPDF({unit:'mm',format:'a4'});
-    let y=20;
-
-    // Title
-    doc.setFontSize(18);
-    doc.setFont('helvetica','bold');
-    doc.text('GrihaLaxmi — Shopping List',105,y,{align:'center'});
-    y+=8;
-    doc.setFontSize(10);
-    doc.setFont('helvetica','normal');
-    doc.text(dateStr,105,y,{align:'center'});
-    y+=12;
-
-    // Categories and items
-    sections.forEach(sec=>{
-      if(y>270){doc.addPage();y=20;}
-      doc.setFontSize(13);
-      doc.setFont('helvetica','bold');
-      doc.setFillColor(230,240,255);
-      doc.rect(15,y-5,180,8,'F');
-      doc.text(sec.name,18,y);
-      y+=8;
-      doc.setFontSize(11);
-      doc.setFont('helvetica','normal');
-      sec.items.forEach(item=>{
-        if(y>275){doc.addPage();y=20;}
-        doc.text('•  '+item,22,y);
-        y+=6;
-      });
-      y+=4;
-    });
-
-    // Footer
-    doc.setFontSize(8);
-    doc.setTextColor(150);
-    doc.text('Generated by GrihaLaxmi App',105,290,{align:'center'});
-
-    // Save PDF as blob and share
-    const pdfBlob=doc.output('blob');
-    const pdfFile=new File([pdfBlob],'GrihaLaxmi_Shopping_List.pdf',{type:'application/pdf'});
-
-    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[pdfFile]})){
-      navigator.share({title:'GrihaLaxmi Shopping List',files:[pdfFile]}).catch(()=>{});
-    } else {
-      // Fallback: download PDF
-      doc.save('GrihaLaxmi_Shopping_List.pdf');
-      toast('📄 PDF saved!');
-    }
-  }catch(e){
-    // Fallback if jsPDF not loaded: share as text via WhatsApp
-    let text='🪔 *GrihaLaxmi Shopping List*\n'+dateStr+'\n\n';
-    sections.forEach(sec=>{
-      text+='*'+sec.name+'*\n';
-      sec.items.forEach(item=>{text+='  • '+item+'\n';});
-      text+='\n';
-    });
-    if(navigator.share){
-      navigator.share({title:'Shopping List',text:text}).catch(()=>{});
-    } else {
-      // Direct WhatsApp link
-      window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
-    }
-  }
+  if(!body){toast('No items to print!');return;}
+  openPrintWin('Shopping List',`<p style="text-align:center;color:#555">${dateStr}</p>${body}`);
 }
+function openPrintWin(title,innerHtml){
+  const w=window.open('','_blank');
+  if(!w){toast('Popup blocked! Allow popups for PDF.');return;}
+  w.document.write(`<!DOCTYPE html><html><head><title>GrihaLaxmi — ${title}</title><style>
+    body{font-family:Arial,sans-serif;padding:20px;max-width:700px;margin:auto;color:#111;}
+    h2{text-align:center;color:#1a3a8c;margin-bottom:4px;}
+    h3{background:#e6f0ff;color:#1a3a8c;padding:6px 10px;border-radius:6px;margin:14px 0 6px;}
+    ul{margin:0 0 8px 18px;padding:0;}li{margin:3px 0;font-size:14px;}
+    pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:14px;}
+    .ft{text-align:center;color:#999;font-size:11px;margin-top:24px;}
+  </style></head><body><h2>🪔 GrihaLaxmi — ${title}</h2>${innerHtml}
+  <div class="ft">Generated from GrihaLaxmi App</div>
+  <script>setTimeout(()=>window.print(),400);<\/script></body></html>`);
+  w.document.close();
+}
+let PDF_MODE=false;
+function pdfVia(fn){PDF_MODE=true;try{fn();}finally{PDF_MODE=false;}}
 function shareShoppingList(){
   const items=ld('gl_items',{});
   const cats3=ld('gl_cats3',[]);
@@ -3546,12 +3489,40 @@ function updateDateTime(){
   const hr=n.getHours().toString().padStart(2,'0');
   const mn=n.getMinutes().toString().padStart(2,'0');
   const dateEl=document.getElementById('tdate');
-  const hmEl=document.getElementById('tclock-hm');
+  const hEl=document.getElementById('tclock-h');const mEl=document.getElementById('tclock-m');
   if(dateEl)dateEl.textContent=days[n.getDay()]+', '+n.getDate()+' '+MN[n.getMonth()]+' '+n.getFullYear();
-  if(hmEl)hmEl.textContent=hr+':'+mn;
+  if(hEl)hEl.textContent=hr;if(mEl)mEl.textContent=mn;
 }
 updateDateTime();
 setInterval(updateDateTime,30000);
+
+// v2.13: back navigation — Esc (desktop) & left-swipe (mobile) return to previous tab
+let _tabHistory=[],_curTab='shopping';
+const _origShowTab=showTab;
+showTab=function(n,btn){
+  if(_curTab&&_curTab!==n){_tabHistory.push(_curTab);if(_tabHistory.length>10)_tabHistory.shift();}
+  _curTab=n;
+  return _origShowTab(n,btn);
+};
+function goBack(){
+  const openMo=document.querySelector('.mo.open');
+  if(openMo){closeM(openMo.id);return;}
+  const prev=_tabHistory.pop();
+  if(prev){
+    _curTab=prev;
+    const idx={shopping:0,organiser:1,cash:2,household:3}[prev];
+    const btn=document.querySelectorAll('.bnav .nb')[idx];
+    _origShowTab(prev,btn);
+  }
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')goBack();});
+let _tx0=0,_ty0=0;
+document.addEventListener('touchstart',e=>{_tx0=e.touches[0].clientX;_ty0=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-_tx0, dy=e.changedTouches[0].clientY-_ty0;
+  if(dx<-90&&Math.abs(dy)<50)goBack();
+},{passive:true});
+
 document.getElementById('about-ver-line').textContent='v'+APP_VERSION+' • '+APP_BUILD;
 const _vb=document.getElementById('ver-badge');if(_vb)_vb.textContent='v'+APP_VERSION;
 init();applyStoredThemeFont();wireAssets();renderShop();setupNotifs();setTimeout(checkNotifs,2000);toggleContactPickerButtons();
