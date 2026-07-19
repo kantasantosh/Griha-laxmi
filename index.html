@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.16.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.17.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -850,6 +850,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       </div>
       <select class="fi" id="t-cat"></select>
     </div>
+    <div class="fg" id="txn-link-field" style="display:none;"><label class="fl">Link Payment To (optional)</label><select class="fi" id="t-link"><option value="">— None —</option></select></div>
     <div class="fg" id="txn-desc-field"><label class="fl">Description</label><input class="fi" id="t-desc" placeholder="e.g. Grocery, Milk payment, Salary received"/></div>
     <div id="bal-preview" style="display:none;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);padding:8px 10px;margin-bottom:10px;font-size:12px;color:var(--text);"></div>
     <button class="sb2" onclick="addTxn()">Save Entry</button>
@@ -993,7 +994,9 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
           <button onclick="openM('m-feedback')" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">💬 Feedback</button>
         </div>
       </div>
-      
+      <div style="background:var(--card);border-radius:var(--rsm);padding:12px;border:1px solid var(--border);margin-bottom:10px;text-align:left;">
+        <button onclick="resetShoppingData()" style="width:100%;background:var(--red);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">🔄 Reset Shopping Data</button>
+      </div>
   </div>
 </div>
 
@@ -1033,7 +1036,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.16.0';
+const APP_VERSION='2.17.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1228,7 +1231,7 @@ function hhView(v,btn){
 }
 
 // MODALS
-function openM(id){if(id==='m-addtxn')setTimeout(updBalPreview,50);
+function openM(id){if(id==='m-addtxn'){fillTxnLink();setTimeout(updBalPreview,50);}
   document.getElementById(id).classList.add('open');
   if(id==='m-milkpay')document.getElementById('mp-date').value=td();
   if(id==='m-suppay')document.getElementById('sp-date').value=td();
@@ -1928,7 +1931,11 @@ function saveMilkPay(){
   const note=document.getElementById('mp-note').value.trim();
   if(!amt||!raw){toast('Enter amount and date');return;}
   const pays=ld('gl_mpay_'+mid,[]);pays.push({amt,date:fmt(raw),raw,note});
-  sv('gl_mpay_'+mid,pays);closeM('m-milkpay');renderMilk();
+  sv('gl_mpay_'+mid,pays);
+  const mm=(ld('gl_milkmen',[]).find(m=>m.id===mid)||{}).name||'Milkman';
+  pushCashTxn('🥛 '+mm+' (Milk)',amt,'🥛 Milk',raw);
+  toast('Recorded — also added to CashBook');
+  closeM('m-milkpay');renderMilk();
 }
 function addMilkman(){
   const name=document.getElementById('mm-name').value.trim();
@@ -2088,7 +2095,11 @@ function saveSupplierPay(){
   const note=document.getElementById('sp-note').value.trim();
   if(!amt||!raw){toast('Enter amount and date');return;}
   const pays=ld('gl_suppay_'+type+'_'+vid,[]);pays.push({amt,date:fmt(raw),raw,note});
-  sv('gl_suppay_'+type+'_'+vid,pays);closeM('m-suppay');renderSupplier(type);
+  sv('gl_suppay_'+type+'_'+vid,pays);
+  const vn=(ld('gl_suppliers_'+type,ld('gl_vendors_'+type,[])).find(v=>v.id===vid)||{}).name||(type==='dhobi'?'Dhobi':'Vendor');
+  pushCashTxn((type==='dhobi'?'👔 ':'🥦 ')+vn,amt,type==='dhobi'?'👔 Dhobi':'🥦 Fruit/Tarkari',raw);
+  toast('Recorded — also added to CashBook');
+  closeM('m-suppay');renderSupplier(type);
 }
 function openAddSupplier(type){
   document.getElementById('sv-type').value=type;
@@ -2299,13 +2310,52 @@ function openAdv(id,name){
   document.getElementById('adv-id').value=id;document.getElementById('adv-name').value=name;document.getElementById('adv-amt').value='';
   openM('m-adv');
 }
+
+// v2.17: household payments auto-post to CashBook
+function pushCashTxn(desc,amt,cat,raw,mode){
+  if(!amt)return;
+  const ts=ld('gl_txns',[]);
+  ts.push({id:Date.now().toString()+Math.floor(Math.random()*99),desc,amt,type:'out',cat,mode:mode||'💵 Cash',raw,date:fmt(raw)});
+  sv('gl_txns',ts);
+}
+
+// v2.17: populate voucher link dropdown & write-back to party ledgers
+function fillTxnLink(){
+  const sel=document.getElementById('t-link');if(!sel)return;
+  let o='<option value="">— None —</option>';
+  const hs=ld('gl_helpers',[]);
+  if(hs.length){o+='<optgroup label="👫 Staff">'+hs.map(x=>`<option value="helper:${x.id}">${x.name} (${x.role||'Staff'})</option>`).join('')+'</optgroup>';}
+  const mm=ld('gl_milkmen',[]);
+  if(mm.length){o+='<optgroup label="🥛 Milkmen">'+mm.map(x=>`<option value="milk:${x.id}">${x.name}</option>`).join('')+'</optgroup>';}
+  ['fruitwala','dhobi'].forEach(t=>{
+    const vs=ld('gl_suppliers_'+t,ld('gl_vendors_'+t,[]));
+    if(vs.length){o+=`<optgroup label="${t==='dhobi'?'👔 Dhobi':'🥦 Fruit/Tarkari'}">`+vs.map(x=>`<option value="sup_${t}:${x.id}">${x.name}</option>`).join('')+'</optgroup>';}
+  });
+  sel.innerHTML=o;
+}
+function applyTxnLink(amt,raw,desc){
+  const v=document.getElementById('t-link')?.value;if(!v)return '';
+  const [kind,id]=v.split(':');
+  const rec={amt,date:fmt(raw),raw,note:'via CashBook'};
+  if(kind==='helper'){const a=ld('gl_adv_'+id,[]);a.push(rec);sv('gl_adv_'+id,a);
+    const nm=(ld('gl_helpers',[]).find(x=>String(x.id)===id)||{}).name||'';return '👫 '+nm;}
+  if(kind==='milk'){const a=ld('gl_mpay_'+id,[]);a.push(rec);sv('gl_mpay_'+id,a);
+    const nm=(ld('gl_milkmen',[]).find(x=>x.id===id)||{}).name||'';return '🥛 '+nm;}
+  if(kind.startsWith('sup_')){const t=kind.slice(4);const a=ld('gl_suppay_'+t+'_'+id,[]);a.push(rec);sv('gl_suppay_'+t+'_'+id,a);
+    const nm=(ld('gl_suppliers_'+t,ld('gl_vendors_'+t,[])).find(x=>x.id===id)||{}).name||'';return (t==='dhobi'?'👔 ':'🥦 ')+nm;}
+  return '';
+}
 function saveAdv(){
   const id=document.getElementById('adv-id').value;
   const amt=parseFloat(document.getElementById('adv-amt').value);
   const raw=document.getElementById('adv-date').value;
   if(!amt||amt<=0||!raw){toast('Enter valid amount and date');return;}
   const advs=ld('gl_adv_'+id,[]);advs.push({amt,date:fmt(raw),raw});
-  sv('gl_adv_'+id,advs);closeM('m-adv');renderHelp();
+  sv('gl_adv_'+id,advs);
+  const hName=document.getElementById('adv-name').value||'Staff';
+  pushCashTxn('👫 '+hName+' (Salary/Advance)',amt,'👫 Staff Salary',raw);
+  toast('Recorded — also added to CashBook');
+  closeM('m-adv');renderHelp();
 }
 
 // CONTACTS
@@ -2493,6 +2543,7 @@ function setTtype(type){
   document.getElementById('txn-contra-fields').style.display=isContra?'block':'none';
   document.getElementById('txn-cat-field').style.display=isContra?'none':'block';
   const df=document.getElementById('txn-desc-field');if(df)df.style.display=isContra?'none':'block';
+  const lf=document.getElementById('txn-link-field');if(lf)lf.style.display=(type==='out')?'block':'none';
   updBalPreview();
 }
 function addTxn(){
@@ -2514,7 +2565,9 @@ function addTxn(){
   const mode=document.getElementById('t-mode').value;
   if(!desc){toast('Please enter a description');return;}
   ts.push({id:Date.now().toString(),desc,amt,type,cat:document.getElementById('t-cat').value,mode,raw,date:fmt(raw)});
-  sv('gl_txns',ts);closeM('m-addtxn');
+  sv('gl_txns',ts);
+  if(type==='out'){const who=applyTxnLink(amt,raw,desc);if(who)toast('Also recorded in '+who+"'s account");}
+  closeM('m-addtxn');
   document.getElementById('t-desc').value='';document.getElementById('t-amt').value='';
   renderCash();
 }
@@ -3587,18 +3640,36 @@ function _balFor(mode){
 function updBalPreview(){
   const el=document.getElementById('bal-preview');if(!el)return;
   const type=document.getElementById('t-type').value;
-  if(type==='contra'){el.style.display='none';return;}
+  const f=n=>'₹'+n.toLocaleString('en-IN');
+  if(type==='contra'){
+    const amt=parseFloat(document.getElementById('t-amt')?.value)||0;
+    const from=document.getElementById('t-confrom')?.value||'bank';
+    const to=document.getElementById('t-conto')?.value||'cash';
+    const bucket=b=>{
+      const all=ld('gl_txns',[]);
+      const isC=b==='cash';
+      let bal=all.filter(t=>t.type==='in'&&(isC?t.mode==='💵 Cash':t.mode!=='💵 Cash'&&t.type!=='contra')).reduce((s,t)=>s+t.amt,0)
+             -all.filter(t=>t.type==='out'&&(isC?t.mode==='💵 Cash':t.mode!=='💵 Cash')).reduce((s,t)=>s+t.amt,0);
+      bal+=all.filter(t=>t.type==='contra'&&t.contraTo===b).reduce((s,t)=>s+t.amt,0);
+      bal-=all.filter(t=>t.type==='contra'&&t.contraFrom===b).reduce((s,t)=>s+t.amt,0);
+      return bal;
+    };
+    const lbl=b=>b==='cash'?'💵 Cash':'🏦 Bank';
+    const fb=bucket(from),tb=bucket(to);
+    el.style.display='block';
+    el.innerHTML=`${lbl(from)}: <b>${f(fb)}</b> → <b style="color:${fb-amt<0?'var(--red)':'var(--text)'}">${f(fb-amt)}</b><br>${lbl(to)}: <b>${f(tb)}</b> → <b style="color:var(--green)">${f(tb+amt)}</b>`;
+    return;
+  }
   const mode=document.getElementById('t-mode')?.value;
   if(!mode){el.style.display='none';return;}
   const amt=parseFloat(document.getElementById('t-amt')?.value)||0;
   const before=_balFor(mode);
   const after=type==='in'?before+amt:before-amt;
-  const f=n=>'₹'+n.toLocaleString('en-IN');
   el.style.display='block';
   el.innerHTML=`<b>${mode}</b> — Balance before: <b>${f(before)}</b> &nbsp;→&nbsp; after: <b style="color:${after<0?'var(--red)':'var(--green)'}">${f(after)}</b>`;
 }
 document.addEventListener('input',e=>{if(['t-amt'].includes(e.target.id))updBalPreview();});
-document.addEventListener('change',e=>{if(['t-mode'].includes(e.target.id))updBalPreview();});
+document.addEventListener('change',e=>{if(['t-mode','t-confrom','t-conto','t-link'].includes(e.target.id))updBalPreview();});
 
 window.addEventListener('resize',fixStickyTop);
 setTimeout(fixStickyTop,600);
