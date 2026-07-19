@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.11.2 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.12.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -85,7 +85,7 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 .topbar h1{font-size:18px;font-weight:900;letter-spacing:0.5px;background:linear-gradient(90deg,white,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .topbar-sub{font-size:9px;opacity:.75;margin-top:1px;-webkit-text-fill-color:rgba(255,255,255,0.75);}
 .topbar-clock{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;flex-shrink:0;}
-.clock-hm{font-size:22px;font-weight:900;color:var(--gold);letter-spacing:2px;font-family:'Courier New',monospace;}
+.clock-hm{font-size:18px;font-weight:900;color:var(--gold);letter-spacing:1px;font-family:'Courier New',monospace;}
 
 /* ===== BOTTOM NAV ===== */
 .bnav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:100;box-shadow:0 -4px 20px rgba(10,26,46,0.4);}
@@ -233,22 +233,22 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .nb-pill-btn.blue:active{background:rgba(167,139,250,0.15);}
 
 /* ===== CATEGORY ROW CARDS (Nano Banana style) ===== */
-.cat-card{border-radius:12px;margin-bottom:3px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;height:56px;border:none;background-size:cover !important;background-position:center !important;width:100%;box-sizing:border-box;}
+.cat-card{border-radius:12px;margin-bottom:6px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;height:56px;border:none;background-size:cover !important;background-position:center !important;width:100%;box-sizing:border-box;}
 .cat-card-text{flex:1;padding:10px 8px 10px 14px;z-index:2;position:relative;min-width:0;overflow:hidden;}
 .cat-card-title{font-size:13px;font-weight:800;color:white;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cat-card-count{display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.2);border-radius:20px;padding:1px 9px;font-size:11px;font-weight:700;color:white;margin-left:7px;}
 .cat-card-low{background:var(--gold);color:#0a1a38;border-radius:20px;padding:1px 8px;font-size:10px;font-weight:800;margin-left:5px;}
 .cat-card-pattern{width:100px;flex-shrink:0;align-self:stretch;display:flex;align-items:center;justify-content:center;overflow:hidden;opacity:0.85;}
-.cat-card-actions{display:flex;flex-direction:column;gap:4px;padding:6px 8px 6px 0;z-index:2;flex-shrink:0;}
-.cat-card-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;border-radius:50%;width:26px;height:26px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.cat-card-actions{display:flex;flex-direction:column;gap:2px;padding:4px 8px 4px 0;justify-content:center;z-index:2;flex-shrink:0;}
+.cat-card-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;border-radius:50%;width:22px;height:22px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 
 /* Sub-category row — matches the blue from category card artwork */
-.sub-card{border-radius:10px;margin-bottom:2px;overflow:hidden;display:flex;align-items:center;min-height:34px;background:#1a4a80;border:1px solid #2258a0;}
+.sub-card{border-radius:10px;margin-bottom:2px;overflow:hidden;display:flex;align-items:center;min-height:34px;background:#2160b0;border:1px solid #2f74c8;}
 .sub-card-text{flex:1;padding:6px 12px;font-size:12px;font-weight:700;color:#d8e4f4;}
 .sub-card-actions{display:flex;gap:4px;padding:4px 8px 4px 0;flex-shrink:0;}
 
 /* Item rows — lighter than sub-card */
-.item-row{display:flex;align-items:center;gap:6px;padding:6px 10px;background:#245a98;border-radius:8px;margin-bottom:2px;border:1px solid #3070b0;}
+.item-row{display:flex;align-items:center;gap:6px;padding:6px 10px;background:#3a80d4;border-radius:8px;margin-bottom:2px;border:1px solid #55a0e8;}
 .item-row.low{border-color:var(--gold);background:rgba(245,200,66,0.07);}
 .item-name{flex:1;font-size:13px;font-weight:600;color:var(--text);}
 .item-row.low .item-name{color:var(--gold);}
@@ -300,15 +300,14 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <!-- Search row - Items view only -->
     <div style="background:var(--card);border-left:1px solid var(--border);border-right:1px solid var(--border);border-top:1px solid var(--border);padding:5px 6px;" id="shop-search-sticky">
       <div style="display:flex;gap:4px;align-items:center;height:32px;">
-        <div style="flex:1;min-width:0;height:100%;border-radius:8px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;overflow:hidden;position:relative;">
+        <div style="flex:1;min-width:0;height:32px;box-sizing:border-box;border-radius:8px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;overflow:hidden;">
           <span style="flex-shrink:0;padding:0 4px 0 8px;font-size:12px;opacity:0.5;">🔍</span>
-          <input id="srch" oninput="renderShop()"
-            style="flex:1;min-width:0;height:100%;padding:0 6px 0 0;background:transparent;border:none;outline:none;font-size:11px;font-family:inherit;color:var(--text);font-weight:600;"/>
-          <span id="srch-placeholder" style="position:absolute;left:32px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--tm);pointer-events:none;font-weight:400;">Search items...</span>
+          <input id="srch" oninput="renderShop()" placeholder="Search items..."
+            style="flex:1;min-width:0;height:30px;line-height:30px;padding:0 6px 0 0;background:transparent;border:none;outline:none;font-size:11px;font-family:inherit;color:var(--text);font-weight:600;"/>
         </div>
-        <button onclick="shareShoppingList()" title="Share" style="flex:0 0 auto;height:100%;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📤 Share</button>
-        <button onclick="printShoppingList()" title="PDF" style="flex:0 0 auto;height:100%;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📄 PDF</button>
-        <button onclick="openAddBroad()" title="Add Category" style="flex:0 0 auto;height:100%;border:1px solid rgba(245,200,66,0.25);color:var(--gold);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">+ Category</button>
+        <button onclick="shareShoppingList()" title="Share" style="flex:0 0 auto;height:32px;box-sizing:border-box;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📤 Share</button>
+        <button onclick="printShoppingList()" title="PDF" style="flex:0 0 auto;height:32px;box-sizing:border-box;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📄 PDF</button>
+        <button onclick="openAddBroad()" title="Add Category" style="flex:0 0 auto;height:32px;box-sizing:border-box;border:1px solid rgba(245,200,66,0.25);color:var(--gold);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">+ Category</button>
       </div>
     </div>
   </div><!-- end shop-sticky -->
@@ -1047,7 +1046,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.11.2';
+const APP_VERSION='2.12.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1284,9 +1283,6 @@ function pickEmojiCat(el){selCatEmoji=el.textContent;document.getElementById('ec
 function renderShop(){
   const items=ld('gl_items',{});
   const q=(document.getElementById('srch')||{}).value||'';
-  // Fix 7: Toggle custom placeholder visibility
-  const ph=document.getElementById('srch-placeholder');
-  if(ph)ph.style.display=q?'none':'block';
   const cats3=ld('gl_cats3',[]);
   const ASSETS=ld('gl_assets',{});// image slot store: {broad: url}
 
@@ -3105,12 +3101,7 @@ function applyUIAssets(){
     if(tabBar){tabBar.style.backgroundImage=`url('${ui.tabs_bg}')`;tabBar.style.backgroundSize='cover';tabBar.style.backgroundPosition='center';}
   }
   // Search bar background
-  if(ui.search_bar){
-    const srchWrap=document.getElementById('srch')?.parentElement;
-    if(srchWrap){srchWrap.style.backgroundImage=`url('${ui.search_bar}')`;srchWrap.style.backgroundSize='100% 100%';srchWrap.style.backgroundRepeat='no-repeat';srchWrap.style.border='none';}
-    const srchInput=document.getElementById('srch');
-    if(srchInput)srchInput.placeholder='';
-  }
+  // search_bar.png disabled — its baked-in text caused double placeholder
   // Action buttons — replace text buttons with image buttons
   ['share','category','item','sos'].forEach(name=>{
     if(ui['btn_'+name]){
@@ -3557,7 +3548,7 @@ function updateDateTime(){
   const dateEl=document.getElementById('tdate');
   const hmEl=document.getElementById('tclock-hm');
   if(dateEl)dateEl.textContent=days[n.getDay()]+', '+n.getDate()+' '+MN[n.getMonth()]+' '+n.getFullYear();
-  if(hmEl)hmEl.textContent=hr+' : '+mn;
+  if(hmEl)hmEl.textContent=hr+':'+mn;
 }
 updateDateTime();
 setInterval(updateDateTime,30000);
