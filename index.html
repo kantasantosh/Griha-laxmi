@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.11.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.11.2 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -84,9 +84,8 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 .topbar-brand{display:flex;flex-direction:column;}
 .topbar h1{font-size:18px;font-weight:900;letter-spacing:0.5px;background:linear-gradient(90deg,white,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .topbar-sub{font-size:9px;opacity:.75;margin-top:1px;-webkit-text-fill-color:rgba(255,255,255,0.75);}
-.topbar-clock{display:flex;flex-direction:column;align-items:center;justify-content:center;position:absolute;left:50%;transform:translateX(-50%);line-height:1;}
-.clock-hm{font-size:24px;font-weight:900;color:var(--gold);letter-spacing:3px;font-family:'Courier New',monospace;}
-.clock-day{font-size:8px;color:rgba(255,255,255,0.55);font-weight:700;letter-spacing:1.5px;margin-top:1px;}
+.topbar-clock{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;flex-shrink:0;}
+.clock-hm{font-size:22px;font-weight:900;color:var(--gold);letter-spacing:2px;font-family:'Courier New',monospace;}
 
 /* ===== BOTTOM NAV ===== */
 .bnav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:100;box-shadow:0 -4px 20px rgba(10,26,46,0.4);}
@@ -96,7 +95,7 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 .ni{font-size:20px;line-height:1;}
 
 /* ===== TABS ===== */
-.tab{display:none;padding:12px;}
+.tab{display:none;padding:0 8px 8px;}
 .tab.active{display:block;}
 .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .st{font-size:18px;font-weight:800;color:var(--gold);}
@@ -234,22 +233,22 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .nb-pill-btn.blue:active{background:rgba(167,139,250,0.15);}
 
 /* ===== CATEGORY ROW CARDS (Nano Banana style) ===== */
-.cat-card{border-radius:12px;margin-bottom:3px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;height:56px;border:none;background-size:cover !important;background-position:center !important;max-width:100%;}
-.cat-card-text{flex:1;padding:12px 14px;z-index:2;position:relative;}
-.cat-card-title{font-size:14px;font-weight:800;color:white;line-height:1.2;}
+.cat-card{border-radius:12px;margin-bottom:3px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;height:56px;border:none;background-size:cover !important;background-position:center !important;width:100%;box-sizing:border-box;}
+.cat-card-text{flex:1;padding:10px 8px 10px 14px;z-index:2;position:relative;min-width:0;overflow:hidden;}
+.cat-card-title{font-size:13px;font-weight:800;color:white;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cat-card-count{display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.2);border-radius:20px;padding:1px 9px;font-size:11px;font-weight:700;color:white;margin-left:7px;}
 .cat-card-low{background:var(--gold);color:#0a1a38;border-radius:20px;padding:1px 8px;font-size:10px;font-weight:800;margin-left:5px;}
 .cat-card-pattern{width:100px;flex-shrink:0;align-self:stretch;display:flex;align-items:center;justify-content:center;overflow:hidden;opacity:0.85;}
 .cat-card-actions{display:flex;flex-direction:column;gap:4px;padding:6px 8px 6px 0;z-index:2;flex-shrink:0;}
 .cat-card-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;border-radius:50%;width:26px;height:26px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 
-/* Sub-category row — medium tier */
-.sub-card{border-radius:10px;margin-bottom:2px;overflow:hidden;display:flex;align-items:center;min-height:34px;background:rgba(14,36,72,0.85);border:1px solid rgba(30,52,88,0.6);}
-.sub-card-text{flex:1;padding:6px 12px;font-size:12px;font-weight:700;color:var(--text);}
+/* Sub-category row — matches the blue from category card artwork */
+.sub-card{border-radius:10px;margin-bottom:2px;overflow:hidden;display:flex;align-items:center;min-height:34px;background:#1a4a80;border:1px solid #2258a0;}
+.sub-card-text{flex:1;padding:6px 12px;font-size:12px;font-weight:700;color:#d8e4f4;}
 .sub-card-actions{display:flex;gap:4px;padding:4px 8px 4px 0;flex-shrink:0;}
 
-/* Item rows — lightest tier */
-.item-row{display:flex;align-items:center;gap:6px;padding:6px 10px;background:rgba(20,44,82,0.6);border-radius:8px;margin-bottom:2px;border:1px solid rgba(30,52,88,0.4);}
+/* Item rows — lighter than sub-card */
+.item-row{display:flex;align-items:center;gap:6px;padding:6px 10px;background:#245a98;border-radius:8px;margin-bottom:2px;border:1px solid #3070b0;}
 .item-row.low{border-color:var(--gold);background:rgba(245,200,66,0.07);}
 .item-name{flex:1;font-size:13px;font-weight:600;color:var(--text);}
 .item-row.low .item-name{color:var(--gold);}
@@ -263,14 +262,13 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </head>
 <body>
 
-<div class="topbar" style="position:relative;">
+<div class="topbar">
   <div class="topbar-brand" style="max-width:120px;">
     <h1 style="font-size:14px;">🪔 GrihaLaxmi</h1>
     <div class="topbar-sub" id="tdate"></div>
   </div>
   <div class="topbar-clock" id="tclock">
     <span class="clock-hm" id="tclock-hm">--:--</span>
-    <span class="clock-day" id="tclock-day">---</span>
   </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
     <div style="display:flex;gap:4px;align-items:center;">
@@ -300,22 +298,23 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       </button>
     </div>
     <!-- Search row - Items view only -->
-    <div style="background:var(--card);border-left:1px solid var(--border);border-right:1px solid var(--border);border-top:1px solid var(--border);padding:5px 8px;" id="shop-search-sticky">
-      <div style="display:flex;gap:4px;align-items:center;">
-        <div style="flex:1;min-width:0;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;overflow:hidden;">
-          <span style="flex-shrink:0;padding:0 6px 0 10px;font-size:12px;opacity:0.5;">🔍</span>
-          <input id="srch" placeholder="Search items..." oninput="renderShop()"
-            style="flex:1;min-width:0;height:100%;padding:0 8px 0 0;background:transparent;border:none;outline:none;font-size:11px;font-family:inherit;color:var(--text);font-weight:600;"/>
+    <div style="background:var(--card);border-left:1px solid var(--border);border-right:1px solid var(--border);border-top:1px solid var(--border);padding:5px 6px;" id="shop-search-sticky">
+      <div style="display:flex;gap:4px;align-items:center;height:32px;">
+        <div style="flex:1;min-width:0;height:100%;border-radius:8px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;overflow:hidden;position:relative;">
+          <span style="flex-shrink:0;padding:0 4px 0 8px;font-size:12px;opacity:0.5;">🔍</span>
+          <input id="srch" oninput="renderShop()"
+            style="flex:1;min-width:0;height:100%;padding:0 6px 0 0;background:transparent;border:none;outline:none;font-size:11px;font-family:inherit;color:var(--text);font-weight:600;"/>
+          <span id="srch-placeholder" style="position:absolute;left:32px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--tm);pointer-events:none;font-weight:400;">Search items...</span>
         </div>
-        <button onclick="shareShoppingList()" title="Share List" style="flex-shrink:0;height:32px;min-width:52px;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 6px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;text-align:center;">📤 Share</button>
-        <button onclick="printShoppingList()" title="Save PDF" style="flex-shrink:0;height:32px;min-width:52px;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 6px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;text-align:center;">📄 PDF</button>
-        <button onclick="openAddBroad()" title="Add Category" style="flex-shrink:0;height:32px;min-width:52px;border:1px solid rgba(245,200,66,0.2);color:var(--gold);border-radius:8px;padding:0 6px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;text-align:center;">+ Category</button>
+        <button onclick="shareShoppingList()" title="Share" style="flex:0 0 auto;height:100%;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📤 Share</button>
+        <button onclick="printShoppingList()" title="PDF" style="flex:0 0 auto;height:100%;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📄 PDF</button>
+        <button onclick="openAddBroad()" title="Add Category" style="flex:0 0 auto;height:100%;border:1px solid rgba(245,200,66,0.25);color:var(--gold);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">+ Category</button>
       </div>
     </div>
   </div><!-- end shop-sticky -->
 
   <!-- Content panel -->
-  <div style="background:var(--card);border-radius:0 0 12px 12px;border:1px solid var(--border);border-top:none;padding:4px 10px 10px;margin-bottom:12px;">
+  <div style="background:var(--card);border-radius:0 0 12px 12px;border:1px solid var(--border);border-top:none;padding:2px 6px 6px;margin-bottom:12px;">
 
     <!-- ITEMS VIEW -->
     <div id="sv-items">
@@ -1048,7 +1047,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.11.0';
+const APP_VERSION='2.11.2';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1285,6 +1284,9 @@ function pickEmojiCat(el){selCatEmoji=el.textContent;document.getElementById('ec
 function renderShop(){
   const items=ld('gl_items',{});
   const q=(document.getElementById('srch')||{}).value||'';
+  // Fix 7: Toggle custom placeholder visibility
+  const ph=document.getElementById('srch-placeholder');
+  if(ph)ph.style.display=q?'none':'block';
   const cats3=ld('gl_cats3',[]);
   const ASSETS=ld('gl_assets',{});// image slot store: {broad: url}
 
@@ -1309,8 +1311,8 @@ function renderShop(){
 
     const bid='b_'+broad.replace(/[^a-z0-9]/gi,'_');
     const besc=esc(broad);
-    // Category card colors — darkest tier
-    const bg=catIdx%2===0?'#081428':'#0c1a34';
+    // Category card colors — DARKEST tier (visibly darker than sub/item)
+    const bg=catIdx%2===0?'#060e1e':'#081222';
     const imgUrl=ASSETS[broad]||'';
     const patternStyle=imgUrl
       ?`background:url('${imgUrl}') center/cover no-repeat`
@@ -3196,14 +3198,14 @@ function toast(msg){
 }
 
 function printShoppingList(){
-  const cats=ld('gl_cats',DEF_CATS);
+  const cats3=ld('gl_cats3',[]);
   const items=ld('gl_items',{});
   const dateStr=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
   // Build list data
   const sections=[];
-  cats.forEach(bcat=>{
-    const broad=bcat.name;
+  cats3.forEach(bcat=>{
+    const broad=bcat.broad;
     const catItems=[];
     bcat.subs.forEach(sub=>{
       Object.values(items).filter(i=>i.broad===broad&&i.sub===sub).forEach(i=>{
@@ -3550,15 +3552,12 @@ function shareCash(){
 function updateDateTime(){
   const n=new Date();
   const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const daysShort=['SUN','MON','TUE','WED','THU','FRI','SAT'];
   const hr=n.getHours().toString().padStart(2,'0');
   const mn=n.getMinutes().toString().padStart(2,'0');
   const dateEl=document.getElementById('tdate');
   const hmEl=document.getElementById('tclock-hm');
-  const dayEl=document.getElementById('tclock-day');
   if(dateEl)dateEl.textContent=days[n.getDay()]+', '+n.getDate()+' '+MN[n.getMonth()]+' '+n.getFullYear();
   if(hmEl)hmEl.textContent=hr+' : '+mn;
-  if(dayEl)dayEl.textContent=daysShort[n.getDay()];
 }
 updateDateTime();
 setInterval(updateDateTime,30000);
