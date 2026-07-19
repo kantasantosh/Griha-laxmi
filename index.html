@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.10.3 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.10.4 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -1048,7 +1048,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.10.3';
+const APP_VERSION='2.10.4';
 const APP_BUILD='20 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -3209,6 +3209,7 @@ function printShoppingList(){
 
   // Generate PDF using jsPDF
   try{
+    if(!window.jspdf) throw new Error('jsPDF not loaded');
     const{jsPDF}=window.jspdf;
     const doc=new jsPDF({unit:'mm',format:'a4'});
     let y=20;
