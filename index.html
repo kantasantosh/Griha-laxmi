@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.15.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.16.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -89,7 +89,7 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 
 /* ===== BOTTOM NAV ===== */
 .bnav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:100;box-shadow:0 -4px 20px rgba(10,26,46,0.4);}
-.nb{flex:1;display:flex;flex-direction:column;align-items:center;padding:7px 1px 6px;border:none;background:none;cursor:pointer;font-family:inherit;color:var(--tm);font-size:8px;font-weight:700;gap:2px;position:relative;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;padding:7px 1px 6px;border:none;background:none;cursor:pointer;font-family:inherit;color:#b8cce8;font-size:11px;font-weight:700;gap:2px;position:relative;}
 .nb.active{color:var(--gold);}
 .nb.active::before{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:linear-gradient(90deg,var(--gold),var(--p3));border-radius:0 0 2px 2px;}
 .ni{font-size:20px;line-height:1;}
@@ -105,8 +105,8 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 .card{background:var(--card);border-radius:var(--radius);padding:14px;margin-bottom:12px;box-shadow:var(--shadow);border:1px solid var(--border);}
 
 /* ===== INNER TABS ===== */
-.itabs{display:flex;background:var(--bg);border-radius:var(--rsm);padding:3px;margin-bottom:12px;gap:3px;border:1px solid var(--border);}
-.it{flex:1;text-align:center;padding:8px 3px;border-radius:8px;font-size:10.5px;font-weight:700;cursor:pointer;border:none;background:none;font-family:inherit;color:var(--tm);}
+.itabs{position:sticky;z-index:80;background:var(--bg);display:flex;background:var(--bg);border-radius:var(--rsm);padding:3px;margin-bottom:12px;gap:3px;border:1px solid var(--border);}
+.it{flex:1;text-align:center;padding:9px 3px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;border:none;background:none;font-family:inherit;color:#c8d8f0;}
 .it.active{background:linear-gradient(135deg,var(--p2),var(--p3));color:white;box-shadow:0 2px 8px rgba(26,90,173,0.35);}
 
 /* ===== INPUTS ===== */
@@ -257,6 +257,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .unit-tag{font-size:10px;color:#12305e;font-weight:600;min-width:26px;}
 .low-btn{background:rgba(255,255,255,0.5);border:1.5px solid #12305e;color:#12305e;border-radius:16px;padding:3px 8px;font-size:10px;font-family:inherit;font-weight:700;cursor:pointer;white-space:nowrap;}
 .low-btn.active{background:var(--gold);border-color:var(--gold);color:#0a1a38;}
+#tab-cash{zoom:1.12;}
 </style>
 </head>
 <body>
@@ -1032,7 +1033,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.15.0';
+const APP_VERSION='2.16.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1295,7 +1296,7 @@ function renderShop(){
     const besc=esc(broad);
     // Category card colors — DARKEST tier (visibly darker than sub/item)
     const bg=catIdx%2===0?'#060e1e':'#081222';
-    const imgUrl=ASSETS[broad]||'';
+    const imgUrl=(window._croppedAssets&&window._croppedAssets['cat:'+broad])||ASSETS[broad]||'';
     const patternStyle=imgUrl
       ?`background:url('${imgUrl}') center/cover no-repeat`
       :`background:${bg}`;
@@ -1732,7 +1733,7 @@ function renderBills(){
         <div style="font-size:21px">${b.icon}</div>
         <div style="flex:1">
           <div style="font-weight:800;font-size:13px;color:#eaf2ff">${b.name}</div>
-          <div style="font-size:12px;color:var(--tm);margin-top:2px">${b.cycle} ${b.amount?'• ₹'+b.amount.toLocaleString('en-IN'):'• Tap twice to set amount'}</div>
+          <div style="font-size:12px;color:#b8cce8;margin-top:2px">${b.cycle} ${b.amount?'• ₹'+b.amount.toLocaleString('en-IN'):'• Tap twice to set amount'}</div>
           <div style="margin-top:5px">${statusBadge}</div>
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
@@ -3081,7 +3082,6 @@ function wireAssets(baseUrl){
   sv('gl_asset_base',base);
   applyUIAssets();
   renderShop();
-  toast('✅ All assets loaded from GitHub!');
 }
 
 function applyUIAssets(){
@@ -3136,7 +3136,7 @@ function applyUIAssets(){
   // Logo header — apply directly (transparent PNG)
   if(ui.logo_header){
     const h1=document.querySelector('.topbar h1');
-    if(h1)h1.innerHTML=`<img src="${ui.logo_header}" style="height:32px;vertical-align:middle;display:block;margin-left:-2px;" alt="GrihaLaxmi"/>`;
+    if(h1)h1.innerHTML=`<img src="${ui.logo_header}" style="height:32px;vertical-align:middle;display:block;" alt="GrihaLaxmi"/>`;
   }
 }
 // ===== ASSET WIRING END =====
@@ -3231,7 +3231,8 @@ function openPrintWin(title,innerHtml){
     ul{margin:0 0 8px 18px;padding:0;}li{margin:3px 0;font-size:14px;}
     pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:14px;}
     .ft{text-align:center;color:#999;font-size:11px;margin-top:24px;}
-  </style></head><body><h2>🪔 GrihaLaxmi — ${title}</h2>${innerHtml}
+  #tab-cash{zoom:1.12;}
+</style></head><body><h2>🪔 GrihaLaxmi — ${title}</h2>${innerHtml}
   <div class="ft">Generated from GrihaLaxmi App</div>
   <script>setTimeout(()=>window.print(),400);<\/script></body></html>`);
   w.document.close();
@@ -3516,10 +3517,56 @@ setInterval(updateDateTime,30000);
 // v2.14: measure topbar height so sticky row sits flush below it (no transparency gap)
 function fixStickyTop(){
   const tb=document.querySelector('.topbar');
+  if(!tb)return;
+  const t=(tb.offsetHeight-1)+'px';
   const st=document.getElementById('shop-sticky');
-  if(tb&&st)st.style.top=(tb.offsetHeight-1)+'px';
+  if(st)st.style.top=t;
+  document.querySelectorAll('.itabs').forEach(el=>el.style.top=t);
 }
 window.addEventListener('load',fixStickyTop);
+
+// v2.16: auto-crop transparent margins from Canva PNGs so all cards render identical geometry
+window._croppedAssets={};
+function autoCropImg(url,key,cb){
+  const img=new Image();img.crossOrigin='anonymous';
+  img.onload=()=>{try{
+    const scale=Math.min(1,800/img.width);
+    const W=Math.round(img.width*scale),H=Math.round(img.height*scale);
+    const c=document.createElement('canvas');c.width=W;c.height=H;
+    const x=c.getContext('2d');x.drawImage(img,0,0,W,H);
+    const d=x.getImageData(0,0,W,H).data;
+    let minX=W,minY=H,maxX=-1,maxY=-1;
+    for(let y=0;y<H;y++){for(let xx=0;xx<W;xx++){
+      if(d[(y*W+xx)*4+3]>12){if(xx<minX)minX=xx;if(xx>maxX)maxX=xx;if(y<minY)minY=y;if(y>maxY)maxY=y;}
+    }}
+    if(maxX<=minX+4||maxY<=minY+4){cb&&cb();return;}
+    const w=maxX-minX+1,hh=maxY-minY+1;
+    const c2=document.createElement('canvas');c2.width=w;c2.height=hh;
+    c2.getContext('2d').drawImage(c,minX,minY,w,hh,0,0,w,hh);
+    window._croppedAssets[key]=c2.toDataURL('image/png');
+    cb&&cb();
+  }catch(e){cb&&cb();}};
+  img.onerror=()=>cb&&cb();
+  img.src=url;
+}
+function cropAllAssets(){
+  const cats=ld('gl_assets',{});
+  const ui=ld('gl_ui_assets',{});
+  let pending=0,dirty=false;
+  const done=()=>{pending--;if(pending===0&&dirty){renderShop();applyCroppedLogo();}};
+  Object.entries(cats).forEach(([broad,url])=>{
+    if(!window._croppedAssets['cat:'+broad]){pending++;dirty=true;autoCropImg(url,'cat:'+broad,done);}
+  });
+  if(ui.logo_header&&!window._croppedAssets['logo']){pending++;dirty=true;autoCropImg(ui.logo_header,'logo',done);}
+  if(pending===0){renderShop();applyCroppedLogo();}
+}
+function applyCroppedLogo(){
+  const src=window._croppedAssets['logo'];if(!src)return;
+  const im=document.querySelector('.topbar h1 img');
+  if(im)im.src=src;
+}
+setTimeout(cropAllAssets,800);
+
 
 // v2.15: live balance preview in voucher entry
 function _balFor(mode){
