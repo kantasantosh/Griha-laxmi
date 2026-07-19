@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.14.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.15.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -83,7 +83,7 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 }
 .topbar-brand{display:flex;flex-direction:column;}
 .topbar h1{font-size:18px;font-weight:900;letter-spacing:0.5px;background:linear-gradient(90deg,white,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.topbar-sub{font-size:9px;opacity:.85;margin-top:2px;margin-left:2px;-webkit-text-fill-color:rgba(255,255,255,0.75);}
+.topbar-sub{font-size:9px;opacity:.85;margin-top:2px;margin-left:0;-webkit-text-fill-color:rgba(255,255,255,0.75);}
 .topbar-clock{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;flex-shrink:0;}
 .clock-hm{font-size:20px;font-weight:900;color:var(--gold);letter-spacing:1px;font-family:'Courier New',monospace;line-height:1.05;}
 
@@ -233,7 +233,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .nb-pill-btn.blue:active{background:rgba(167,139,250,0.15);}
 
 /* ===== CATEGORY ROW CARDS (Nano Banana style) ===== */
-.cat-card{border-radius:12px;margin-bottom:5px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;height:56px;border:1px solid #2a5490;background-color:#122b52;background-size:cover !important;background-position:center !important;width:100%;box-sizing:border-box;}
+.cat-card{border-radius:12px;margin-bottom:5px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;height:56px;border:none;background-color:#122b52;background-size:cover !important;background-position:center !important;width:100%;box-sizing:border-box;}
 .cat-card-text{flex:1;padding:10px 8px 10px 14px;z-index:2;position:relative;min-width:0;overflow:hidden;}
 .cat-card-title{font-size:14px;font-weight:800;color:white;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .cat-card-count{display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.2);border-radius:20px;padding:1px 9px;font-size:11px;font-weight:700;color:white;margin-left:7px;}
@@ -825,7 +825,6 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       <input type="hidden" id="t-type" value="in"/>
     </div>
     <div id="txn-normal-fields">
-      <div class="fg"><label class="fl">Description</label><input class="fi" id="t-desc" placeholder="e.g. Grocery, Milk payment, Salary received"/></div>
       <div class="fg">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
           <label class="fl" style="margin-bottom:0;">Payment Mode</label>
@@ -850,6 +849,8 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       </div>
       <select class="fi" id="t-cat"></select>
     </div>
+    <div class="fg" id="txn-desc-field"><label class="fl">Description</label><input class="fi" id="t-desc" placeholder="e.g. Grocery, Milk payment, Salary received"/></div>
+    <div id="bal-preview" style="display:none;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);padding:8px 10px;margin-bottom:10px;font-size:12px;color:var(--text);"></div>
     <button class="sb2" onclick="addTxn()">Save Entry</button>
   </div>
 </div>
@@ -938,10 +939,9 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 <div class="mo" id="m-about">
   <div class="md">
     <button class="mc2" onclick="closeM('m-about')">✕</button>
-    <div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:4px 0 6px;">
-      <span style="font-size:26px;">🪔</span>
-      <span style="font-size:19px;font-weight:800;color:var(--gold);">GrihaLaxmi</span>
-      <span style="font-size:11px;color:var(--tm);">· Your Complete Home Manager</span>
+    <div style="text-align:center;padding:4px 0 8px;">
+      <div><span style="font-size:24px;vertical-align:middle;">🪔</span> <span style="font-size:20px;font-weight:800;color:var(--gold);vertical-align:middle;">GrihaLaxmi</span></div>
+      <div style="font-size:11px;color:var(--tm);margin-top:2px;">Your Complete Home Manager</div>
     </div>
       <!-- Credits & Tech Stack -->
       <div style="padding:16px;background:var(--card);border-radius:var(--rsm);color:white;margin-bottom:10px;border:1px solid var(--border);text-align:center;">
@@ -984,26 +984,15 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       <!-- Appearance Settings -->
       
       <!-- Data Backup -->
-      <div style="background:var(--card);border-radius:var(--rsm);padding:14px;border:1px solid var(--border);margin-bottom:10px;text-align:left;">
-        <div style="font-size:13px;font-weight:800;color:var(--gold);margin-bottom:8px;">💾 Data Backup</div>
+      <div style="background:var(--card);border-radius:var(--rsm);padding:10px;border:1px solid var(--border);margin-bottom:10px;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <button onclick="exportData()" style="background:linear-gradient(135deg,var(--teal),#007a6e);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">⬇️ Export</button>
-          <label style="background:linear-gradient(135deg,var(--purple),#9b59b6);color:white;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;text-align:center;display:block;">⬆️ Import<input type="file" accept=".json" onchange="importData(this)" style="display:none;"/></label>
+          <button onclick="exportData()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">⬇️ Export</button>
+          <label style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;text-align:center;display:block;">⬆️ Import<input type="file" accept=".json" onchange="importData(this)" style="display:none;"/></label>
+          <button onclick="closeM('m-about');openM('m-settings');" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">⚙️ Theme &amp; Font</button>
+          <button onclick="openM('m-feedback')" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">💬 Feedback</button>
         </div>
       </div>
-      <!-- Theme + Feedback in one row -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-        <button onclick="closeM('m-about');openM('m-settings');" style="background:#3a80d4;color:white;border:1px solid #4f94e4;border-radius:var(--rsm);padding:12px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">⚙️ Theme & Font</button>
-        <button onclick="openM('m-feedback')" style="background:#3a80d4;color:white;border:1px solid #4f94e4;border-radius:var(--rsm);padding:12px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">💬 Feedback</button>
-      </div>
-      <!-- Reset Shopping -->
-      <div style="background:var(--card);border-radius:var(--rsm);padding:14px;border:1px solid var(--border);margin-bottom:10px;text-align:left;">
-        <div style="font-size:13px;font-weight:800;color:var(--red);margin-bottom:4px;">🔄 Fix Shopping List</div>
-        <div style="font-size:11px;color:var(--tm);margin-bottom:8px;">Resets shopping data to defaults. Other data is safe.</div>
-        <button onclick="resetShoppingData()" style="width:100%;background:var(--red);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">🔄 Reset Shopping Data</button>
-      </div>
-      <div style="font-size:11px;color:#c0c8d8;margin-top:6px;" id="about-ver-line"></div>
-    </div>
+      
   </div>
 </div>
 
@@ -1043,7 +1032,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.14.0';
+const APP_VERSION='2.15.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1238,7 +1227,7 @@ function hhView(v,btn){
 }
 
 // MODALS
-function openM(id){
+function openM(id){if(id==='m-addtxn')setTimeout(updBalPreview,50);
   document.getElementById(id).classList.add('open');
   if(id==='m-milkpay')document.getElementById('mp-date').value=td();
   if(id==='m-suppay')document.getElementById('sp-date').value=td();
@@ -1766,7 +1755,7 @@ function markPaid(id){
   // reflect in CashBook as expense
   const ts=ld('gl_txns',[]);
   const now=new Date();const raw=now.toISOString().slice(0,10);
-  ts.push({id:Date.now().toString(),desc:`${x.icon||'💡'} ${x.name} (Bill)`,amt:x.amount||0,type:'expense',cat:'💡 Bills & Utilities',mode:'bank',raw,date:fmt(raw)});
+  ts.push({id:Date.now().toString(),desc:`${x.icon||'💡'} ${x.name} (Bill)`,amt:x.amount||0,type:'expense',cat:'💡 Bills & Utilities',mode:'🏦 Net Banking',raw,date:fmt(raw)});
   sv('gl_txns',ts);
   toast(x.amount?`Paid ₹${x.amount} — added to CashBook`:'Marked paid — set amount to record in CashBook');
   renderBills();
@@ -2502,6 +2491,8 @@ function setTtype(type){
   document.getElementById('txn-normal-fields').style.display=isContra?'none':'block';
   document.getElementById('txn-contra-fields').style.display=isContra?'block':'none';
   document.getElementById('txn-cat-field').style.display=isContra?'none':'block';
+  const df=document.getElementById('txn-desc-field');if(df)df.style.display=isContra?'none':'block';
+  updBalPreview();
 }
 function addTxn(){
   const type=document.getElementById('t-type').value;
@@ -3145,7 +3136,7 @@ function applyUIAssets(){
   // Logo header — apply directly (transparent PNG)
   if(ui.logo_header){
     const h1=document.querySelector('.topbar h1');
-    if(h1)h1.innerHTML=`<img src="${ui.logo_header}" style="height:32px;vertical-align:middle;" alt="GrihaLaxmi"/>`;
+    if(h1)h1.innerHTML=`<img src="${ui.logo_header}" style="height:32px;vertical-align:middle;display:block;margin-left:-2px;" alt="GrihaLaxmi"/>`;
   }
 }
 // ===== ASSET WIRING END =====
@@ -3529,6 +3520,39 @@ function fixStickyTop(){
   if(tb&&st)st.style.top=(tb.offsetHeight-1)+'px';
 }
 window.addEventListener('load',fixStickyTop);
+
+// v2.15: live balance preview in voucher entry
+function _balFor(mode){
+  const all=ld('gl_txns',[]);
+  let bal=all.filter(t=>t.type==='in'&&t.mode===mode).reduce((s,t)=>s+t.amt,0)
+         -all.filter(t=>t.type==='out'&&t.mode===mode).reduce((s,t)=>s+t.amt,0);
+  const isCash=mode==='💵 Cash';
+  const isBank=/Bank|UPI|Card|Wallet/i.test(mode);
+  if(isCash){
+    bal+=all.filter(t=>t.type==='contra'&&t.contraTo==='cash').reduce((s,t)=>s+t.amt,0);
+    bal-=all.filter(t=>t.type==='contra'&&t.contraFrom==='cash').reduce((s,t)=>s+t.amt,0);
+  }else if(isBank){
+    bal+=all.filter(t=>t.type==='contra'&&t.contraTo==='bank').reduce((s,t)=>s+t.amt,0);
+    bal-=all.filter(t=>t.type==='contra'&&t.contraFrom==='bank').reduce((s,t)=>s+t.amt,0);
+  }
+  return bal;
+}
+function updBalPreview(){
+  const el=document.getElementById('bal-preview');if(!el)return;
+  const type=document.getElementById('t-type').value;
+  if(type==='contra'){el.style.display='none';return;}
+  const mode=document.getElementById('t-mode')?.value;
+  if(!mode){el.style.display='none';return;}
+  const amt=parseFloat(document.getElementById('t-amt')?.value)||0;
+  const before=_balFor(mode);
+  const after=type==='in'?before+amt:before-amt;
+  const f=n=>'₹'+n.toLocaleString('en-IN');
+  el.style.display='block';
+  el.innerHTML=`<b>${mode}</b> — Balance before: <b>${f(before)}</b> &nbsp;→&nbsp; after: <b style="color:${after<0?'var(--red)':'var(--green)'}">${f(after)}</b>`;
+}
+document.addEventListener('input',e=>{if(['t-amt'].includes(e.target.id))updBalPreview();});
+document.addEventListener('change',e=>{if(['t-mode'].includes(e.target.id))updBalPreview();});
+
 window.addEventListener('resize',fixStickyTop);
 setTimeout(fixStickyTop,600);
 
