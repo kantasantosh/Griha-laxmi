@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.10.4 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.11.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -84,12 +84,9 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 .topbar-brand{display:flex;flex-direction:column;}
 .topbar h1{font-size:18px;font-weight:900;letter-spacing:0.5px;background:linear-gradient(90deg,white,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .topbar-sub{font-size:9px;opacity:.75;margin-top:1px;-webkit-text-fill-color:rgba(255,255,255,0.75);}
-.topbar-clock{font-size:22px;font-weight:900;color:var(--gold);letter-spacing:1px;text-align:center;line-height:1;}
-.clock-wrap{display:flex;align-items:center;gap:2px;}
-.clock-digit{background:rgba(8,16,35,0.9);border:1px solid rgba(245,200,66,0.15);border-radius:3px;width:18px;height:24px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;font-family:'Courier New',monospace;color:var(--gold);position:relative;}
-.clock-digit::after{content:'';position:absolute;left:2px;right:2px;top:50%;height:1px;background:rgba(0,0,0,0.4);}
-.clock-colon{font-size:14px;font-weight:900;color:var(--gold);opacity:0.4;font-family:'Courier New',monospace;margin:0 1px;}
-.topbar-date-small{font-size:8px;opacity:.7;text-align:center;margin-top:1px;}
+.topbar-clock{display:flex;flex-direction:column;align-items:center;justify-content:center;position:absolute;left:50%;transform:translateX(-50%);line-height:1;}
+.clock-hm{font-size:24px;font-weight:900;color:var(--gold);letter-spacing:3px;font-family:'Courier New',monospace;}
+.clock-day{font-size:8px;color:rgba(255,255,255,0.55);font-weight:700;letter-spacing:1.5px;margin-top:1px;}
 
 /* ===== BOTTOM NAV ===== */
 .bnav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:100;box-shadow:0 -4px 20px rgba(10,26,46,0.4);}
@@ -237,7 +234,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .nb-pill-btn.blue:active{background:rgba(167,139,250,0.15);}
 
 /* ===== CATEGORY ROW CARDS (Nano Banana style) ===== */
-.cat-card{border-radius:12px;margin-bottom:3px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;height:56px;border:none;background-size:cover !important;background-position:center !important;}
+.cat-card{border-radius:12px;margin-bottom:3px;overflow:hidden;position:relative;cursor:pointer;display:flex;align-items:center;height:56px;border:none;background-size:cover !important;background-position:center !important;max-width:100%;}
 .cat-card-text{flex:1;padding:12px 14px;z-index:2;position:relative;}
 .cat-card-title{font-size:14px;font-weight:800;color:white;line-height:1.2;}
 .cat-card-count{display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.2);border-radius:20px;padding:1px 9px;font-size:11px;font-weight:700;color:white;margin-left:7px;}
@@ -246,13 +243,13 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .cat-card-actions{display:flex;flex-direction:column;gap:4px;padding:6px 8px 6px 0;z-index:2;flex-shrink:0;}
 .cat-card-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;border-radius:50%;width:26px;height:26px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 
-/* Sub-category row */
-.sub-card{border-radius:10px;margin-bottom:2px;overflow:hidden;display:flex;align-items:center;min-height:34px;background:rgba(60,100,160,0.2);border:1px solid rgba(100,150,220,0.15);}
+/* Sub-category row — medium tier */
+.sub-card{border-radius:10px;margin-bottom:2px;overflow:hidden;display:flex;align-items:center;min-height:34px;background:rgba(14,36,72,0.85);border:1px solid rgba(30,52,88,0.6);}
 .sub-card-text{flex:1;padding:6px 12px;font-size:12px;font-weight:700;color:var(--text);}
 .sub-card-actions{display:flex;gap:4px;padding:4px 8px 4px 0;flex-shrink:0;}
 
-/* Item rows inside sub-category */
-.item-row{display:flex;align-items:center;gap:6px;padding:6px 10px;background:rgba(80,130,200,0.12);border-radius:8px;margin-bottom:2px;border:1px solid rgba(100,150,220,0.1);}
+/* Item rows — lightest tier */
+.item-row{display:flex;align-items:center;gap:6px;padding:6px 10px;background:rgba(20,44,82,0.6);border-radius:8px;margin-bottom:2px;border:1px solid rgba(30,52,88,0.4);}
 .item-row.low{border-color:var(--gold);background:rgba(245,200,66,0.07);}
 .item-name{flex:1;font-size:13px;font-weight:600;color:var(--text);}
 .item-row.low .item-name{color:var(--gold);}
@@ -266,17 +263,20 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </head>
 <body>
 
-<div class="topbar">
+<div class="topbar" style="position:relative;">
   <div class="topbar-brand" style="max-width:120px;">
     <h1 style="font-size:14px;">🪔 GrihaLaxmi</h1>
     <div class="topbar-sub" id="tdate"></div>
   </div>
-  <div id="tclock" style="display:flex;align-items:center;gap:1px;"></div>
+  <div class="topbar-clock" id="tclock">
+    <span class="clock-hm" id="tclock-hm">--:--</span>
+    <span class="clock-day" id="tclock-day">---</span>
+  </div>
   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">
-    <div style="display:flex;gap:3px;align-items:center;">
-      <button onclick="openSOS()" style="background:linear-gradient(135deg,#8b0000,#e74c3c);border:none;color:white;border-radius:12px;padding:3px 8px;font-size:9px;font-weight:800;cursor:pointer;animation:sosPulse 2.5s infinite;">🆘 SOS</button>
-      <button onclick="forceSyncNow()" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;border-radius:12px;padding:3px 7px;font-size:9px;font-weight:700;cursor:pointer;" title="Sync">☁️</button>
-      <button onclick="openM('m-about')" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;border-radius:12px;padding:3px 7px;font-size:9px;font-weight:700;cursor:pointer;" title="About & Settings">⚙️</button>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <button onclick="openSOS()" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#8b0000,#e74c3c);border:none;color:white;font-size:9px;font-weight:900;cursor:pointer;animation:sosPulse 2.5s infinite;display:flex;align-items:center;justify-content:center;" title="Emergency SOS">SOS</button>
+      <button onclick="forceSyncNow()" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.2);color:white;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Sync">☁️</button>
+      <button onclick="openM('m-about')" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.2);color:white;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Settings">⚙️</button>
     </div>
     <span id="ver-badge" style="font-size:7px;color:rgba(245,200,66,0.5);font-weight:700;"></span>
   </div>
@@ -300,16 +300,16 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       </button>
     </div>
     <!-- Search row - Items view only -->
-    <div style="background:var(--card);border-left:1px solid var(--border);border-right:1px solid var(--border);border-top:1px solid var(--border);padding:5px 10px;" id="shop-search-sticky">
-      <div style="display:flex;gap:5px;align-items:center;">
+    <div style="background:var(--card);border-left:1px solid var(--border);border-right:1px solid var(--border);border-top:1px solid var(--border);padding:5px 8px;" id="shop-search-sticky">
+      <div style="display:flex;gap:4px;align-items:center;">
         <div style="flex:1;min-width:0;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;overflow:hidden;">
           <span style="flex-shrink:0;padding:0 6px 0 10px;font-size:12px;opacity:0.5;">🔍</span>
           <input id="srch" placeholder="Search items..." oninput="renderShop()"
             style="flex:1;min-width:0;height:100%;padding:0 8px 0 0;background:transparent;border:none;outline:none;font-size:11px;font-family:inherit;color:var(--text);font-weight:600;"/>
         </div>
-        <button onclick="shareShoppingList()" title="Share List" style="flex-shrink:0;height:32px;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📤 Share</button>
-        <button onclick="printShoppingList()" title="Save PDF &amp; share via WhatsApp" style="flex-shrink:0;height:32px;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">📄 PDF</button>
-        <button onclick="openAddBroad()" title="Add Category" style="flex-shrink:0;height:32px;border:1px solid rgba(245,200,66,0.2);color:var(--gold);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">+ Category</button>
+        <button onclick="shareShoppingList()" title="Share List" style="flex-shrink:0;height:32px;min-width:52px;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 6px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;text-align:center;">📤 Share</button>
+        <button onclick="printShoppingList()" title="Save PDF" style="flex-shrink:0;height:32px;min-width:52px;border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:0 6px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;text-align:center;">📄 PDF</button>
+        <button onclick="openAddBroad()" title="Add Category" style="flex-shrink:0;height:32px;min-width:52px;border:1px solid rgba(245,200,66,0.2);color:var(--gold);border-radius:8px;padding:0 6px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;text-align:center;">+ Category</button>
       </div>
     </div>
   </div><!-- end shop-sticky -->
@@ -1048,8 +1048,8 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.10.4';
-const APP_BUILD='20 Jul 2026';
+const APP_VERSION='2.11.0';
+const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
 const CLR=['#1a3a8c','#00B4A2','#7C5CBF','#E74C3C','#27AE60','#F39C12','#0071e3'];
@@ -1211,6 +1211,12 @@ function shopView(v,btn){
   // Show search row only in Items view
   const srchRow=document.getElementById('shop-search-sticky');
   if(srchRow)srchRow.style.display=v==='items'?'block':'none';
+  if(v==='items'){
+    // Fix 8: Clear search and re-render (all collapsed)
+    const srch=document.getElementById('srch');
+    if(srch)srch.value='';
+    renderShop();
+  }
   if(v==='cart')renderCart();
   if(v==='history')renderHist();
 }
@@ -1303,19 +1309,23 @@ function renderShop(){
 
     const bid='b_'+broad.replace(/[^a-z0-9]/gi,'_');
     const besc=esc(broad);
-    // Alternating dark navy shades - uniform blue theme
-    const bg=catIdx%2===0?'#1a0e38':'#221550';
+    // Category card colors — darkest tier
+    const bg=catIdx%2===0?'#081428':'#0c1a34';
     const imgUrl=ASSETS[broad]||'';
     const patternStyle=imgUrl
       ?`background:url('${imgUrl}') center/cover no-repeat`
       :`background:${bg}`;
     catIdx++;
+    // Fix 6: golden title when any item is low
+    const titleColor=lowCount?'var(--gold)':'white';
+    // Fix 6: show "low" badge text
+    const lowBadge=lowCount?`<span class="cat-card-low">⚠ ${lowCount}</span>`:'<span class="cat-card-low" style="display:none"></span>';
 
-    html+=`<div class="cat-card" style="${patternStyle};margin-bottom:8px;" onclick="toggleC('${bid}')">
+    html+=`<div class="cat-card" style="${patternStyle}" onclick="toggleC('${bid}')">
       <div class="cat-card-text">
-        <div class="cat-card-title">${broad}
+        <div class="cat-card-title" style="color:${titleColor}">${broad}
           <span class="cat-card-count">${totalItems}</span>
-          ${lowCount?`<span class="cat-card-low">⚠ ${lowCount} low</span>`:''}
+          ${lowBadge}
         </div>
       </div>
       <div class="cat-card-actions" onclick="event.stopPropagation()">
@@ -1323,7 +1333,7 @@ function renderShop(){
         <button class="cat-card-btn" onclick="openAddSub('${besc}')" title="Add sub" style="background:rgba(255,255,255,0.25);">+</button>
       </div>
     </div>
-    <div id="${bid}" style="display:${q||lowCount?'block':'none'};margin-bottom:2px;padding:2px 0;">`;
+    <div id="${bid}" style="display:${q?'block':'none'};margin-bottom:2px;padding:2px 0;">`;
 
     bcat.subs.forEach(sub=>{
       const si=subMap[sub]||[];
@@ -3540,24 +3550,18 @@ function shareCash(){
 function updateDateTime(){
   const n=new Date();
   const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const daysShort=['SUN','MON','TUE','WED','THU','FRI','SAT'];
   const hr=n.getHours().toString().padStart(2,'0');
   const mn=n.getMinutes().toString().padStart(2,'0');
-  const sec=n.getSeconds().toString().padStart(2,'0');
   const dateEl=document.getElementById('tdate');
-  const clockEl=document.getElementById('tclock');
+  const hmEl=document.getElementById('tclock-hm');
+  const dayEl=document.getElementById('tclock-day');
   if(dateEl)dateEl.textContent=days[n.getDay()]+', '+n.getDate()+' '+MN[n.getMonth()]+' '+n.getFullYear();
-  if(clockEl){
-    clockEl.className='clock-wrap';
-    clockEl.innerHTML=
-      `<span class="clock-digit">${hr[0]}</span><span class="clock-digit">${hr[1]}</span>`+
-      `<span class="clock-colon">:</span>`+
-      `<span class="clock-digit">${mn[0]}</span><span class="clock-digit">${mn[1]}</span>`+
-      `<span class="clock-colon">:</span>`+
-      `<span class="clock-digit">${sec[0]}</span><span class="clock-digit">${sec[1]}</span>`;
-  }
+  if(hmEl)hmEl.textContent=hr+' : '+mn;
+  if(dayEl)dayEl.textContent=daysShort[n.getDay()];
 }
 updateDateTime();
-setInterval(updateDateTime,1000);
+setInterval(updateDateTime,30000);
 document.getElementById('about-ver-line').textContent='v'+APP_VERSION+' • '+APP_BUILD;
 const _vb=document.getElementById('ver-badge');if(_vb)_vb.textContent='v'+APP_VERSION;
 init();applyStoredThemeFont();wireAssets();renderShop();setupNotifs();setTimeout(checkNotifs,2000);toggleContactPickerButtons();
