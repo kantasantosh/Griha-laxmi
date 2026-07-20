@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.21.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.21.1 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -1098,7 +1098,7 @@ input[type=checkbox]{width:12px;height:12px;accent-color:var(--gold);outline:1px
 </div>
 
 <script>
-const APP_VERSION='2.21.0';
+const APP_VERSION='2.21.1';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -3322,7 +3322,8 @@ function sendFeedback(){
 // ================= v2.20 FIREBASE SYNC =================
 const FB_CONFIG={apiKey:"AIzaSyDq5AjTUCxZ85CBffYFh_MmKhibN7Pjnl8",authDomain:"ss-indent-pro-3b7ea.firebaseapp.com",projectId:"ss-indent-pro-3b7ea",storageBucket:"ss-indent-pro-3b7ea.firebasestorage.app",messagingSenderId:"221934576188",appId:"1:221934576188:web:34568216695ba7efbc5939"};
 let _fbdb=null,_syncBusy=false,_dirty=false;
-const SYNC_SKIP=['gl_last_tab','gl_key_ts','gl_last_sync','gl_family'];
+const SYNC_SKIP=['gl_last_tab','gl_key_ts','gl_last_sync','gl_family','gl_device'];
+let _devId=ld('gl_device','');if(!_devId){_devId=Math.random().toString(36).slice(2,10);try{localStorage.setItem('gl_device',JSON.stringify(_devId));}catch(e){}}
 function fbInit(){
   try{
     if(!window.firebase)return null;
@@ -3369,7 +3370,7 @@ async function syncNow(silent){
       else if(l){merged[k]=l;if(!r||l.t>r.t)pushed++;}
     });
     const ts=ld('gl_key_ts',{});Object.keys(merged).forEach(k=>ts[k]=merged[k].t);_origSv('gl_key_ts',ts);
-    await ref.set({keys:merged,updatedAt:Date.now(),by:ld('gl_user','?')});
+    await ref.set({keys:merged,updatedAt:Date.now(),by:ld('gl_user','?'),dev:_devId});
     _origSv('gl_last_sync',Date.now());_dirty=false;
     if(!silent)toast(`☁️ Synced ✓ ${pulled?'↓'+pulled+' ':''}${pushed?'↑'+pushed:''}`||'☁️ Synced ✓');
     if(firstSync&&pulled){toast('☁️ Family data loaded — refreshing…');setTimeout(()=>location.reload(),900);}
@@ -3389,9 +3390,8 @@ function listenLive(){
     const d=snap.data();
     if(!d.updatedAt||d.updatedAt<=_lastApplied)return;
     if(_syncBusy)return;
-    const me=ld('gl_user','?');
     _lastApplied=d.updatedAt;
-    if(d.by===me&&Date.now()-d.updatedAt<15000)return; // our own write echoing back
+    if(d.dev===_devId)return; // our own write echoing back
     const remote=d.keys||{};const ts=ld('gl_key_ts',{});let applied=0;
     Object.keys(remote).forEach(k=>{
       if((ts[k]||0)<remote[k].t){localStorage.setItem(k,remote[k].v);ts[k]=remote[k].t;applied++;}
