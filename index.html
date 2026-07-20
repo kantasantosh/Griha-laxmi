@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.21.1 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.22.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -1098,7 +1098,7 @@ input[type=checkbox]{width:12px;height:12px;accent-color:var(--gold);outline:1px
 </div>
 
 <script>
-const APP_VERSION='2.21.1';
+const APP_VERSION='2.22.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -3338,6 +3338,7 @@ sv=function(k,v){
   if(SYNC_SKIP.includes(k)||k.startsWith('gl_billalert'))return;
   const ts=ld('gl_key_ts',{});ts[k]=Date.now();_origSv('gl_key_ts',ts);
   _dirty=true;
+  clearTimeout(window._pushT);window._pushT=setTimeout(()=>syncNow(true),3000);
 };
 function collectLocal(){
   const out={};const ts=ld('gl_key_ts',{});
@@ -3349,8 +3350,7 @@ function collectLocal(){
   return out;
 }
 async function syncNow(silent){
-  const fam=String(ld('gl_family','')||'');
-  if(!fam){if(!silent)glPrompt('☁️ Set your Family Code (same on all phones, e.g. AGGARWAL7)','',c=>{const cc=c.trim().toUpperCase();if(cc){sv('gl_family',cc);syncNow();setTimeout(listenLive,1500);}});return;}
+  const fam='main';
   const db=fbInit();
   if(!db){if(!silent)toast('⚠️ Firebase not loaded — check internet');return;}
   if(_syncBusy)return;_syncBusy=true;
@@ -3382,9 +3382,9 @@ async function syncNow(silent){
 // live listener: changes from other phones appear automatically
 let _liveUnsub=null,_lastApplied=0;
 function listenLive(){
-  const fam=String(ld('gl_family','')||'');
+  const fam='main';
   const db=fbInit();
-  if(!fam||!db||_liveUnsub)return;
+  if(!db||_liveUnsub)return;
   _liveUnsub=db.collection('grihalaxmi').doc(fam).onSnapshot(snap=>{
     if(!snap.exists)return;
     const d=snap.data();
@@ -3404,7 +3404,8 @@ function listenLive(){
   },err=>{});
 }
 // auto-sync: on load, every 2 min if dirty, on return to app + live listener
-setTimeout(()=>{syncNow(true);listenLive();},3000);
+setTimeout(()=>{syncNow(true);listenLive();},2500);
+setInterval(()=>{if(!_liveUnsub)listenLive();},8000);
 setInterval(()=>{if(_dirty)syncNow(true);},120000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){syncNow(true);listenLive();}});
 function forceSyncNow(){syncNow(false);}
