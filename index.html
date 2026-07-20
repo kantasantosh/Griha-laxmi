@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.19.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.18.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -85,10 +85,7 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 .topbar h1{font-size:18px;font-weight:900;letter-spacing:0.5px;background:linear-gradient(90deg,white,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .topbar-sub{font-size:9px;opacity:.85;margin-top:2px;margin-left:0;-webkit-text-fill-color:rgba(255,255,255,0.75);}
 .topbar-clock{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;flex-shrink:0;}
-.clock-hm{font-size:19px;font-weight:900;color:var(--gold);letter-spacing:0;font-family:'Courier New',monospace;line-height:1.1;}
-.clock-hm .fd{display:inline-block;background:#0d1e3c;border:1px solid #24457e;border-radius:5px;padding:1px 4px;margin:0 1px;min-width:0.72em;text-align:center;transform-origin:center 50%;backface-visibility:hidden;}
-.clock-hm .fd.flip{animation:fdflip .45s ease;}
-@keyframes fdflip{0%{transform:rotateX(0);}50%{transform:rotateX(-88deg);}100%{transform:rotateX(0);}}
+.clock-hm{font-size:20px;font-weight:900;color:var(--gold);letter-spacing:1px;font-family:'Courier New',monospace;line-height:1.05;}
 
 /* ===== BOTTOM NAV ===== */
 .bnav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:100;box-shadow:0 -4px 20px rgba(10,26,46,0.4);}
@@ -261,11 +258,6 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .low-btn{background:rgba(255,255,255,0.5);border:1.5px solid #12305e;color:#12305e;border-radius:16px;padding:3px 8px;font-size:10px;font-family:inherit;font-weight:700;cursor:pointer;white-space:nowrap;}
 .low-btn.active{background:var(--gold);border-color:var(--gold);color:#0a1a38;}
 #tab-cash{zoom:1.12;}
-.nb-stab.active{color:var(--gold)!important;}
-.nb-stab:active{transform:scale(0.97);}
-#shop-sticky{background:linear-gradient(180deg,var(--bg) 60%,rgba(26,60,120,0.25));border-bottom:1px solid rgba(245,200,66,0.15);}
-#srch{caret-color:var(--gold);}
-.it.active{box-shadow:0 0 12px rgba(58,128,212,0.5);}
 #srch::placeholder{color:#9ab2d6;opacity:1;}
 .topbar-sub{color:#d5e2f5!important;font-size:10px!important;font-weight:600;}
 .unit-tag{font-size:11px!important;font-weight:800;}
@@ -363,7 +355,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
   </div>
 
   <div id="ov-bills">
-    <div class="sh"><div class="st">💡 Bills</div></div>
+    <div class="sh"><div class="st">💡 Bills</div><button class="ab" onclick="openM('m-addbill')">+ Add</button></div>
     <div id="bills-soon"></div><div id="bills-list"></div>
   </div>
 
@@ -373,7 +365,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       <div style="display:flex;gap:6px;">
         <button onclick="pdfVia(()=>shareTodo())" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
         <button onclick="clearDone()" style="background:white;border:1.5px solid var(--border);color:var(--tm);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">🧹 Clear Done</button>
-        
+        <button class="ab" onclick="openM('m-addtodo')">+ Add</button>
       </div>
     </div>
     <div class="itabs" id="todo-tabs">
@@ -389,7 +381,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       <div class="st">🔧 Services</div>
       <div style="display:flex;gap:6px;">
         <button onclick="pdfVia(()=>shareServices())" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
-        
+        <button class="ab" id="svc-add-btn" onclick="openM('m-addcon')">+ Add</button>
       </div>
     </div>
     <button class="sos-btn-contact" onclick="openSOS()" style="display:none;"></button>
@@ -443,7 +435,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       <div class="st">👨‍👩‍👧 Staff</div>
       <div style="display:flex;gap:6px;">
         <button onclick="pdfVia(()=>shareStaff())" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
-        
+        <button class="ab" onclick="openM('m-addhelp')" style="background:linear-gradient(135deg,var(--purple),#9b59b6);">+ Add</button>
       </div>
     </div>
     <div class="mnav"><button class="mb" onclick="chHelp(-1)">◀</button><div class="ml" id="help-ml"></div><button class="mb" onclick="chHelp(1)">▶</button></div>
@@ -496,32 +488,15 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 <!-- MEDICAL -->
 <!-- Floating Action Button -->
 
-
-<!-- Themed dialog -->
-<div class="mo" id="m-gldlg" style="z-index:9999;">
-  <div class="mc" style="max-width:340px;">
-    <div id="gldlg-msg" style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;text-align:center;line-height:1.5;"></div>
-    <input class="fi" id="gldlg-input" style="display:none;text-align:center;"/>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-      <button id="gldlg-cancel" style="background:var(--bg2);border:1px solid var(--border);color:var(--tm);border-radius:var(--rsm);padding:11px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">Cancel</button>
-      <button id="gldlg-ok" style="background:var(--p2);border:none;color:white;border-radius:var(--rsm);padding:11px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">OK</button>
-    </div>
-  </div>
-</div>
 <div class="mo" id="m-billpay">
   <div class="mc">
     <div class="mh"><span id="bp-title">💡 Pay Bill</span><button class="mx" onclick="closeM('m-billpay')">✕</button></div>
     <input type="hidden" id="bp-id"/>
-    <div style="text-align:center;margin-bottom:12px;">
-      <label class="fl" style="display:block;margin-bottom:4px;">Amount (₹)</label>
-      <input class="fi" id="bp-amt" type="number" placeholder="0" style="font-size:24px;font-weight:800;text-align:center;color:var(--gold);max-width:180px;margin:auto;"/>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
-      <div><label class="fl">Date</label><input class="fi" id="bp-date" type="date" style="margin-bottom:0;"/></div>
-      <div><label class="fl">Paid From</label><select class="fi" id="bp-mode" style="margin-bottom:0;"></select></div>
-    </div>
+    <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="bp-amt" type="number" placeholder="0"/></div>
+    <div class="fg"><label class="fl">Date</label><input class="fi" id="bp-date" type="date"/></div>
+    <div class="fg"><label class="fl">Paid From</label><select class="fi" id="bp-mode"></select></div>
     <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="bp-note" placeholder="e.g. July bill"/></div>
-    <button class="sb2" onclick="saveBillPay()" style="background:linear-gradient(135deg,var(--green),#1e8e5a);">✓ Confirm Payment</button>
+    <button class="sb2" onclick="saveBillPay()">✓ Confirm Payment</button>
   </div>
 </div>
 <div class="mo" id="m-changelog">
@@ -608,7 +583,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <div class="fg"><label class="fl">Bill Name</label><input class="fi" id="b-name" placeholder="e.g. Electricity Bill"/></div>
     <div class="fr">
       <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="b-amt" type="number" placeholder="0"/></div>
-      <div class="fg"><label class="fl">Due Date</label><input class="fi" id="b-due" type="date"/></div>
+      <div class="fg"><label class="fl">Due Date (day)</label><input class="fi" id="b-due" type="number" min="1" max="31" placeholder="e.g. 15"/></div>
     </div>
     <div class="fr">
       <div class="fg"><label class="fl">Cycle</label><select class="fi" id="b-cycle"><option value="monthly">Monthly</option><option value="quarterly">Quarterly</option><option value="yearly">Yearly</option></select></div>
@@ -812,7 +787,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
   <div class="md"><button class="mc2" onclick="closeM('m-addhelp')">✕</button><h2>Add Staff Member</h2>
     <div class="fg"><label class="fl">Name</label><input class="fi" id="h-name" placeholder="e.g. Sunita"/></div>
     <div class="fg"><label class="fl">Mobile No. (optional)</label><input class="fi" id="h-phone" type="tel" placeholder="e.g. 9876543210"/></div>
-    <div class="fg"><label class="fl" style="display:flex;justify-content:space-between;">Role <a href="javascript:void(0)" onclick="editRoles()" style="color:var(--p2);font-size:11px;text-decoration:none;">✏️ Edit roles</a></label><select class="fi" id="h-role"></select></div>
+    <div class="fg"><label class="fl">Role</label><select class="fi" id="h-role"><option>Cook / Bai</option><option>Cleaning</option><option>Driver</option><option>Gardener</option><option>Watchman</option><option>Other</option></select></div>
     <div class="fg"><label class="fl">Monthly Salary (₹)</label><input class="fi" id="h-sal" type="number" placeholder="0"/></div>
     <div class="fg"><label class="fl">Holiday Type</label>
       <select class="fi" id="h-holtype" onchange="toggleHolDays()">
@@ -842,7 +817,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <button id="c-pick-btn" onclick="pickFromContacts('c-name','c-ph')" style="display:none;width:100%;background:var(--pl);border:1.5px solid var(--p2);color:var(--p1);border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:12px;">📇 Pick from Phone Contacts</button>
     <div class="fg"><label class="fl">Name</label><input class="fi" id="c-name" placeholder="e.g. Suresh Plumber"/></div>
     <div class="fg"><label class="fl">Service</label><select class="fi" id="c-role"><option value="🔧 Plumber">🔧 Plumber</option><option value="⚡ Electrician">⚡ Electrician</option><option value="❄️ AC Repair">❄️ AC Repair</option><option value="🪵 Carpenter">🪵 Carpenter</option><option value="🎨 Painter">🎨 Painter</option><option value="🔒 Locksmith">🔒 Locksmith</option><option value="🚗 Car Mechanic">🚗 Car Mechanic</option><option value="📺 Appliance Repair">📺 Appliance Repair</option><option value="🏠 Pest Control">🏠 Pest Control</option><option value="📦 Other">📦 Other</option></select></div>
-    <div class="fg"><label class="fl">Phone</label><input class="fi" id="c-ph" type="tel" placeholder="e.g. 9876543210"/></div>
+    <div class="fg"><label class="fl">Phone</label><input class="fi" id="c-ph" type="tel" style="width:calc(100% - 46px);display:inline-block;vertical-align:middle;" placeholder="e.g. 9876543210"/><button onclick="pickContact('c-ph','c-name')" title="Pick from phonebook" style="width:38px;height:38px;margin-left:6px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:16px;cursor:pointer;vertical-align:middle;">📇</button></div>
     <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="c-note" placeholder="e.g. Very reliable, fair charges"/></div>
     <button class="sb2" onclick="addCon()">Add Contact</button>
   </div>
@@ -854,7 +829,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <button id="med-pick-btn" onclick="pickFromContacts('med-name','med-ph')" style="display:none;width:100%;background:var(--rl);border:1.5px solid var(--red);color:var(--red);border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:12px;">📇 Pick from Phone Contacts</button>
     <div class="fg"><label class="fl">Name</label><input class="fi" id="med-name" placeholder="e.g. Dr. Sharma"/></div>
     <div class="fg"><label class="fl">Type</label><select class="fi" id="med-role"><option value="👨‍⚕️ Doctor">👨‍⚕️ Doctor</option><option value="💊 Pharmacy">💊 Pharmacy</option><option value="🏥 Hospital">🏥 Hospital</option><option value="🦷 Dentist">🦷 Dentist</option><option value="👁️ Eye Specialist">👁️ Eye Specialist</option><option value="🧪 Lab/Diagnostics">🧪 Lab/Diagnostics</option><option value="📦 Other">📦 Other</option></select></div>
-    <div class="fg"><label class="fl">Phone</label><input class="fi" id="med-ph" type="tel" placeholder="e.g. 9876543210"/></div>
+    <div class="fg"><label class="fl">Phone</label><input class="fi" id="med-ph" type="tel" style="width:calc(100% - 46px);display:inline-block;vertical-align:middle;" placeholder="e.g. 9876543210"/><button onclick="pickContact('med-ph','med-name')" title="Pick from phonebook" style="width:38px;height:38px;margin-left:6px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:16px;cursor:pointer;vertical-align:middle;">📇</button></div>
     <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="med-note" placeholder="e.g. Family physician, OPD 5-8pm"/></div>
     <button class="sb2" onclick="addMedCon()" style="background:linear-gradient(135deg,var(--red),#c0392b);">Add</button>
   </div>
@@ -952,7 +927,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <input type="hidden" id="ec-idx"/>
     <div class="fg"><label class="fl">Name</label><input class="fi" id="ec-name"/></div>
     <div class="fg"><label class="fl">Service</label><select class="fi" id="ec-role"><option value="🔧 Plumber">🔧 Plumber</option><option value="⚡ Electrician">⚡ Electrician</option><option value="❄️ AC Repair">❄️ AC Repair</option><option value="🪵 Carpenter">🪵 Carpenter</option><option value="🎨 Painter">🎨 Painter</option><option value="🔒 Locksmith">🔒 Locksmith</option><option value="🚗 Car Mechanic">🚗 Car Mechanic</option><option value="📺 Appliance Repair">📺 Appliance Repair</option><option value="🏠 Pest Control">🏠 Pest Control</option><option value="📦 Other">📦 Other</option></select></div>
-    <div class="fg"><label class="fl">Phone</label><input class="fi" id="ec-ph" type="tel"/></div>
+    <div class="fg"><label class="fl">Phone</label><input class="fi" id="ec-ph" type="tel" style="width:calc(100% - 46px);display:inline-block;vertical-align:middle;"/><button onclick="pickContact('ec-ph','ec-name')" title="Pick from phonebook" style="width:38px;height:38px;margin-left:6px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:16px;cursor:pointer;vertical-align:middle;">📇</button></div>
     <div class="fg"><label class="fl">Note</label><input class="fi" id="ec-note" placeholder="e.g. Very reliable"/></div>
     <button class="sb2" onclick="saveEditCon()">Save Changes</button>
   </div>
@@ -1038,8 +1013,8 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       <!-- Data Backup -->
       <div style="background:var(--card);border-radius:var(--rsm);padding:10px;border:1px solid var(--border);margin-bottom:10px;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <button onclick="glConfirm('⬇️ Export full backup file?',exportData)" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">⬇️ Export</button>
-          <label style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;text-align:center;display:block;">⬆️ Import<input type="file" accept=".json" onchange="const el=this;glConfirm('⬆️ Import will OVERWRITE current data. Continue?',()=>askPin(()=>importData(el)))" style="display:none;"/></label>
+          <button onclick="exportData()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">⬇️ Export</button>
+          <label style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;text-align:center;display:block;">⬆️ Import<input type="file" accept=".json" onchange="importData(this)" style="display:none;"/></label>
           <button onclick="closeM('m-about');askPin(()=>openM('m-settings'));" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">⚙️ Theme &amp; Font</button>
           <button onclick="openM('m-feedback')" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">💬 Feedback</button>
           <button onclick="setPinFlow()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">🔐 PIN</button>
@@ -1089,7 +1064,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.19.0';
+const APP_VERSION='2.18.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1286,7 +1261,7 @@ function hhView(v,btn){
 }
 
 // MODALS
-function openM(id){if(id==='m-addtxn'){fillTxnLink();setTimeout(updBalPreview,50);}if(id==='m-addhelp')fillRoles();
+function openM(id){if(id==='m-addtxn'){fillTxnLink();setTimeout(updBalPreview,50);}
   document.getElementById(id).classList.add('open');
   if(id==='m-milkpay')document.getElementById('mp-date').value=td();
   if(id==='m-suppay')document.getElementById('sp-date').value=td();
@@ -1861,8 +1836,7 @@ function editBill(id){
   document.getElementById('b-edit-id').value=id;
   document.getElementById('b-name').value=x.name;
   document.getElementById('b-amt').value=x.amount||'';
-  {const now=new Date();const dd=x.dueDay||1;
-   document.getElementById('b-due').value=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(dd).padStart(2,'0')}`;}
+  document.getElementById('b-due').value=x.dueDay||'';
   document.getElementById('b-cycle').value=x.cycle||'monthly';
   refreshBillSelect(x.icon||'💡');
   openM('m-addbill');
@@ -1879,13 +1853,13 @@ function saveBill(){
     if(x){
       x.name=name;
       x.amount=parseFloat(document.getElementById('b-amt').value)||0;
-      {const dv=document.getElementById('b-due').value;x.dueDay=dv?new Date(dv).getDate():(x.dueDay||1);}
+      x.dueDay=parseInt(document.getElementById('b-due').value)||1;
       x.cycle=document.getElementById('b-cycle').value;
       x.icon=document.getElementById('b-icon').value;
     }
   } else {
     // Add new
-    b.push({id:Date.now(),name,icon:document.getElementById('b-icon').value,amount:parseFloat(document.getElementById('b-amt').value)||0,dueDay:(document.getElementById('b-due').value?new Date(document.getElementById('b-due').value).getDate():1),cycle:document.getElementById('b-cycle').value,paid:false});
+    b.push({id:Date.now(),name,icon:document.getElementById('b-icon').value,amount:parseFloat(document.getElementById('b-amt').value)||0,dueDay:parseInt(document.getElementById('b-due').value)||1,cycle:document.getElementById('b-cycle').value,paid:false});
   }
   sv('gl_bills',b);
   closeM('m-addbill');
@@ -1975,7 +1949,7 @@ function renderMilk(){
     const pe=document.getElementById('mpay-'+mm.id);
     if(pe)pe.innerHTML=pays.length?pays.map(p=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--tm);">${p.date}${p.note?' • '+p.note:''}</span><span style="font-weight:700;color:var(--green);">₹${p.amt.toLocaleString('en-IN')}</span></div>`).join(''):`<div style="color:var(--tm);font-size:13px;text-align:center;padding:6px;">No payments this month</div>`;
     const be=document.getElementById('mbal-'+mm.id);
-    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px;"><span style="color:var(--tm);">Total Milk</span><span style="font-weight:700;color:var(--p3);">${totL2} L</span></div><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Bill</span><span>₹${totBill2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid</span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Balance Due':bal2<0?'Overpaid':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
+    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Bill</span><span>₹${totBill2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid</span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Balance Due':bal2<0?'Overpaid':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
   });
 }
 function tapMilkDay(mid,key,d){
@@ -2405,54 +2379,25 @@ function openAdv(id,name){
 // v2.17: household payments auto-post to CashBook
 
 // v2.18: PIN protection + audit log + contact picker
-
-// v2.19: themed dialogs (no more browser "site says" popups)
-function glConfirm(msg,cb){
-  const d=document.getElementById('m-gldlg');
-  document.getElementById('gldlg-msg').textContent=msg;
-  document.getElementById('gldlg-input').style.display='none';
-  d.classList.add('open');
-  document.getElementById('gldlg-ok').onclick=()=>{d.classList.remove('open');cb();};
-  document.getElementById('gldlg-cancel').onclick=()=>d.classList.remove('open');
-}
-function glPrompt(msg,def,cb,type){
-  const d=document.getElementById('m-gldlg');
-  document.getElementById('gldlg-msg').textContent=msg;
-  const inp=document.getElementById('gldlg-input');
-  inp.style.display='block';inp.value=def||'';inp.type=type||'text';
-  d.classList.add('open');setTimeout(()=>inp.focus(),100);
-  document.getElementById('gldlg-ok').onclick=()=>{d.classList.remove('open');cb(inp.value);};
-  document.getElementById('gldlg-cancel').onclick=()=>d.classList.remove('open');
-}
-
-// v2.19: user-editable staff roles (Cook and Bai are separate by default)
-const DEF_ROLES=['Cook','Bai / Maid','Cleaning','Driver','Gardener','Watchman','Nanny','Other'];
-function getRoles(){return ld('gl_staff_roles',DEF_ROLES);}
-function fillRoles(){const s=document.getElementById('h-role');if(s)s.innerHTML=getRoles().map(r=>`<option>${r}</option>`).join('');}
-function editRoles(){
-  glPrompt('Edit roles (comma-separated)',getRoles().join(', '),v=>{
-    const rs=v.split(',').map(x=>x.trim()).filter(Boolean);
-    if(rs.length){sv('gl_staff_roles',rs);fillRoles();toast('Roles updated');}
-  });
-}
 function askPin(cb){
   const pin=ld('gl_pin','');
   if(!pin){cb();return;}
-  glPrompt('🔐 Enter 4-digit PIN','',e=>{if(e===pin)cb();else toast('❌ Wrong PIN');},'password');
+  const e=prompt('🔐 Enter 4-digit PIN:');
+  if(e===pin)cb();else if(e!==null)toast('❌ Wrong PIN');
 }
 function setPinFlow(){
   const cur=ld('gl_pin','');
-  const step2=()=>glPrompt(cur?'New 4-digit PIN (blank to remove)':'Set a 4-digit PIN','',np=>{
-    if(np===''){sv('gl_pin','');toast('PIN removed');return;}
-    if(!/^\d{4}$/.test(np)){toast('PIN must be exactly 4 digits');return;}
-    sv('gl_pin',np);toast('🔐 PIN set');
-  },'password');
-  if(cur)glPrompt('Enter current PIN','',e=>{if(e===cur)step2();else toast('❌ Wrong PIN');},'password');
-  else step2();
+  if(cur){const e=prompt('Enter current PIN:');if(e!==cur){if(e!==null)toast('❌ Wrong PIN');return;}}
+  const np=prompt(cur?'New 4-digit PIN (blank to remove):':'Set a 4-digit PIN:');
+  if(np===null)return;
+  if(np===''){sv('gl_pin','');toast('PIN removed');return;}
+  if(!/^\d{4}$/.test(np)){toast('PIN must be exactly 4 digits');return;}
+  sv('gl_pin',np);toast('🔐 PIN set');
 }
-function guardDel(msg,cb){glConfirm(msg,()=>askPin(cb));}
+function guardDel(msg,cb){if(!confirm(msg))return;askPin(cb);}
 function setUserFlow(){
-  glPrompt('👤 Your short name (for audit log)',ld('gl_user',''),n=>{sv('gl_user',n.trim());toast('👤 Saved: '+n.trim());});
+  const n=prompt('Your short name (for audit log, e.g. SK, Mummy):',ld('gl_user',''));
+  if(n===null)return;sv('gl_user',n.trim());toast('👤 Saved: '+n.trim());
 }
 function audit(action){
   const a=ld('gl_audit',[]);
@@ -2463,7 +2408,6 @@ function audit(action){
 function showAudit(){
   const a=ld('gl_audit',[]).slice().reverse();
   const body=a.length?a.map(x=>`${new Date(x.ts).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})} — <b>${x.u||'?'}</b>: ${x.a}`).join('<br>'):'No entries yet.';
-  closeM('m-about');
   document.getElementById('changelog-body').innerHTML='<b>📜 Audit Log (last 200)</b><br><br>'+body;
   openM('m-changelog');
 }
@@ -2480,7 +2424,6 @@ v2.14.0 — Cart-only PDF, soft bill accents, Bills→CashBook
 v2.13.0 — Print-based PDF (jsPDF removed), 2-line clock, back nav
 v2.12.0 — Search fixed, colors laddered, clock simplified`;
 function showChangelog(){
-  const ab=document.getElementById('m-about');if(ab&&ab.classList.contains('open'))closeM('m-about');
   document.getElementById('changelog-body').textContent=CHANGELOG;
   openM('m-changelog');
 }
@@ -2599,7 +2542,6 @@ function renderMedCon(){
       </div>
       <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
         ${c.phone?`<a class="clb" href="tel:${clean}">📞</a><a class="wb" href="https://wa.me/91${clean}" target="_blank">💬</a>`:''}
-        <button onclick="openEditMedCon(${i})" style="background:none;border:none;font-size:15px;cursor:pointer;color:var(--p2);width:34px;height:34px">✏️</button>
         <button onclick="delMedCon(${i})" style="background:none;border:none;font-size:16px;cursor:pointer;color:#c0c8d8;width:34px;height:34px">🗑</button>
       </div>
     </div>`;
@@ -2610,19 +2552,7 @@ function addMedCon(){
   if(!name){alert('Enter name');return;}
   const cs=ld('gl_medcons',[]);
   cs.push({name,role:document.getElementById('med-role').value,phone:document.getElementById('med-ph').value.trim(),note:document.getElementById('med-note').value.trim()});
-  if(_medEditIdx!==null){const nu=cs.pop();cs[_medEditIdx]={...cs[_medEditIdx],...nu};_medEditIdx=null;}
   sv('gl_medcons',cs);closeM('m-addmed');['med-name','med-ph','med-note'].forEach(x=>document.getElementById(x).value='');renderMedCon();
-}
-
-// v2.19: edit medical contact (reuses add modal)
-let _medEditIdx=null;
-function openEditMedCon(i){
-  const c=ld('gl_medcons',[])[i];if(!c)return;
-  _medEditIdx=i;
-  document.getElementById('med-name').value=c.name||'';
-  document.getElementById('med-ph').value=c.phone||'';
-  const nt=document.getElementById('med-note');if(nt)nt.value=c.note||'';
-  openM('m-addmed');
 }
 function delMedCon(idx){guardDel('Delete this contact?',()=>{const cs=ld('gl_medcons',[]);cs.splice(idx,1);sv('gl_medcons',cs);audit('Deleted medical contact');renderMedCon();});}
 
@@ -3489,11 +3419,6 @@ function openPrintWin(title,innerHtml){
     pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:14px;}
     .ft{text-align:center;color:#999;font-size:11px;margin-top:24px;}
   #tab-cash{zoom:1.12;}
-.nb-stab.active{color:var(--gold)!important;}
-.nb-stab:active{transform:scale(0.97);}
-#shop-sticky{background:linear-gradient(180deg,var(--bg) 60%,rgba(26,60,120,0.25));border-bottom:1px solid rgba(245,200,66,0.15);}
-#srch{caret-color:var(--gold);}
-.it.active{box-shadow:0 0 12px rgba(58,128,212,0.5);}
 #srch::placeholder{color:#9ab2d6;opacity:1;}
 .topbar-sub{color:#d5e2f5!important;font-size:10px!important;font-weight:600;}
 .unit-tag{font-size:11px!important;font-weight:800;}
@@ -3775,19 +3700,7 @@ function updateDateTime(){
   const dateEl=document.getElementById('tdate');
   const hEl=document.getElementById('tclock-h');const mEl=document.getElementById('tclock-m');
   if(dateEl)dateEl.textContent=days[n.getDay()]+', '+n.getDate()+' '+MN[n.getMonth()]+' '+n.getFullYear();
-  const digs=(hr+mn).split('');
-  [hEl,mEl].forEach((el,half)=>{
-    if(!el)return;
-    const pair=digs.slice(half*2,half*2+2);
-    if(!el._fd||el._fd.join('')!==pair.join('')){
-      if(!el._fd){el.innerHTML='<span class="fd">'+pair.join('</span><span class="fd">')+'</span>';}
-      else{
-        const els=el.querySelectorAll('.fd');
-        pair.forEach((d,i)=>{if(el._fd[i]!==d){els[i].textContent=d;els[i].classList.remove('flip');void els[i].offsetWidth;els[i].classList.add('flip');}});
-      }
-      el._fd=pair;
-    }
-  });
+  if(hEl)hEl.textContent=hr;if(mEl)mEl.textContent=mn;
 }
 updateDateTime();
 setInterval(updateDateTime,1000);
