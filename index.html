@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.20.1 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.21.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -268,7 +268,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .nb-stab.active{background:linear-gradient(135deg,#1a3c78,#2a5ca8);border-radius:9px;color:var(--gold)!important;box-shadow:0 2px 8px rgba(42,92,168,0.5);}
 #shop-sticky button{border-color:rgba(245,200,66,0.35)!important;}
 .fi::placeholder,#srch::placeholder,textarea::placeholder{color:#46587c!important;font-weight:400!important;font-style:italic;}
-input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);outline:1px solid var(--gold);outline-offset:1px;border-radius:3px;}
+input[type=checkbox]{width:12px;height:12px;accent-color:var(--gold);outline:1px solid rgba(245,200,66,0.6);outline-offset:1px;border-radius:3px;vertical-align:middle;transform:translateY(-1px);}
 .sub-card{border-width:1.5px!important;border-color:#5a9ae8!important;}
 .item-row{border-width:1.5px!important;border-color:#a8cef6!important;}
 .cat-card{border:1px solid #3a68b0!important;}
@@ -1098,7 +1098,7 @@ input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);outline:1px
 </div>
 
 <script>
-const APP_VERSION='2.20.1';
+const APP_VERSION='2.21.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -3349,7 +3349,7 @@ function collectLocal(){
 }
 async function syncNow(silent){
   const fam=String(ld('gl_family','')||'');
-  if(!fam){if(!silent)glPrompt('☁️ Set your Family Code (same on all phones, e.g. AGGARWAL7)','',c=>{const cc=c.trim().toUpperCase();if(cc){sv('gl_family',cc);syncNow();}});return;}
+  if(!fam){if(!silent)glPrompt('☁️ Set your Family Code (same on all phones, e.g. AGGARWAL7)','',c=>{const cc=c.trim().toUpperCase();if(cc){sv('gl_family',cc);syncNow();setTimeout(listenLive,1500);}});return;}
   const db=fbInit();
   if(!db){if(!silent)toast('⚠️ Firebase not loaded — check internet');return;}
   if(_syncBusy)return;_syncBusy=true;
@@ -3359,26 +3359,54 @@ async function syncNow(silent){
     const snap=await ref.get();
     const remote=snap.exists?(snap.data().keys||{}):{};
     const local=collectLocal();
+    const firstSync=!ld('gl_last_sync',0)&&Object.keys(remote).length>0;
     const merged={};let pulled=0,pushed=0;
     const allKeys=new Set([...Object.keys(remote),...Object.keys(local)]);
     allKeys.forEach(k=>{
       const r=remote[k],l=local[k];
-      if(r&&(!l||r.t>l.t)){merged[k]=r;localStorage.setItem(k,r.v);pulled++;}
+      // first sync on a fresh device: cloud data wins over local defaults
+      if(r&&(firstSync||!l||r.t>l.t)){merged[k]=r;localStorage.setItem(k,r.v);if(!l||r.v!==l.v)pulled++;}
       else if(l){merged[k]=l;if(!r||l.t>r.t)pushed++;}
     });
     const ts=ld('gl_key_ts',{});Object.keys(merged).forEach(k=>ts[k]=merged[k].t);_origSv('gl_key_ts',ts);
     await ref.set({keys:merged,updatedAt:Date.now(),by:ld('gl_user','?')});
     _origSv('gl_last_sync',Date.now());_dirty=false;
-    if(pulled){try{renderShop();renderBills&&renderBills();renderCash&&renderCash();}catch(e){}}
     if(!silent)toast(`☁️ Synced ✓ ${pulled?'↓'+pulled+' ':''}${pushed?'↑'+pushed:''}`||'☁️ Synced ✓');
+    if(firstSync&&pulled){toast('☁️ Family data loaded — refreshing…');setTimeout(()=>location.reload(),900);}
+    else if(pulled){try{renderShop();renderBills&&renderBills();renderCash&&renderCash();}catch(e){}}
   }catch(e){
     if(!silent)toast('⚠️ Sync failed: '+(e.code==='permission-denied'?'add grihalaxmi rule in Firebase':e.message||'error'));
   }finally{_syncBusy=false;if(btn)btn.style.opacity='1';}
 }
-// auto-sync: on load, every 2 min if dirty, on return to app
-setTimeout(()=>syncNow(true),3000);
+// live listener: changes from other phones appear automatically
+let _liveUnsub=null,_lastApplied=0;
+function listenLive(){
+  const fam=String(ld('gl_family','')||'');
+  const db=fbInit();
+  if(!fam||!db||_liveUnsub)return;
+  _liveUnsub=db.collection('grihalaxmi').doc(fam).onSnapshot(snap=>{
+    if(!snap.exists)return;
+    const d=snap.data();
+    if(!d.updatedAt||d.updatedAt<=_lastApplied)return;
+    if(_syncBusy)return;
+    const me=ld('gl_user','?');
+    _lastApplied=d.updatedAt;
+    if(d.by===me&&Date.now()-d.updatedAt<15000)return; // our own write echoing back
+    const remote=d.keys||{};const ts=ld('gl_key_ts',{});let applied=0;
+    Object.keys(remote).forEach(k=>{
+      if((ts[k]||0)<remote[k].t){localStorage.setItem(k,remote[k].v);ts[k]=remote[k].t;applied++;}
+    });
+    _origSv('gl_key_ts',ts);
+    if(applied){
+      try{renderShop();renderBills&&renderBills();renderCash&&renderCash();renderHelp&&renderHelp();}catch(e){}
+      toast('☁️ Updated from '+(d.by||'family'));
+    }
+  },err=>{});
+}
+// auto-sync: on load, every 2 min if dirty, on return to app + live listener
+setTimeout(()=>{syncNow(true);listenLive();},3000);
 setInterval(()=>{if(_dirty)syncNow(true);},120000);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)syncNow(true);});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){syncNow(true);listenLive();}});
 function forceSyncNow(){syncNow(false);}
 
 
@@ -3583,7 +3611,7 @@ function openPrintWin(title,innerHtml){
 .nb-stab.active{background:linear-gradient(135deg,#1a3c78,#2a5ca8);border-radius:9px;color:var(--gold)!important;box-shadow:0 2px 8px rgba(42,92,168,0.5);}
 #shop-sticky button{border-color:rgba(245,200,66,0.35)!important;}
 .fi::placeholder,#srch::placeholder,textarea::placeholder{color:#46587c!important;font-weight:400!important;font-style:italic;}
-input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);outline:1px solid var(--gold);outline-offset:1px;border-radius:3px;}
+input[type=checkbox]{width:12px;height:12px;accent-color:var(--gold);outline:1px solid rgba(245,200,66,0.6);outline-offset:1px;border-radius:3px;vertical-align:middle;transform:translateY(-1px);}
 .sub-card{border-width:1.5px!important;border-color:#5a9ae8!important;}
 .item-row{border-width:1.5px!important;border-color:#a8cef6!important;}
 .cat-card{border:1px solid #3a68b0!important;}
