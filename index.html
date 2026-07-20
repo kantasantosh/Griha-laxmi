@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.17.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.18.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -106,7 +106,7 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 
 /* ===== INNER TABS ===== */
 .itabs{position:sticky;z-index:80;background:var(--bg);display:flex;background:var(--bg);border-radius:var(--rsm);padding:3px;margin-bottom:12px;gap:3px;border:1px solid var(--border);}
-.it{flex:1;text-align:center;padding:9px 3px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;border:none;background:none;font-family:inherit;color:#c8d8f0;}
+.it{flex:1;text-align:center;padding:9px 2px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;background:none;font-family:inherit;color:#dce8f8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .it.active{background:linear-gradient(135deg,var(--p2),var(--p3));color:white;box-shadow:0 2px 8px rgba(26,90,173,0.35);}
 
 /* ===== INPUTS ===== */
@@ -258,6 +258,10 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .low-btn{background:rgba(255,255,255,0.5);border:1.5px solid #12305e;color:#12305e;border-radius:16px;padding:3px 8px;font-size:10px;font-family:inherit;font-weight:700;cursor:pointer;white-space:nowrap;}
 .low-btn.active{background:var(--gold);border-color:var(--gold);color:#0a1a38;}
 #tab-cash{zoom:1.12;}
+#srch::placeholder{color:#9ab2d6;opacity:1;}
+.topbar-sub{color:#d5e2f5!important;font-size:10px!important;font-weight:600;}
+.unit-tag{font-size:11px!important;font-weight:800;}
+@page{margin:12mm;}
 </style>
 </head>
 <body>
@@ -483,6 +487,24 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 
 <!-- MEDICAL -->
 <!-- Floating Action Button -->
+
+<div class="mo" id="m-billpay">
+  <div class="mc">
+    <div class="mh"><span id="bp-title">💡 Pay Bill</span><button class="mx" onclick="closeM('m-billpay')">✕</button></div>
+    <input type="hidden" id="bp-id"/>
+    <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="bp-amt" type="number" placeholder="0"/></div>
+    <div class="fg"><label class="fl">Date</label><input class="fi" id="bp-date" type="date"/></div>
+    <div class="fg"><label class="fl">Paid From</label><select class="fi" id="bp-mode"></select></div>
+    <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="bp-note" placeholder="e.g. July bill"/></div>
+    <button class="sb2" onclick="saveBillPay()">✓ Confirm Payment</button>
+  </div>
+</div>
+<div class="mo" id="m-changelog">
+  <div class="mc">
+    <div class="mh"><span>📋 What's New</span><button class="mx" onclick="closeM('m-changelog')">✕</button></div>
+    <div id="changelog-body" style="font-size:12px;line-height:1.7;color:var(--text);white-space:pre-wrap;max-height:60vh;overflow-y:auto;"></div>
+  </div>
+</div>
 <button class="fab" id="fab-btn" onclick="fabAction()" title="Add new item">＋</button>
 
 <!-- BOTTOM NAV -->
@@ -795,7 +817,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <button id="c-pick-btn" onclick="pickFromContacts('c-name','c-ph')" style="display:none;width:100%;background:var(--pl);border:1.5px solid var(--p2);color:var(--p1);border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:12px;">📇 Pick from Phone Contacts</button>
     <div class="fg"><label class="fl">Name</label><input class="fi" id="c-name" placeholder="e.g. Suresh Plumber"/></div>
     <div class="fg"><label class="fl">Service</label><select class="fi" id="c-role"><option value="🔧 Plumber">🔧 Plumber</option><option value="⚡ Electrician">⚡ Electrician</option><option value="❄️ AC Repair">❄️ AC Repair</option><option value="🪵 Carpenter">🪵 Carpenter</option><option value="🎨 Painter">🎨 Painter</option><option value="🔒 Locksmith">🔒 Locksmith</option><option value="🚗 Car Mechanic">🚗 Car Mechanic</option><option value="📺 Appliance Repair">📺 Appliance Repair</option><option value="🏠 Pest Control">🏠 Pest Control</option><option value="📦 Other">📦 Other</option></select></div>
-    <div class="fg"><label class="fl">Phone</label><input class="fi" id="c-ph" type="tel" placeholder="e.g. 9876543210"/></div>
+    <div class="fg"><label class="fl">Phone</label><input class="fi" id="c-ph" type="tel" style="width:calc(100% - 46px);display:inline-block;vertical-align:middle;" placeholder="e.g. 9876543210"/><button onclick="pickContact('c-ph','c-name')" title="Pick from phonebook" style="width:38px;height:38px;margin-left:6px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:16px;cursor:pointer;vertical-align:middle;">📇</button></div>
     <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="c-note" placeholder="e.g. Very reliable, fair charges"/></div>
     <button class="sb2" onclick="addCon()">Add Contact</button>
   </div>
@@ -807,7 +829,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <button id="med-pick-btn" onclick="pickFromContacts('med-name','med-ph')" style="display:none;width:100%;background:var(--rl);border:1.5px solid var(--red);color:var(--red);border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:12px;">📇 Pick from Phone Contacts</button>
     <div class="fg"><label class="fl">Name</label><input class="fi" id="med-name" placeholder="e.g. Dr. Sharma"/></div>
     <div class="fg"><label class="fl">Type</label><select class="fi" id="med-role"><option value="👨‍⚕️ Doctor">👨‍⚕️ Doctor</option><option value="💊 Pharmacy">💊 Pharmacy</option><option value="🏥 Hospital">🏥 Hospital</option><option value="🦷 Dentist">🦷 Dentist</option><option value="👁️ Eye Specialist">👁️ Eye Specialist</option><option value="🧪 Lab/Diagnostics">🧪 Lab/Diagnostics</option><option value="📦 Other">📦 Other</option></select></div>
-    <div class="fg"><label class="fl">Phone</label><input class="fi" id="med-ph" type="tel" placeholder="e.g. 9876543210"/></div>
+    <div class="fg"><label class="fl">Phone</label><input class="fi" id="med-ph" type="tel" style="width:calc(100% - 46px);display:inline-block;vertical-align:middle;" placeholder="e.g. 9876543210"/><button onclick="pickContact('med-ph','med-name')" title="Pick from phonebook" style="width:38px;height:38px;margin-left:6px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:16px;cursor:pointer;vertical-align:middle;">📇</button></div>
     <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="med-note" placeholder="e.g. Family physician, OPD 5-8pm"/></div>
     <button class="sb2" onclick="addMedCon()" style="background:linear-gradient(135deg,var(--red),#c0392b);">Add</button>
   </div>
@@ -850,7 +872,10 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       </div>
       <select class="fi" id="t-cat"></select>
     </div>
-    <div class="fg" id="txn-link-field" style="display:none;"><label class="fl">Link Payment To (optional)</label><select class="fi" id="t-link"><option value="">— None —</option></select></div>
+    <div id="txn-link-wrap" style="display:none;margin-bottom:8px;">
+      <a href="javascript:void(0)" onclick="document.getElementById('txn-link-field').style.display='block';this.style.display='none';" style="font-size:11px;color:var(--p2);font-weight:700;text-decoration:none;">🔗 Link to staff / vendor (optional)</a>
+      <div class="fg" id="txn-link-field" style="display:none;margin-top:6px;"><label class="fl">Link Payment To</label><select class="fi" id="t-link"><option value="">— None —</option></select></div>
+    </div>
     <div class="fg" id="txn-desc-field"><label class="fl">Description</label><input class="fi" id="t-desc" placeholder="e.g. Grocery, Milk payment, Salary received"/></div>
     <div id="bal-preview" style="display:none;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rsm);padding:8px 10px;margin-bottom:10px;font-size:12px;color:var(--text);"></div>
     <button class="sb2" onclick="addTxn()">Save Entry</button>
@@ -902,7 +927,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <input type="hidden" id="ec-idx"/>
     <div class="fg"><label class="fl">Name</label><input class="fi" id="ec-name"/></div>
     <div class="fg"><label class="fl">Service</label><select class="fi" id="ec-role"><option value="🔧 Plumber">🔧 Plumber</option><option value="⚡ Electrician">⚡ Electrician</option><option value="❄️ AC Repair">❄️ AC Repair</option><option value="🪵 Carpenter">🪵 Carpenter</option><option value="🎨 Painter">🎨 Painter</option><option value="🔒 Locksmith">🔒 Locksmith</option><option value="🚗 Car Mechanic">🚗 Car Mechanic</option><option value="📺 Appliance Repair">📺 Appliance Repair</option><option value="🏠 Pest Control">🏠 Pest Control</option><option value="📦 Other">📦 Other</option></select></div>
-    <div class="fg"><label class="fl">Phone</label><input class="fi" id="ec-ph" type="tel"/></div>
+    <div class="fg"><label class="fl">Phone</label><input class="fi" id="ec-ph" type="tel" style="width:calc(100% - 46px);display:inline-block;vertical-align:middle;"/><button onclick="pickContact('ec-ph','ec-name')" title="Pick from phonebook" style="width:38px;height:38px;margin-left:6px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;font-size:16px;cursor:pointer;vertical-align:middle;">📇</button></div>
     <div class="fg"><label class="fl">Note</label><input class="fi" id="ec-note" placeholder="e.g. Very reliable"/></div>
     <button class="sb2" onclick="saveEditCon()">Save Changes</button>
   </div>
@@ -990,12 +1015,15 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
           <button onclick="exportData()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">⬇️ Export</button>
           <label style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;text-align:center;display:block;">⬆️ Import<input type="file" accept=".json" onchange="importData(this)" style="display:none;"/></label>
-          <button onclick="closeM('m-about');openM('m-settings');" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">⚙️ Theme &amp; Font</button>
+          <button onclick="closeM('m-about');askPin(()=>openM('m-settings'));" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">⚙️ Theme &amp; Font</button>
           <button onclick="openM('m-feedback')" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">💬 Feedback</button>
+          <button onclick="setPinFlow()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">🔐 PIN</button>
+          <button onclick="setUserFlow()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">👤 My Name</button>
+          <button onclick="showAudit()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;grid-column:span 2;">📜 Audit Log</button>
         </div>
       </div>
       <div style="background:var(--card);border-radius:var(--rsm);padding:12px;border:1px solid var(--border);margin-bottom:10px;text-align:left;">
-        <button onclick="resetShoppingData()" style="width:100%;background:var(--red);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">🔄 Reset Shopping Data</button>
+        <button onclick="guardDel('Reset ALL shopping data to defaults?',()=>{resetShoppingData();audit('Reset shopping data');})" style="width:100%;background:var(--red);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">🔄 Reset Shopping Data</button>
       </div>
   </div>
 </div>
@@ -1036,7 +1064,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 </div>
 
 <script>
-const APP_VERSION='2.17.0';
+const APP_VERSION='2.18.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1199,6 +1227,8 @@ function shopView(v,btn){
   // Show search row only in Items view
   const srchRow=document.getElementById('shop-search-sticky');
   if(srchRow)srchRow.style.display=v==='items'?'block':'none';
+  const fb=document.getElementById('fab-btn');
+  if(fb)fb.style.display=v==='items'?'flex':'none';
   if(v==='items'){
     // Fix 8: Clear search and re-render (all collapsed)
     const srch=document.getElementById('srch');
@@ -1447,7 +1477,7 @@ function addItem(){
   it[k]={name,broad,sub,low:false,inCart:false,qty:qty?parseFloat(qty):null,unit:unit||''};
   sv('gl_items',it);closeM('m-additem');document.getElementById('ni-name').value='';document.getElementById('ni-qty').value='';renderShop();
 }
-function delItem(k){const rk=unesc(k);const it=ld('gl_items',{});delete it[rk];sv('gl_items',it);renderShop();}
+function delItem(k){guardDel('Delete this item?',()=>{const rk=unesc(k);const it=ld('gl_items',{});delete it[rk];sv('gl_items',it);renderShop();});}
 function openEditItem3(k){
   const rk=unesc(k);
   const items=ld('gl_items',{});const item=items[rk];if(!item)return;
@@ -1542,7 +1572,7 @@ function renderHist(){
           </div>
           <button onclick="delHist(${i})" style="background:none;border:none;font-size:14px;cursor:pointer;color:var(--tm)">🗑</button>
         </div>
-        <div style="font-size:12px;color:var(--tm);margin-bottom:9px;line-height:1.6;">${itemNames.slice(0,8).join(' • ')}${itemNames.length>8?` <span style="color:var(--p3)">+${itemNames.length-8} more</span>`:''}</div>
+        <div style="font-size:13px;color:#c8d8f0;margin-bottom:9px;line-height:1.6;">${itemNames.slice(0,8).join(' • ')}${itemNames.length>8?` <span style="color:var(--p3)">+${itemNames.length-8} more</span>`:''}</div>
         <div style="display:flex;gap:8px;">
           <button style="flex:1;background:var(--p2);color:white;border:none;border-radius:20px;padding:8px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;" onclick="repeatOrd(${i})">🔄 Use as Template</button>
           <button onclick="renameHist(${i})" style="background:var(--card2);border:1px solid var(--border);color:var(--tm);border-radius:20px;padding:8px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">✏️ Rename</button>
@@ -1551,7 +1581,8 @@ function renderHist(){
     }).join('')
     :`<div class="es"><div style="font-size:44px">📋</div><div>No saved lists yet.<br>Save your cart to create a template.</div></div>`;
 }
-function delHist(i){
+function delHist(i){guardDel('Delete this saved list?',()=>{_g_delHist(i);audit('Deleted saved list');});}
+function _g_delHist(i){
   const h=ld('gl_hist',[]);h.splice(i,1);sv('gl_hist',h);renderHist();
 }
 function renameHist(i){
@@ -1610,7 +1641,8 @@ function saveEditCat(){
   });
   sv('gl_items',newItems);closeM('m-editcat');renderShop();
 }
-function delCat(broad){
+function delCat(broad){guardDel('Delete this category and its items?',()=>{_g_delCat(broad);audit('Deleted category');});}
+function _g_delCat(broad){
   const items=ld('gl_items',{});
   const hasItems=Object.values(items).some(i=>i.broad===broad);
   if(hasItems){alert('Please delete all items in this category first!');return;}
@@ -1741,7 +1773,7 @@ function renderBills(){
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
           ${!b.paid
-            ?`<button class="pdb" onclick="event.stopPropagation();markPaid(${b.id})">Mark Paid ✓</button>`
+            ?`<button class="pdb" onclick="event.stopPropagation();openBillPay(${b.id})">Mark Paid ✓</button>`
             :`<button class="pdb" style="opacity:.6" onclick="event.stopPropagation();markUnpaid(${b.id})">Undo</button>`}
           <button onclick="event.stopPropagation();editBill(${b.id})" style="background:var(--pl);border:1px solid var(--p2);color:var(--p2);border-radius:14px;padding:3px 9px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">✏️ Edit</button>
           <button onclick="event.stopPropagation();delBill(${b.id})" style="background:none;border:none;font-size:11px;cursor:pointer;color:#c0c8d8">🗑</button>
@@ -1753,6 +1785,36 @@ function renderBills(){
   document.getElementById('bills-list').innerHTML=html;
 }
 
+
+// v2.18: Bill payment window -> records details, posts to CashBook
+function openBillPay(id){
+  const b=ld('gl_bills',[]).find(v=>v.id===id);if(!b)return;
+  document.getElementById('bp-id').value=id;
+  document.getElementById('bp-title').textContent=(b.icon||'💡')+' Pay: '+b.name;
+  document.getElementById('bp-amt').value=b.amount||'';
+  document.getElementById('bp-date').value=new Date().toISOString().slice(0,10);
+  document.getElementById('bp-note').value='';
+  const ms=getModes();
+  document.getElementById('bp-mode').innerHTML=ms.map(m=>{const v=(m.e?m.e+' ':'')+(m.n||m);return `<option value="${v}">${v}</option>`;}).join('');
+  openM('m-billpay');
+}
+function saveBillPay(){
+  const id=parseFloat(document.getElementById('bp-id').value);
+  const b=ld('gl_bills',[]);const x=b.find(v=>v.id===id);if(!x)return;
+  const amt=parseFloat(document.getElementById('bp-amt').value)||0;
+  const raw=document.getElementById('bp-date').value;
+  const mode=document.getElementById('bp-mode').value;
+  const note=document.getElementById('bp-note').value.trim();
+  if(!amt){toast('Enter amount');return;}
+  if(!raw){toast('Enter date');return;}
+  x.paid=true;x.amount=amt;sv('gl_bills',b);
+  const ts=ld('gl_txns',[]);
+  ts.push({id:Date.now().toString(),desc:`${x.icon||'💡'} ${x.name}${note?' — '+note:''}`,amt,type:'out',cat:'💡 Bills & Utilities',mode,raw,date:fmt(raw)});
+  sv('gl_txns',ts);
+  audit(`Paid bill: ${x.name} ₹${amt}`);
+  toast(`✓ ₹${amt} paid — recorded in CashBook`);
+  closeM('m-billpay');renderBills();
+}
 function markPaid(id){
   const b=ld('gl_bills',[]);const x=b.find(v=>v.id===id);if(!x)return;
   x.paid=true;sv('gl_bills',b);
@@ -1765,7 +1827,7 @@ function markPaid(id){
   renderBills();
 }
 function markUnpaid(id){const b=ld('gl_bills',[]);const x=b.find(v=>v.id===id);if(x)x.paid=false;sv('gl_bills',b);renderBills();}
-function delBill(id){sv('gl_bills',ld('gl_bills',[]).filter(v=>v.id!==id));renderBills();}
+function delBill(id){guardDel('Delete this bill?',()=>{sv('gl_bills',ld('gl_bills',[]).filter(v=>v.id!==id));audit('Deleted bill');renderBills();});}
 
 function editBill(id){
   const b=ld('gl_bills',[]);const x=b.find(v=>v.id===id);if(!x)return;
@@ -1969,7 +2031,8 @@ function saveEditMilkman(){
   }
   sv('gl_milkmen',milkmen);closeM('m-editmilkman');renderMilk();
 }
-function delMilkman(idx){
+function delMilkman(idx){guardDel('Delete this milkman?',()=>{_g_delMilkman(idx);audit('Deleted milkman');});}
+function _g_delMilkman(idx){
   const mm=ld('gl_milkmen',[]);mm.splice(idx,1);sv('gl_milkmen',mm);renderMilk();
 }
 
@@ -2136,7 +2199,8 @@ function saveEditSupplier(){
   }
   sv('gl_sup_'+type,vendors);closeM('m-editsupplier');renderSupplier(type);
 }
-function delSupplier(type,idx){
+function delSupplier(type,idx){guardDel('Delete this vendor?',()=>{_g_delSupplier(type,idx);audit('Deleted vendor');});}
+function _g_delSupplier(type,idx){
   const vendors=ld('gl_sup_'+type,[]);vendors.splice(idx,1);sv('gl_sup_'+type,vendors);renderSupplier(type);
 }
 function shareSupplier(type){
@@ -2302,7 +2366,8 @@ function addHelper(){
   hs.push({id:Date.now(),name,phone:document.getElementById('h-phone').value.trim(),role:document.getElementById('h-role').value,salary:parseFloat(document.getElementById('h-sal').value)||0,holtype,holidays});
   sv('gl_helpers',hs);closeM('m-addhelp');document.getElementById('h-name').value='';document.getElementById('h-phone').value='';document.getElementById('h-sal').value='';renderHelp();
 }
-function delHelper(idx){
+function delHelper(idx){guardDel('Delete this staff member?',()=>{_g_delHelper(idx);audit('Deleted staff');});}
+function _g_delHelper(idx){
   
   const hs=ld('gl_helpers',[]);hs.splice(idx,1);sv('gl_helpers',hs);renderHelp();
 }
@@ -2312,6 +2377,72 @@ function openAdv(id,name){
 }
 
 // v2.17: household payments auto-post to CashBook
+
+// v2.18: PIN protection + audit log + contact picker
+function askPin(cb){
+  const pin=ld('gl_pin','');
+  if(!pin){cb();return;}
+  const e=prompt('🔐 Enter 4-digit PIN:');
+  if(e===pin)cb();else if(e!==null)toast('❌ Wrong PIN');
+}
+function setPinFlow(){
+  const cur=ld('gl_pin','');
+  if(cur){const e=prompt('Enter current PIN:');if(e!==cur){if(e!==null)toast('❌ Wrong PIN');return;}}
+  const np=prompt(cur?'New 4-digit PIN (blank to remove):':'Set a 4-digit PIN:');
+  if(np===null)return;
+  if(np===''){sv('gl_pin','');toast('PIN removed');return;}
+  if(!/^\d{4}$/.test(np)){toast('PIN must be exactly 4 digits');return;}
+  sv('gl_pin',np);toast('🔐 PIN set');
+}
+function guardDel(msg,cb){if(!confirm(msg))return;askPin(cb);}
+function setUserFlow(){
+  const n=prompt('Your short name (for audit log, e.g. SK, Mummy):',ld('gl_user',''));
+  if(n===null)return;sv('gl_user',n.trim());toast('👤 Saved: '+n.trim());
+}
+function audit(action){
+  const a=ld('gl_audit',[]);
+  a.push({ts:Date.now(),u:ld('gl_user','?'),a:action});
+  if(a.length>200)a.splice(0,a.length-200);
+  sv('gl_audit',a);
+}
+function showAudit(){
+  const a=ld('gl_audit',[]).slice().reverse();
+  const body=a.length?a.map(x=>`${new Date(x.ts).toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})} — <b>${x.u||'?'}</b>: ${x.a}`).join('<br>'):'No entries yet.';
+  document.getElementById('changelog-body').innerHTML='<b>📜 Audit Log (last 200)</b><br><br>'+body;
+  openM('m-changelog');
+}
+const CHANGELOG=`v2.18.0 (20 Jul)
+• Clock second-accurate • Bill payment window → CashBook
+• PIN protection (deletes + settings) • Audit log with user names
+• Back-swipe stays in app • Last tab remembered on refresh
+• Contact picker 📇 • Notes readable • Visibility fixes
+
+v2.17.0 — Two-way CashBook↔Staff/Vendor sync, contra both-side preview
+v2.16.0 — PNG auto-crop (uniform cards), sticky sub-tabs, bigger fonts
+v2.15.0 — Voucher balance preview, About redesign
+v2.14.0 — Cart-only PDF, soft bill accents, Bills→CashBook
+v2.13.0 — Print-based PDF (jsPDF removed), 2-line clock, back nav
+v2.12.0 — Search fixed, colors laddered, clock simplified`;
+function showChangelog(){
+  document.getElementById('changelog-body').textContent=CHANGELOG;
+  openM('m-changelog');
+}
+(function(){
+  const vb=document.getElementById('ver-badge');if(!vb)return;
+  let t;const down=()=>{t=setTimeout(showChangelog,600);};const up=()=>clearTimeout(t);
+  vb.addEventListener('touchstart',down,{passive:true});vb.addEventListener('touchend',up);
+  vb.addEventListener('mousedown',down);vb.addEventListener('mouseup',up);vb.addEventListener('mouseleave',up);
+})();
+async function pickContact(phoneId,nameId){
+  if(!('contacts' in navigator&&'select' in navigator.contacts)){toast('Contact picker needs Chrome on Android');return;}
+  try{
+    const c=await navigator.contacts.select(['name','tel'],{multiple:false});
+    if(c&&c[0]){
+      if(c[0].tel&&c[0].tel[0])document.getElementById(phoneId).value=c[0].tel[0].replace(/[^\d+]/g,'');
+      if(nameId&&c[0].name&&c[0].name[0]&&!document.getElementById(nameId).value)document.getElementById(nameId).value=c[0].name[0];
+    }
+  }catch(e){}
+}
 function pushCashTxn(desc,amt,cat,raw,mode){
   if(!amt)return;
   const ts=ld('gl_txns',[]);
@@ -2390,7 +2521,7 @@ function addCon(){
   cs.push({id:Date.now(),name,role:document.getElementById('c-role').value,phone:document.getElementById('c-ph').value.trim(),note:document.getElementById('c-note').value.trim()});
   sv('gl_contacts',cs);closeM('m-addcon');['c-name','c-ph','c-note'].forEach(x=>document.getElementById(x).value='');renderCon();
 }
-function delCon(idx){const cs=ld('gl_contacts',[]);cs.splice(idx,1);sv('gl_contacts',cs);renderCon();}
+function delCon(idx){guardDel('Delete this contact?',()=>{const cs=ld('gl_contacts',[]);cs.splice(idx,1);sv('gl_contacts',cs);audit('Deleted contact');renderCon();});}
 
 
 
@@ -2423,7 +2554,7 @@ function addMedCon(){
   cs.push({name,role:document.getElementById('med-role').value,phone:document.getElementById('med-ph').value.trim(),note:document.getElementById('med-note').value.trim()});
   sv('gl_medcons',cs);closeM('m-addmed');['med-name','med-ph','med-note'].forEach(x=>document.getElementById(x).value='');renderMedCon();
 }
-function delMedCon(idx){const cs=ld('gl_medcons',[]);cs.splice(idx,1);sv('gl_medcons',cs);renderMedCon();}
+function delMedCon(idx){guardDel('Delete this contact?',()=>{const cs=ld('gl_medcons',[]);cs.splice(idx,1);sv('gl_medcons',cs);audit('Deleted medical contact');renderMedCon();});}
 
 // CASH
 let cashM={y:new Date().getFullYear(),m:new Date().getMonth()};
@@ -2513,7 +2644,7 @@ function renderCash(){
         </div>
       </div>`;
     }
-    return `<div class="tr ${t.type==='out'?'out':''}">
+    return `<div class="tr ${t.type==='out'?'out':''}" style="border-left-color:${t.type==='out'?'var(--red)':'var(--green)'}">
       <div style="font-size:22px">${t.cat?t.cat.split(' ')[0]:'💰'}</div>
       <div style="flex:1;min-width:0">
         <div style="font-weight:700;font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.desc}</div>
@@ -2543,7 +2674,7 @@ function setTtype(type){
   document.getElementById('txn-contra-fields').style.display=isContra?'block':'none';
   document.getElementById('txn-cat-field').style.display=isContra?'none':'block';
   const df=document.getElementById('txn-desc-field');if(df)df.style.display=isContra?'none':'block';
-  const lf=document.getElementById('txn-link-field');if(lf)lf.style.display=(type==='out')?'block':'none';
+  const lw=document.getElementById('txn-link-wrap');if(lw)lw.style.display=(type==='out')?'block':'none';
   updBalPreview();
 }
 function addTxn(){
@@ -2567,11 +2698,12 @@ function addTxn(){
   ts.push({id:Date.now().toString(),desc,amt,type,cat:document.getElementById('t-cat').value,mode,raw,date:fmt(raw)});
   sv('gl_txns',ts);
   if(type==='out'){const who=applyTxnLink(amt,raw,desc);if(who)toast('Also recorded in '+who+"'s account");}
+  audit((type==='in'?'Receipt':type==='out'?'Payment':'Transfer')+' ₹'+amt+' — '+desc);
   closeM('m-addtxn');
   document.getElementById('t-desc').value='';document.getElementById('t-amt').value='';
   renderCash();
 }
-function delTxn(id){sv('gl_txns',ld('gl_txns',[]).filter(t=>t.id!==id));renderCash();}
+function delTxn(id){guardDel('Delete this entry?',()=>{sv('gl_txns',ld('gl_txns',[]).filter(t=>t.id!==id));audit('Deleted cash entry');renderCash();});}
 function chCash(dir){cashM.m+=dir;if(cashM.m>11){cashM.m=0;cashM.y++;}if(cashM.m<0){cashM.m=11;cashM.y--;}renderCash();}
 
 // TODO — fixed delete using data-id
@@ -2607,7 +2739,8 @@ function togTodo(id,v){
   const ts=ld('gl_todos',[]);const t=ts.find(x=>x.id===id);if(t)t.done=v;
   sv('gl_todos',ts);renderTodo();
 }
-function delTodo(id){
+function delTodo(id){guardDel('Delete this task?',()=>{_g_delTodo(id);audit('Deleted task');});}
+function _g_delTodo(id){
   sv('gl_todos',ld('gl_todos',[]).filter(t=>t.id!==id));
   renderTodo();
 }
@@ -2628,13 +2761,13 @@ function renderNotes(){
     const col=NCOL[i%NCOL.length];
     return `<div style="background:${col};border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--shadow);">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;">
-        <div style="font-weight:800;font-size:14px;color:var(--text);flex:1;">${n.title||'Untitled'}</div>
+        <div style="font-weight:800;font-size:14px;color:#1a2a4a;flex:1;">${n.title||'Untitled'}</div>
         <div style="display:flex;gap:4px;flex-shrink:0;">
           <button onclick="openEditNote(${i})" style="background:none;border:none;font-size:14px;cursor:pointer;color:var(--p2);">✏️</button>
           <button onclick="delNote(${i})" style="background:none;border:none;font-size:14px;cursor:pointer;color:#9a8a50;">🗑</button>
         </div>
       </div>
-      <div style="font-size:13px;color:var(--text);white-space:pre-wrap;line-height:1.5;">${n.body||''}</div>
+      <div style="font-size:13px;color:#1a2a4a;white-space:pre-wrap;line-height:1.5;">${n.body||''}</div>
     </div>`;
   }).join('');
 }
@@ -2664,7 +2797,8 @@ function saveEditNote(){
   }
   sv('gl_notes',notes);closeM('m-editnote');renderNotes();
 }
-function delNote(idx){
+function delNote(idx){guardDel('Delete this note?',()=>{_g_delNote(idx);audit('Deleted note');});}
+function _g_delNote(idx){
   const notes=ld('gl_notes',[]);notes.splice(idx,1);sv('gl_notes',notes);renderNotes();
 }
 
@@ -3285,6 +3419,10 @@ function openPrintWin(title,innerHtml){
     pre{white-space:pre-wrap;font-family:Arial,sans-serif;font-size:14px;}
     .ft{text-align:center;color:#999;font-size:11px;margin-top:24px;}
   #tab-cash{zoom:1.12;}
+#srch::placeholder{color:#9ab2d6;opacity:1;}
+.topbar-sub{color:#d5e2f5!important;font-size:10px!important;font-weight:600;}
+.unit-tag{font-size:11px!important;font-weight:800;}
+@page{margin:12mm;}
 </style></head><body><h2>🪔 GrihaLaxmi — ${title}</h2>${innerHtml}
   <div class="ft">Generated from GrihaLaxmi App</div>
   <script>setTimeout(()=>window.print(),400);<\/script></body></html>`);
@@ -3565,7 +3703,7 @@ function updateDateTime(){
   if(hEl)hEl.textContent=hr;if(mEl)mEl.textContent=mn;
 }
 updateDateTime();
-setInterval(updateDateTime,30000);
+setInterval(updateDateTime,1000);
 
 // v2.14: measure topbar height so sticky row sits flush below it (no transparency gap)
 function fixStickyTop(){
@@ -3681,8 +3819,17 @@ const _origShowTab=showTab;
 showTab=function(n,btn){
   if(_curTab&&_curTab!==n){_tabHistory.push(_curTab);if(_tabHistory.length>10)_tabHistory.shift();}
   _curTab=n;
+  try{localStorage.setItem('gl_last_tab',n);}catch(e){}
   return _origShowTab(n,btn);
 };
+setTimeout(()=>{
+  const lt=localStorage.getItem('gl_last_tab');
+  if(lt&&lt!=='shopping'){
+    const idx={shopping:0,organiser:1,cash:2,household:3}[lt];
+    const btn=document.querySelectorAll('.bnav .nb')[idx];
+    if(btn){_curTab=lt;_origShowTab(lt,btn);}
+  }
+},100);
 function goBack(){
   const openMo=document.querySelector('.mo.open');
   if(openMo){closeM(openMo.id);return;}
@@ -3695,6 +3842,8 @@ function goBack(){
   }
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')goBack();});
+history.pushState({gl:1},'');
+window.addEventListener('popstate',()=>{goBack();history.pushState({gl:1},'');});
 let _tx0=0,_ty0=0;
 document.addEventListener('touchstart',e=>{_tx0=e.touches[0].clientX;_ty0=e.touches[0].clientY;},{passive:true});
 document.addEventListener('touchend',e=>{
