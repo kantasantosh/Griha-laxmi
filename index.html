@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.20.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.20.1 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -1098,7 +1098,7 @@ input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);outline:1px
 </div>
 
 <script>
-const APP_VERSION='2.20.0';
+const APP_VERSION='2.20.1';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -3592,11 +3592,8 @@ input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);outline:1px
 .topbar-sub{color:#d5e2f5!important;font-size:10px!important;font-weight:600;}
 .unit-tag{font-size:11px!important;font-weight:800;}
 @page{margin:12mm;}
-</style><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-</head><body><h2>🪔 GrihaLaxmi — ${title}</h2>${innerHtml}
-  <div class="ft">Generated from GrihaLaxmi App</div>
-  <script>setTimeout(()=>window.print(),400);<\/script></body></html>`);
+</style></head><body onload="setTimeout(function(){window.print()},400)"><h2>🪔 GrihaLaxmi — ${title}</h2>${innerHtml}
+  <div class="ft">Generated from GrihaLaxmi App</div></body></html>`);
   w.document.close();
 }
 let PDF_MODE=false;
