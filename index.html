@@ -11,7 +11,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.22.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.22.2 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -1098,7 +1098,7 @@ input[type=checkbox]{width:12px;height:12px;accent-color:var(--gold);outline:1px
 </div>
 
 <script>
-const APP_VERSION='2.22.0';
+const APP_VERSION='2.22.2';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -3338,7 +3338,7 @@ sv=function(k,v){
   if(SYNC_SKIP.includes(k)||k.startsWith('gl_billalert'))return;
   const ts=ld('gl_key_ts',{});ts[k]=Date.now();_origSv('gl_key_ts',ts);
   _dirty=true;
-  clearTimeout(window._pushT);window._pushT=setTimeout(()=>syncNow(true),3000);
+  clearTimeout(window._pushT);window._pushT=setTimeout(()=>syncNow(true),1200);
 };
 function collectLocal(){
   const out={};const ts=ld('gl_key_ts',{});
@@ -3370,7 +3370,12 @@ async function syncNow(silent){
       else if(l){merged[k]=l;if(!r||l.t>r.t)pushed++;}
     });
     const ts=ld('gl_key_ts',{});Object.keys(merged).forEach(k=>ts[k]=merged[k].t);_origSv('gl_key_ts',ts);
-    await ref.set({keys:merged,updatedAt:Date.now(),by:ld('gl_user','?'),dev:_devId});
+    // push ONLY keys where local is newer (merge:true = field-level, no clobbering concurrent writes)
+    const pushKeys={};
+    Object.keys(merged).forEach(k=>{const r=remote[k];if(!r||merged[k].t>r.t||merged[k].v!==r.v&&merged[k].t>=r.t)pushKeys[k]=merged[k];});
+    if(Object.keys(pushKeys).length||!snap.exists){
+      await ref.set({keys:pushKeys,updatedAt:Date.now(),by:ld('gl_user','?'),dev:_devId},{merge:true});
+    }
     _origSv('gl_last_sync',Date.now());_dirty=false;
     if(!silent)toast(`☁️ Synced ✓ ${pulled?'↓'+pulled+' ':''}${pushed?'↑'+pushed:''}`||'☁️ Synced ✓');
     if(firstSync&&pulled){toast('☁️ Family data loaded — refreshing…');setTimeout(()=>location.reload(),900);}
@@ -3381,6 +3386,20 @@ async function syncNow(silent){
 }
 // live listener: changes from other phones appear automatically
 let _liveUnsub=null,_lastApplied=0;
+function _liveApply(d){
+  if(!d.updatedAt||d.updatedAt<=_lastApplied)return;
+  _lastApplied=d.updatedAt;
+  if(d.dev===_devId)return;
+  const remote=d.keys||{};const ts=ld('gl_key_ts',{});let applied=0;
+  Object.keys(remote).forEach(k=>{
+    if((ts[k]||0)<remote[k].t){localStorage.setItem(k,remote[k].v);ts[k]=remote[k].t;applied++;}
+  });
+  _origSv('gl_key_ts',ts);
+  if(applied){
+    [()=>renderShop(),()=>renderBills(),()=>renderCash(),()=>renderHelp(),()=>renderTodo(),()=>renderNotes(),()=>renderMilk()].forEach(f=>{try{f();}catch(e){}});
+    toast('☁️ Updated from '+(d.by||'family'));
+  }
+}
 function listenLive(){
   const fam='main';
   const db=fbInit();
@@ -3389,25 +3408,15 @@ function listenLive(){
     if(!snap.exists)return;
     const d=snap.data();
     if(!d.updatedAt||d.updatedAt<=_lastApplied)return;
-    if(_syncBusy)return;
-    _lastApplied=d.updatedAt;
-    if(d.dev===_devId)return; // our own write echoing back
-    const remote=d.keys||{};const ts=ld('gl_key_ts',{});let applied=0;
-    Object.keys(remote).forEach(k=>{
-      if((ts[k]||0)<remote[k].t){localStorage.setItem(k,remote[k].v);ts[k]=remote[k].t;applied++;}
-    });
-    _origSv('gl_key_ts',ts);
-    if(applied){
-      try{renderShop();renderBills&&renderBills();renderCash&&renderCash();renderHelp&&renderHelp();}catch(e){}
-      toast('☁️ Updated from '+(d.by||'family'));
-    }
+    if(_syncBusy){setTimeout(()=>{_liveApply(d);},1500);return;}
+    _liveApply(d);
   },err=>{});
 }
 // auto-sync: on load, every 2 min if dirty, on return to app + live listener
 setTimeout(()=>{syncNow(true);listenLive();},2500);
 setInterval(()=>{if(!_liveUnsub)listenLive();},8000);
 setInterval(()=>{if(_dirty)syncNow(true);},120000);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden){syncNow(true);listenLive();}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(_dirty)syncNow(true);}else{syncNow(true);listenLive();}});
 function forceSyncNow(){syncNow(false);}
 
 
