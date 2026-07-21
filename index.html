@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<!--
+  ═══════════════════════════════════════════════════════════
+  GrihaLaxmi — Your Complete Home Manager
+  © 2026 Santosh Aggarwal (SantKanta). All rights reserved.
+  Unauthorized copying, redistribution, or commercial use of
+  this source code, design, or assets is strictly prohibited.
+  ═══════════════════════════════════════════════════════════
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -11,7 +19,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.22.2 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.24.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -214,7 +222,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .es{text-align:center;padding:36px 20px;color:var(--tm);}
 
 /* ===== FAB ===== */
-.fab{position:fixed;bottom:80px;right:16px;width:48px;height:48px;border-radius:50%;background:transparent;color:rgba(245,200,66,0.4);border:2px solid rgba(245,200,66,0.25);font-size:26px;cursor:pointer;box-shadow:none;z-index:90;display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.2s;}
+.fab{position:fixed;bottom:80px;right:16px;width:48px;height:48px;border-radius:50%;background:rgba(13,30,60,0.85);color:var(--gold);border:2px solid rgba(245,200,66,0.65);font-size:26px;cursor:pointer;box-shadow:none;z-index:90;display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.2s;}
 .fab:hover,.fab:active{background:linear-gradient(135deg,rgba(26,90,173,0.6),rgba(245,200,66,0.3));border-color:rgba(245,200,66,0.6);color:white;box-shadow:0 4px 20px rgba(245,200,66,0.2);}
 .hero{background:linear-gradient(135deg,var(--p1),var(--p2));border-radius:var(--radius);padding:16px;margin-bottom:14px;color:white;box-shadow:0 4px 20px rgba(26,90,173,0.3);}
 
@@ -261,6 +269,10 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .low-btn{background:rgba(255,255,255,0.5);border:1.5px solid #12305e;color:#12305e;border-radius:16px;padding:3px 8px;font-size:10px;font-family:inherit;font-weight:700;cursor:pointer;white-space:nowrap;}
 .low-btn.active{background:var(--gold);border-color:var(--gold);color:#0a1a38;}
 #tab-cash{zoom:1.12;}
+input[type=checkbox]{-webkit-appearance:none;appearance:none;width:13px;height:13px;border:1.5px solid var(--gold);border-radius:4px;background:transparent;vertical-align:middle;cursor:pointer;position:relative;flex-shrink:0;}
+input[type=checkbox]:checked{background:var(--gold);}
+input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;left:1px;font-size:11px;font-weight:900;color:#0a1a38;}
+#cart-list>div,#hist-list>div{border-color:#4f86d8!important;border-width:1.5px!important;}
 .nb-stab.active{color:var(--gold)!important;}
 .nb-stab:active{transform:scale(0.97);}
 #shop-sticky{background:linear-gradient(180deg,var(--bg) 60%,rgba(26,60,120,0.25));border-bottom:1px solid rgba(245,200,66,0.15);}
@@ -268,7 +280,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .nb-stab.active{background:linear-gradient(135deg,#1a3c78,#2a5ca8);border-radius:9px;color:var(--gold)!important;box-shadow:0 2px 8px rgba(42,92,168,0.5);}
 #shop-sticky button{border-color:rgba(245,200,66,0.35)!important;}
 .fi::placeholder,#srch::placeholder,textarea::placeholder{color:#46587c!important;font-weight:400!important;font-style:italic;}
-input[type=checkbox]{width:12px;height:12px;accent-color:var(--gold);outline:1px solid rgba(245,200,66,0.6);outline-offset:1px;border-radius:3px;vertical-align:middle;transform:translateY(-1px);}
+
 .sub-card{border-width:1.5px!important;border-color:#5a9ae8!important;}
 .item-row{border-width:1.5px!important;border-color:#a8cef6!important;}
 .cat-card{border:1px solid #3a68b0!important;}
@@ -280,6 +292,7 @@ input[type=checkbox]{width:12px;height:12px;accent-color:var(--gold);outline:1px
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 </head>
 <body>
 
@@ -432,6 +445,7 @@ input[type=checkbox]{width:12px;height:12px;accent-color:var(--gold);outline:1px
     <div class="st">💸 Expenses</div>
     <div style="display:flex;gap:6px;flex-wrap:wrap;">
       <button onclick="pdfVia(()=>shareCash())" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
+      <button onclick="printDaybook()" style="background:white;border:1.5px solid var(--gold);color:#8a6d1a;border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📒 Day Book</button>
       <button class="ab" onclick="openM('m-addtxn')">+ Entry</button>
     </div>
   </div>
@@ -507,6 +521,18 @@ input[type=checkbox]{width:12px;height:12px;accent-color:var(--gold);outline:1px
 
 
 <!-- Themed dialog -->
+
+<!-- v2.23: Sign-in gate -->
+<div id="auth-gate" style="display:none;position:fixed;inset:0;z-index:99999;background:linear-gradient(160deg,#0a1226,#122240);flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:30px;text-align:center;">
+  <div style="font-size:52px;">🪔</div>
+  <div style="font-size:24px;font-weight:800;color:var(--gold);">GrihaLaxmi</div>
+  <div style="font-size:13px;color:#b8cce8;max-width:280px;line-height:1.6;">Family app — sign in with your Google account to continue</div>
+  <button onclick="glSignIn()" style="display:flex;align-items:center;gap:10px;background:white;color:#333;border:none;border-radius:26px;padding:13px 26px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,0.4);">
+    <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.7 2.4 30.2 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.2C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.7 6C44.1 38 46.5 31.8 46.5 24.5z"/><path fill="#FBBC05" d="M10.5 28.6c-.5-1.5-.8-3-.8-4.6s.3-3.1.8-4.6l-7.9-6.2C.9 16.5 0 20.1 0 24s.9 7.5 2.6 10.8l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.7-2 15.6-5.6l-7.7-6c-2.1 1.4-4.8 2.3-7.9 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.2C6.5 42.6 14.6 48 24 48z"/></svg>
+    Sign in with Google
+  </button>
+  <div style="font-size:10px;color:#5a6f92;">Your family's data stays private to signed-in members</div>
+</div>
 <div class="mo" id="m-gldlg" style="z-index:9999;">
   <div class="mc" style="max-width:340px;">
     <div id="gldlg-msg" style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;text-align:center;line-height:1.5;"></div>
@@ -1052,8 +1078,9 @@ input[type=checkbox]{width:12px;height:12px;accent-color:var(--gold);outline:1px
           <button onclick="closeM('m-about');askPin(()=>openM('m-settings'));" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">⚙️ Theme &amp; Font</button>
           <button onclick="openM('m-feedback')" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">💬 Feedback</button>
           <button onclick="setPinFlow()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">🔐 PIN</button>
-          <button onclick="setUserFlow()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">👤 My Name</button>
-          <button onclick="showAudit()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;grid-column:span 2;">📜 Audit Log</button>
+          <button onclick="glSignOut()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">🚪 Sign Out</button>
+          <button onclick="showAudit()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📜 Audit Log</button>
+          <button onclick="famFlow()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">👪 Family Group</button>
         </div>
       </div>
       <div style="background:var(--card);border-radius:var(--rsm);padding:12px;border:1px solid var(--border);margin-bottom:10px;text-align:left;">
@@ -1098,7 +1125,7 @@ input[type=checkbox]{width:12px;height:12px;accent-color:var(--gold);outline:1px
 </div>
 
 <script>
-const APP_VERSION='2.22.2';
+const APP_VERSION='2.24.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1586,8 +1613,11 @@ function saveCart(){
 }
 function _saveHistNamed(name){
   if(name===null)return; // cancelled
+  const items=ld('gl_items',{});
+  const cart=Object.values(items).filter(i=>i.inCart);
+  if(!cart.length){toast('No items in cart!');return;}
   const h=ld('gl_hist',[]);
-  h.unshift({date:fmt(td()),name:name.trim()||fmt(td()),items:cart.map(i=>({name:i.name,qty:i.qty,unit:i.unit}))});
+  h.unshift({date:fmt(td()),name:(name||'').trim()||fmt(td()),items:cart.map(i=>({name:i.name,qty:i.qty,unit:i.unit}))});
   if(h.length>20)h.pop();
   sv('gl_hist',h);
   Object.keys(items).forEach(k=>{items[k].inCart=false;items[k].low=false;items[k].purchased=false;});
@@ -2458,6 +2488,7 @@ function editRoles(sel){
   });
 }
 function askPin(cb){
+  if(isAdmin()){cb();return;}
   const pin=String(ld('gl_pin','')||'');
   if(!pin){cb();return;}
   glPrompt('🔐 Enter 4-digit PIN','',e=>{if(e===pin)cb();else toast('❌ Wrong PIN');},'password');
@@ -2845,6 +2876,10 @@ function clearDone(){
 
 // NOTES
 const NCOL=['#FFF6D6','#E0F7F5','#F0EBFF','#FDEDEC','#E8F8F0','#E8F0FE'];
+
+// v2.23: forward notes
+function noteToPDF(i){const n=ld('gl_notes',[])[i];if(!n)return;openPrintWin('Note — '+(n.title||'Untitled'),'<pre>'+(n.body||'')+'</pre>');}
+function noteToWA(i){const n=ld('gl_notes',[])[i];if(!n)return;window.open('https://wa.me/?text='+encodeURIComponent('📝 *'+(n.title||'Note')+'*\n\n'+(n.body||'')+'\n\n_from GrihaLaxmi_'),'_blank');}
 function renderNotes(){
   const notes=ld('gl_notes',[]);
   if(!notes.length){document.getElementById('notes-list').innerHTML=`<div class="es"><div style="font-size:44px">📝</div><div>No notes yet.<br>Tap "+ Note" to scribble something!</div></div>`;return;}
@@ -2854,6 +2889,8 @@ function renderNotes(){
     return `<div style="background:${col};border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--shadow);">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px;">
         <div style="font-weight:800;font-size:14px;color:#1a2a4a;flex:1;">${n.title||'Untitled'}</div>
+        <button onclick="event.stopPropagation();noteToPDF(${i})" title="PDF" style="background:none;border:none;font-size:14px;cursor:pointer;">📄</button>
+        <button onclick="event.stopPropagation();noteToWA(${i})" title="WhatsApp" style="background:none;border:none;font-size:14px;cursor:pointer;">🟢</button>
         <div style="display:flex;gap:4px;flex-shrink:0;">
           <button onclick="openEditNote(${i})" style="background:none;border:none;font-size:14px;cursor:pointer;color:var(--p2);">✏️</button>
           <button onclick="delNote(${i})" style="background:none;border:none;font-size:14px;cursor:pointer;color:#9a8a50;">🗑</button>
@@ -2915,7 +2952,7 @@ function renderSOSCons(){
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
         <a href="tel:${cl}" onclick="confSOS(event,'call','${c.name}')" style="background:var(--green);color:white;border-radius:var(--rsm);padding:10px 4px;text-align:center;font-size:12px;font-weight:700;text-decoration:none;display:block">📞 Call</a>
         <a href="https://wa.me/91${cl}?text=${msg}" target="_blank" onclick="confSOS(event,'WhatsApp','${c.name}')" style="background:#25D366;color:white;border-radius:var(--rsm);padding:10px 4px;text-align:center;font-size:12px;font-weight:700;text-decoration:none;display:block">💬 WA</a>
-        <a href="sms:${cl}?body=${msg}" onclick="confSOS(event,'SMS','${c.name}')" style="background:var(--p2);color:white;border-radius:var(--rsm);padding:10px 4px;text-align:center;font-size:12px;font-weight:700;text-decoration:none;display:block">✉️ SMS</a>
+        <a href="https://wa.me/91${cl.replace(/\D/g,'').slice(-10)}?text=${msg}" target="_blank" onclick="confSOS(event,'WhatsApp','${c.name}')" style="background:#25D366;color:white;border-radius:var(--rsm);padding:10px 4px;text-align:center;font-size:12px;font-weight:700;text-decoration:none;display:block">🟢 WhatsApp</a>
       </div>
     </div>`;
   });
@@ -3129,7 +3166,7 @@ function renderManageList(){
   const items=_manageListType==='modes'?getModes():_manageListType==='expcats'?getExpCats():getBillIcons();
   const el=document.getElementById('ml-items');
   el.innerHTML=items.map((item,i)=>`
-    <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:${i%2?'white':'var(--bg)'};border-radius:var(--rsm);margin-bottom:4px;">
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:${i%2?'rgba(58,128,212,0.18)':'var(--bg)'};border-radius:var(--rsm);margin-bottom:4px;">
       <span style="font-size:20px;width:30px;text-align:center;">${item.e}</span>
       <span style="flex:1;font-size:13px;font-weight:600;">${item.n}</span>
       <button onclick="delManageItem(${i})" style="background:none;border:none;color:#c0c8d8;cursor:pointer;font-size:15px;padding:2px;">🗑</button>
@@ -3321,8 +3358,54 @@ function sendFeedback(){
 
 // ================= v2.20 FIREBASE SYNC =================
 const FB_CONFIG={apiKey:"AIzaSyDq5AjTUCxZ85CBffYFh_MmKhibN7Pjnl8",authDomain:"ss-indent-pro-3b7ea.firebaseapp.com",projectId:"ss-indent-pro-3b7ea",storageBucket:"ss-indent-pro-3b7ea.firebasestorage.app",messagingSenderId:"221934576188",appId:"1:221934576188:web:34568216695ba7efbc5939"};
+
+// ================= v2.23 GOOGLE SIGN-IN =================
+const GL_ADMINS=['vinfab@gmail.com']; // admin emails — full rights
+let _authUser=null;
+function isAdmin(){return _authUser&&GL_ADMINS.includes((_authUser.email||'').toLowerCase());}
+
+// v2.24: data doc = your family group if joined, else your own private uid
+function famId(){return String(ld('gl_famid','')||'')||(_authUser?_authUser.uid.slice(0,8).toUpperCase():'');}
+function famFlow(){
+  const cur=ld('gl_famid','');
+  const myCode=_authUser?_authUser.uid.slice(0,8).toUpperCase():'—';
+  glPrompt(cur?('👪 Current Family Group: '+cur+'\nEnter a different code to switch, "ME" for private data, or Cancel to keep.'):('👪 Your share-code: '+myCode+'\nGive it to family members. To JOIN someone\'s group, enter THEIR code:'),cur||'',c=>{
+    c=(c||'').trim().toUpperCase();
+    if(!c)return;
+    if(c==='ME'){localStorage.removeItem('gl_famid');}
+    else{_origSv('gl_famid',c);}
+    _origSv('gl_last_sync',0); // treat as fresh device → pull group data wholesale
+    if(_liveUnsub){try{_liveUnsub();}catch(e){}_liveUnsub=null;}
+    toast('👪 Switching data group…');
+    setTimeout(()=>{syncNow(false);listenLive();},600);
+  });
+}
+function glSignIn(){
+  const p=new firebase.auth.GoogleAuthProvider();
+  firebase.auth().signInWithPopup(p).catch(()=>firebase.auth().signInWithRedirect(p));
+}
+function glSignOut(){glConfirm('Sign out of GrihaLaxmi?',()=>{firebase.auth().signOut();});}
+function initAuth(){
+  if(!window.firebase||!firebase.auth){setTimeout(initAuth,700);return;}
+  fbInit();
+  firebase.auth().onAuthStateChanged(u=>{
+    _authUser=u;
+    const g=document.getElementById('auth-gate');
+    if(u){
+      if(g)g.style.display='none';
+      const short=(u.displayName||u.email||'').split(/[ @]/)[0];
+      if(short&&ld('gl_user','')!==short)sv('gl_user',short);
+      syncNow(true);listenLive();
+    }else{
+      if(g)g.style.display='flex';
+      if(_liveUnsub){try{_liveUnsub();}catch(e){}_liveUnsub=null;}
+    }
+  });
+}
+setTimeout(initAuth,900);
+console.log('%c🪔 GrihaLaxmi © 2026 SantKanta — All rights reserved. Unauthorized commercial use prohibited.','color:#f5c842;font-size:13px;font-weight:bold;');
 let _fbdb=null,_syncBusy=false,_dirty=false;
-const SYNC_SKIP=['gl_last_tab','gl_key_ts','gl_last_sync','gl_family','gl_device'];
+const SYNC_SKIP=['gl_last_tab','gl_key_ts','gl_last_sync','gl_family','gl_famid','gl_device'];
 let _devId=ld('gl_device','');if(!_devId){_devId=Math.random().toString(36).slice(2,10);try{localStorage.setItem('gl_device',JSON.stringify(_devId));}catch(e){}}
 function fbInit(){
   try{
@@ -3350,7 +3433,8 @@ function collectLocal(){
   return out;
 }
 async function syncNow(silent){
-  const fam='main';
+  if(!_authUser){if(!silent)toast('Sign in first');return;}
+  const fam=famId();if(!fam)return;
   const db=fbInit();
   if(!db){if(!silent)toast('⚠️ Firebase not loaded — check internet');return;}
   if(_syncBusy)return;_syncBusy=true;
@@ -3374,7 +3458,7 @@ async function syncNow(silent){
     const pushKeys={};
     Object.keys(merged).forEach(k=>{const r=remote[k];if(!r||merged[k].t>r.t||merged[k].v!==r.v&&merged[k].t>=r.t)pushKeys[k]=merged[k];});
     if(Object.keys(pushKeys).length||!snap.exists){
-      await ref.set({keys:pushKeys,updatedAt:Date.now(),by:ld('gl_user','?'),dev:_devId},{merge:true});
+      await ref.set({keys:pushKeys,updatedAt:Date.now(),by:(_authUser&&(_authUser.displayName||_authUser.email).split(/[ @]/)[0])||ld('gl_user','?'),dev:_devId},{merge:true});
     }
     _origSv('gl_last_sync',Date.now());_dirty=false;
     if(!silent)toast(`☁️ Synced ✓ ${pulled?'↓'+pulled+' ':''}${pushed?'↑'+pushed:''}`||'☁️ Synced ✓');
@@ -3396,12 +3480,13 @@ function _liveApply(d){
   });
   _origSv('gl_key_ts',ts);
   if(applied){
-    [()=>renderShop(),()=>renderBills(),()=>renderCash(),()=>renderHelp(),()=>renderTodo(),()=>renderNotes(),()=>renderMilk()].forEach(f=>{try{f();}catch(e){}});
+    [()=>renderShop(),()=>renderCart(),()=>renderHist(),()=>updCart(),()=>renderBills(),()=>renderCash(),()=>renderHelp(),()=>renderTodo(),()=>renderNotes(),()=>renderMilk(),()=>renderCon(),()=>renderMedCon(),()=>renderSupplier('fruitwala'),()=>renderSupplier('dhobi'),()=>renderSvc&&renderSvc()].forEach(f=>{try{f();}catch(e){}});
     toast('☁️ Updated from '+(d.by||'family'));
   }
 }
 function listenLive(){
-  const fam='main';
+  if(!_authUser)return;
+  const fam=famId();if(!fam)return;
   const db=fbInit();
   if(!db||_liveUnsub)return;
   _liveUnsub=db.collection('grihalaxmi').doc(fam).onSnapshot(snap=>{
@@ -3563,6 +3648,34 @@ function toast(msg){
   clearTimeout(t._to);t._to=setTimeout(()=>{t.style.opacity='0';},2500);
 }
 
+
+// v2.23: Day Book — full month register with running balance
+function printDaybook(){
+  const all=ld('gl_txns',[]);
+  const m=cashM.m,y=cashM.y;
+  const txns=all.filter(t=>{const d=new Date(t.raw);return d.getMonth()===m&&d.getFullYear()===y;}).sort((a,b)=>new Date(a.raw)-new Date(b.raw));
+  if(!txns.length){toast('No entries this month');return;}
+  const MNAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  // opening balance = all txns before month start
+  const start=new Date(y,m,1);
+  let bal=0;
+  all.forEach(t=>{const d=new Date(t.raw);if(d<start){bal+=t.type==='in'?t.amt:t.type==='out'?-t.amt:0;}});
+  const opening=bal;
+  const f=n=>'₹'+Math.abs(n).toLocaleString('en-IN');
+  let rows='',tin=0,tout=0;
+  txns.forEach(t=>{
+    const isIn=t.type==='in',isOut=t.type==='out';
+    if(isIn){bal+=t.amt;tin+=t.amt;}if(isOut){bal-=t.amt;tout+=t.amt;}
+    rows+=`<tr><td>${t.date}</td><td>${t.desc}</td><td>${t.cat||''}</td><td>${t.mode||''}</td><td style="text-align:right;color:#1e7a45">${isIn?f(t.amt):''}</td><td style="text-align:right;color:#a33">${isOut?f(t.amt):''}</td><td style="text-align:right;font-weight:700">${f(bal)}${bal<0?' Dr':''}</td></tr>`;
+  });
+  const html=`<table>
+    <tr><th>Date</th><th>Particulars</th><th>Category</th><th>Mode</th><th style="text-align:right">Receipt</th><th style="text-align:right">Payment</th><th style="text-align:right">Balance</th></tr>
+    <tr><td colspan="6" style="font-weight:700">Opening Balance</td><td style="text-align:right;font-weight:700">${f(opening)}</td></tr>
+    ${rows}
+    <tr><td colspan="4" style="font-weight:800;background:#faf5e6">TOTAL</td><td style="text-align:right;font-weight:800;background:#faf5e6">${f(tin)}</td><td style="text-align:right;font-weight:800;background:#faf5e6">${f(tout)}</td><td style="text-align:right;font-weight:800;background:#faf5e6">${f(bal)}</td></tr>
+  </table>`;
+  openPrintWin('Day Book — '+MNAMES[m]+' '+y,html);
+}
 function printShoppingList(){
   const cats3=ld('gl_cats3',[]);
   const items=ld('gl_items',{});
@@ -3600,7 +3713,15 @@ function printCart(){
 function openPrintWin(title,innerHtml){
   const w=window.open('','_blank');
   if(!w){toast('Popup blocked! Allow popups for PDF.');return;}
-  w.document.write(`<!DOCTYPE html><html><head><title>GrihaLaxmi — ${title}</title><style>
+  w.document.write(`<!DOCTYPE html>
+<!--
+  ═══════════════════════════════════════════════════════════
+  GrihaLaxmi — Your Complete Home Manager
+  © 2026 Santosh Aggarwal (SantKanta). All rights reserved.
+  Unauthorized copying, redistribution, or commercial use of
+  this source code, design, or assets is strictly prohibited.
+  ═══════════════════════════════════════════════════════════
+--><html><head><title>GrihaLaxmi — ${title}</title><style>
     body{font-family:Georgia,'Times New Roman',serif;padding:24px;max-width:680px;margin:auto;color:#1a1a1a;background:#fffdf8;}
     h2{text-align:left;color:#8a6d1a;margin:0 0 2px;font-size:22px;letter-spacing:0.5px;border-bottom:2px solid #c9a227;padding-bottom:8px;}
     .pdate{color:#777;font-size:12px;margin:6px 0 18px;text-align:left!important;}
@@ -3612,8 +3733,12 @@ function openPrintWin(title,innerHtml){
     td{padding:5px 8px;border-bottom:1px solid #eee;}
     tr:nth-child(even) td{background:#fbfaf6;}
     .ft{text-align:center;color:#bbb;font-size:10px;margin-top:28px;border-top:1px solid #eee;padding-top:8px;}
-    @media print{body{padding:8px;}}
+    @page{size:A4;margin:10mm;}@media print{body{padding:0;}}
   #tab-cash{zoom:1.12;}
+input[type=checkbox]{-webkit-appearance:none;appearance:none;width:13px;height:13px;border:1.5px solid var(--gold);border-radius:4px;background:transparent;vertical-align:middle;cursor:pointer;position:relative;flex-shrink:0;}
+input[type=checkbox]:checked{background:var(--gold);}
+input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;left:1px;font-size:11px;font-weight:900;color:#0a1a38;}
+#cart-list>div,#hist-list>div{border-color:#4f86d8!important;border-width:1.5px!important;}
 .nb-stab.active{color:var(--gold)!important;}
 .nb-stab:active{transform:scale(0.97);}
 #shop-sticky{background:linear-gradient(180deg,var(--bg) 60%,rgba(26,60,120,0.25));border-bottom:1px solid rgba(245,200,66,0.15);}
@@ -3621,7 +3746,7 @@ function openPrintWin(title,innerHtml){
 .nb-stab.active{background:linear-gradient(135deg,#1a3c78,#2a5ca8);border-radius:9px;color:var(--gold)!important;box-shadow:0 2px 8px rgba(42,92,168,0.5);}
 #shop-sticky button{border-color:rgba(245,200,66,0.35)!important;}
 .fi::placeholder,#srch::placeholder,textarea::placeholder{color:#46587c!important;font-weight:400!important;font-style:italic;}
-input[type=checkbox]{width:12px;height:12px;accent-color:var(--gold);outline:1px solid rgba(245,200,66,0.6);outline-offset:1px;border-radius:3px;vertical-align:middle;transform:translateY(-1px);}
+
 .sub-card{border-width:1.5px!important;border-color:#5a9ae8!important;}
 .item-row{border-width:1.5px!important;border-color:#a8cef6!important;}
 .cat-card{border:1px solid #3a68b0!important;}
@@ -4096,6 +4221,13 @@ function goBack(){
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')goBack();});
 document.addEventListener('focusin',e=>{if(e.target.type==='date'){try{e.target.showPicker();}catch(err){}}});
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter'||e.target.tagName==='TEXTAREA')return;
+  const mo=document.querySelector('.mo.open:not(#m-gldlg)');
+  if(mo&&e.target.tagName==='INPUT'){const b=mo.querySelector('.sb2');if(b){e.preventDefault();b.click();}}
+  const dlg=document.getElementById('m-gldlg');
+  if(dlg&&dlg.classList.contains('open')&&e.target.id==='gldlg-input'){e.preventDefault();document.getElementById('gldlg-ok').click();}
+});
 history.pushState({gl:1},'');
 window.addEventListener('popstate',()=>{goBack();history.pushState({gl:1},'');});
 let _tx0=0,_ty0=0;
