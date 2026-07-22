@@ -19,7 +19,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.26.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.27.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -548,12 +548,18 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 <div class="mo" id="m-daybook">
   <div class="mc">
     <div class="mh"><span>📒 Day Book</span><button class="mx" onclick="closeM('m-daybook')">✕</button></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+    <div style="font-size:11px;color:var(--tm);margin:-4px 0 12px;line-height:1.5;">Ledger-style register with running balance — pick a period and account.</div>
+    <div style="display:flex;gap:6px;margin-bottom:12px;">
+      <button onclick="dbPreset(0)" style="flex:1;background:var(--bg2);border:1px solid rgba(245,200,66,0.4);color:var(--gold);border-radius:16px;padding:7px 4px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">This Month</button>
+      <button onclick="dbPreset(1)" style="flex:1;background:var(--bg2);border:1px solid rgba(245,200,66,0.4);color:var(--gold);border-radius:16px;padding:7px 4px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">Last Month</button>
+      <button onclick="dbPreset(3)" style="flex:1;background:var(--bg2);border:1px solid rgba(245,200,66,0.4);color:var(--gold);border-radius:16px;padding:7px 4px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">3 Months</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
       <div><label class="fl">From</label><input class="fi" id="db-from" type="date" style="margin-bottom:0;"/></div>
       <div><label class="fl">To</label><input class="fi" id="db-to" type="date" style="margin-bottom:0;"/></div>
     </div>
     <div class="fg"><label class="fl">Account / Mode</label><select class="fi" id="db-mode"><option value="">All Accounts</option></select></div>
-    <button class="sb2" onclick="runDaybook()">📒 Generate Day Book</button>
+    <button class="sb2" onclick="runDaybook()" style="background:linear-gradient(135deg,#b0902a,var(--gold));color:#1a1204;">📒 Generate Day Book</button>
   </div>
 </div>
 <div class="mo" id="m-billpay">
@@ -1138,7 +1144,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 </div>
 
 <script>
-const APP_VERSION='2.26.0';
+const APP_VERSION='2.27.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -3665,6 +3671,14 @@ function toast(msg){
 
 
 // v2.23: Day Book — full month register with running balance
+function dbPreset(back){
+  const now=new Date();
+  const from=new Date(now.getFullYear(),now.getMonth()-(back===0?0:back===1?1:back-0),1);
+  const to=back===1?new Date(now.getFullYear(),now.getMonth(),0):now;
+  const p=n=>String(n).padStart(2,'0');
+  document.getElementById('db-from').value=`${from.getFullYear()}-${p(from.getMonth()+1)}-01`;
+  document.getElementById('db-to').value=`${to.getFullYear()}-${p(to.getMonth()+1)}-${p(to.getDate())}`;
+}
 function openDaybook(){
   const y=cashM.y,m=cashM.m;
   document.getElementById('db-from').value=`${y}-${String(m+1).padStart(2,'0')}-01`;
@@ -3695,7 +3709,7 @@ function printDaybook(fromRaw,toRaw,modeF){
     const dr=t.type==='in'?t.amt:0, cr=t.type==='out'?t.amt:0;
     bal+=dr-cr; tdr+=dr; tcr+=cr;
     const dt=new Date(t.raw);
-    rows+=`<tr><td>${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}</td><td>${t.desc}<span style="color:#999;font-size:11px"> · ${t.cat||''} · ${t.mode||''}</span></td><td style="text-align:right;color:#1e7a45">${dr?f(dr):'—'}</td><td style="text-align:right;color:#a33">${cr?f(cr):'—'}</td><td style="text-align:right;font-weight:700">${f(bal)}${bal<0?' <span style="color:#a33">Dr</span>':''}</td></tr>`;
+    rows+=`<tr><td>${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}</td><td>${t.desc}</td><td class="muted">${(t.cat||'—').replace(/^[^ ]+ /,'')}</td><td class="muted">${(t.mode||'—').replace(/^[^ ]+ /,'')}</td><td class="num" style="color:#1e7a45">${dr?f(dr):'—'}</td><td class="num" style="color:#a33">${cr?f(cr):'—'}</td><td class="num" style="font-weight:700">${f(bal)}${bal<0?' <span style="color:#a33">Dr</span>':''}</td></tr>`;
   });
   const fD=new Date(fromRaw),tD=new Date(toRaw);
   const period=`${fD.getDate()} ${MNAMES[fD.getMonth()].slice(0,3)} ${fD.getFullYear()} — ${tD.getDate()} ${MNAMES[tD.getMonth()].slice(0,3)} ${tD.getFullYear()}`+(modeF?` · ${modeF}`:' · All Accounts');
@@ -3705,11 +3719,11 @@ function printDaybook(fromRaw,toRaw,modeF){
     <div style="font-size:12px;color:#777;">Period: ${period}</div>
   </div>
   <table>
-    <tr><th style="width:52px">Date</th><th>Particulars</th><th style="text-align:right;width:90px">Debit ₹<br><span style="font-weight:400;font-size:10px">(Receipts)</span></th><th style="text-align:right;width:90px">Credit ₹<br><span style="font-weight:400;font-size:10px">(Payments)</span></th><th style="text-align:right;width:100px">Balance ₹</th></tr>
-    <tr style="background:#faf5e6"><td>${String(fD.getDate()).padStart(2,'0')}/${String(fD.getMonth()+1).padStart(2,'0')}</td><td style="font-weight:800">Opening Balance b/f</td><td></td><td></td><td style="text-align:right;font-weight:800">${f(opening)}${opening<0?' Dr':''}</td></tr>
+    <tr><th style="width:44px">Date</th><th>Particulars</th><th style="width:92px">Category</th><th style="width:86px">Mode</th><th class="num" style="width:82px">Debit ₹<br><span style="font-weight:400;font-size:9px;letter-spacing:0">(Receipts)</span></th><th class="num" style="width:82px">Credit ₹<br><span style="font-weight:400;font-size:9px;letter-spacing:0">(Payments)</span></th><th class="num" style="width:92px">Balance ₹</th></tr>
+    <tr style="background:#faf5e6"><td>${String(fD.getDate()).padStart(2,'0')}/${String(fD.getMonth()+1).padStart(2,'0')}</td><td style="font-weight:800" colspan="3">Opening Balance b/f</td><td></td><td></td><td class="num" style="font-weight:800">${f(opening)}${opening<0?' Dr':''}</td></tr>
     ${rows}
-    <tr style="background:#faf5e6;border-top:2px solid #c9a227"><td></td><td style="font-weight:800">Period Totals</td><td style="text-align:right;font-weight:800;color:#1e7a45">${f(tdr)}</td><td style="text-align:right;font-weight:800;color:#a33">${f(tcr)}</td><td></td></tr>
-    <tr style="background:#f5edd6"><td></td><td style="font-weight:800">Closing Balance c/f</td><td></td><td></td><td style="text-align:right;font-weight:800;font-size:14px">${f(bal)}${bal<0?' Dr':''}</td></tr>
+    <tr style="background:#faf5e6;border-top:2px solid #c9a227"><td></td><td style="font-weight:800" colspan="3">Period Totals</td><td class="num" style="font-weight:800;color:#1e7a45">${f(tdr)}</td><td class="num" style="font-weight:800;color:#a33">${f(tcr)}</td><td></td></tr>
+    <tr style="background:#f5edd6;border-bottom:3px double #c9a227"><td></td><td style="font-weight:800" colspan="3">Closing Balance c/f</td><td></td><td></td><td class="num" style="font-weight:800;font-size:14px">${f(bal)}${bal<0?' Dr':''}</td></tr>
   </table>`;
   openPrintWin('Day Book',html);
 }
@@ -3760,15 +3774,20 @@ function openPrintWin(title,innerHtml){
   ═══════════════════════════════════════════════════════════
 --><html><head><title>GrihaLaxmi — ${title}</title><style>
     body{font-family:Georgia,'Times New Roman',serif;padding:24px;max-width:680px;margin:auto;color:#1a1a1a;background:#fffdf8;}
-    h2{text-align:left;color:#8a6d1a;margin:0 0 2px;font-size:22px;letter-spacing:0.5px;border-bottom:2px solid #c9a227;padding-bottom:8px;}
-    .pdate{color:#777;font-size:12px;margin:6px 0 18px;text-align:left!important;}
+    .letterhead{border-bottom:3px double #c9a227;padding-bottom:10px;margin-bottom:16px;}
+    .lh-brand{font-size:12px;letter-spacing:4px;color:#b0902a;font-weight:700;}
+    .lh-title{font-size:24px;font-weight:800;color:#6b5410;margin:3px 0 6px;letter-spacing:0.5px;}
+    .lh-meta{display:flex;justify-content:space-between;font-size:11px;color:#999;font-style:italic;}
+    .pdate{color:#777;font-size:12px;margin:6px 0 14px;text-align:center;}
     h3{color:#8a6d1a;border-left:4px solid #c9a227;padding:4px 10px;margin:16px 0 6px;font-size:15px;background:#faf5e6;}
     ul{margin:0 0 8px 20px;padding:0;}li{margin:4px 0;font-size:13.5px;line-height:1.5;}
     pre{white-space:pre-wrap;font-family:Georgia,serif;font-size:13.5px;line-height:1.6;}
-    table{width:100%;border-collapse:collapse;font-size:13px;}
-    th{background:#faf5e6;color:#8a6d1a;text-align:left;padding:6px 8px;border-bottom:2px solid #c9a227;}
-    td{padding:5px 8px;border-bottom:1px solid #eee;}
+    table{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums;}
+    th{background:#f7efd8;color:#6b5410;text-align:left;padding:8px;border-top:2px solid #c9a227;border-bottom:2px solid #c9a227;font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;}
+    td{padding:6px 8px;border-bottom:1px solid #eee;vertical-align:top;}
     tr:nth-child(even) td{background:#fbfaf6;}
+    .num{text-align:right;white-space:nowrap;}
+    .muted{color:#999;font-size:10.5px;}
     .ft{text-align:center;color:#bbb;font-size:10px;margin-top:28px;border-top:1px solid #eee;padding-top:8px;}
     @media print{body{padding:0;}}
   #tab-cash{zoom:1.12;}
@@ -3792,10 +3811,15 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 .topbar-sub{color:#d5e2f5!important;font-size:10px!important;font-weight:600;}
 .unit-tag{font-size:11px!important;font-weight:800;}
 @.no-print{position:sticky;top:0;display:flex;gap:10px;justify-content:flex-end;background:#fffdf8;padding:6px 0 10px;z-index:9;}
-    .no-print button{flex:1;max-width:200px;border:1.5px solid #c9a227;background:#faf5e6;color:#8a6d1a;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
+    .no-print button{width:185px;flex:none;border:1.5px solid #c9a227;background:#faf5e6;color:#8a6d1a;border-radius:8px;padding:9px 0;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;letter-spacing:0.3px;}
     @media print{.no-print{display:none;}}
-</style></head><body onload="var mm=Math.ceil(document.body.scrollHeight*0.2646)+24;var st=document.createElement('style');st.textContent='@page{size:210mm '+Math.max(mm,60)+'mm;margin:8mm;}';document.head.appendChild(st)"><div class="no-print"><button onclick="window.print()">🖨 Print / Save PDF</button><button onclick="window.close()">← Back to App</button></div><h2>🪔 GrihaLaxmi — ${title}</h2>${innerHtml}
-  <div class="ft">Generated from GrihaLaxmi App</div></body></html>`);
+</style></head><body onload="var mm=Math.ceil(document.body.scrollHeight*0.2646)+24;var st=document.createElement('style');st.textContent='@page{size:210mm '+Math.max(mm,60)+'mm;margin:8mm;}';document.head.appendChild(st)"><div class="no-print"><button onclick="window.print()">🖨 Print / Save PDF</button><button onclick="window.close()">← Back to App</button></div><div class="letterhead">
+    <div class="lh-brand">🪔 GRIHALAXMI</div>
+    <div class="lh-title">${title}</div>
+    <div class="lh-meta"><span>Your Complete Home Manager</span><span>Generated: ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})} · ${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</span></div>
+  </div>
+  ${innerHtml}
+  <div class="ft">Generated from GrihaLaxmi App · griha-laxmi.pages.dev</div></body></html>`);
   w.document.close();
 }
 let PDF_MODE=false;
