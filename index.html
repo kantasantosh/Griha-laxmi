@@ -19,7 +19,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.24.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.25.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -1125,7 +1125,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 </div>
 
 <script>
-const APP_VERSION='2.24.0';
+const APP_VERSION='2.25.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -3653,26 +3653,32 @@ function toast(msg){
 function printDaybook(){
   const all=ld('gl_txns',[]);
   const m=cashM.m,y=cashM.y;
-  const txns=all.filter(t=>{const d=new Date(t.raw);return d.getMonth()===m&&d.getFullYear()===y;}).sort((a,b)=>new Date(a.raw)-new Date(b.raw));
-  if(!txns.length){toast('No entries this month');return;}
   const MNAMES=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  // opening balance = all txns before month start
+  const txns=all.filter(t=>{const d=new Date(t.raw);return d.getMonth()===m&&d.getFullYear()===y&&t.type!=='contra';}).sort((a,b)=>new Date(a.raw)-new Date(b.raw));
+  if(!txns.length){toast('No entries this month');return;}
   const start=new Date(y,m,1);
-  let bal=0;
-  all.forEach(t=>{const d=new Date(t.raw);if(d<start){bal+=t.type==='in'?t.amt:t.type==='out'?-t.amt:0;}});
-  const opening=bal;
-  const f=n=>'₹'+Math.abs(n).toLocaleString('en-IN');
-  let rows='',tin=0,tout=0;
+  let opening=0;
+  all.forEach(t=>{const d=new Date(t.raw);if(d<start){opening+=t.type==='in'?t.amt:t.type==='out'?-t.amt:0;}});
+  const f=n=>Math.abs(n).toLocaleString('en-IN',{minimumFractionDigits:2});
+  let bal=opening,tdr=0,tcr=0,rows='';
   txns.forEach(t=>{
-    const isIn=t.type==='in',isOut=t.type==='out';
-    if(isIn){bal+=t.amt;tin+=t.amt;}if(isOut){bal-=t.amt;tout+=t.amt;}
-    rows+=`<tr><td>${t.date}</td><td>${t.desc}</td><td>${t.cat||''}</td><td>${t.mode||''}</td><td style="text-align:right;color:#1e7a45">${isIn?f(t.amt):''}</td><td style="text-align:right;color:#a33">${isOut?f(t.amt):''}</td><td style="text-align:right;font-weight:700">${f(bal)}${bal<0?' Dr':''}</td></tr>`;
+    const dr=t.type==='in'?t.amt:0, cr=t.type==='out'?t.amt:0;
+    bal+=dr-cr; tdr+=dr; tcr+=cr;
+    const dt=new Date(t.raw);
+    rows+=`<tr><td>${String(dt.getDate()).padStart(2,'0')}/${String(dt.getMonth()+1).padStart(2,'0')}</td><td>${t.desc}<span style="color:#999;font-size:11px"> · ${t.cat||''} · ${t.mode||''}</span></td><td style="text-align:right;color:#1e7a45">${dr?f(dr):'—'}</td><td style="text-align:right;color:#a33">${cr?f(cr):'—'}</td><td style="text-align:right;font-weight:700">${f(bal)}${bal<0?' <span style="color:#a33">Dr</span>':''}</td></tr>`;
   });
-  const html=`<table>
-    <tr><th>Date</th><th>Particulars</th><th>Category</th><th>Mode</th><th style="text-align:right">Receipt</th><th style="text-align:right">Payment</th><th style="text-align:right">Balance</th></tr>
-    <tr><td colspan="6" style="font-weight:700">Opening Balance</td><td style="text-align:right;font-weight:700">${f(opening)}</td></tr>
+  const period=`1 ${MNAMES[m].slice(0,3)} ${y} — ${new Date(y,m+1,0).getDate()} ${MNAMES[m].slice(0,3)} ${y}`;
+  const html=`
+  <div style="text-align:center;margin-bottom:10px;">
+    <div style="font-size:15px;font-weight:800;color:#8a6d1a;">DAY BOOK — CASH & BANK</div>
+    <div style="font-size:12px;color:#777;">Period: ${period}</div>
+  </div>
+  <table>
+    <tr><th style="width:52px">Date</th><th>Particulars</th><th style="text-align:right;width:90px">Debit ₹<br><span style="font-weight:400;font-size:10px">(Receipts)</span></th><th style="text-align:right;width:90px">Credit ₹<br><span style="font-weight:400;font-size:10px">(Payments)</span></th><th style="text-align:right;width:100px">Balance ₹</th></tr>
+    <tr style="background:#faf5e6"><td>01/${String(m+1).padStart(2,'0')}</td><td style="font-weight:800">Opening Balance b/f</td><td></td><td></td><td style="text-align:right;font-weight:800">${f(opening)}${opening<0?' Dr':''}</td></tr>
     ${rows}
-    <tr><td colspan="4" style="font-weight:800;background:#faf5e6">TOTAL</td><td style="text-align:right;font-weight:800;background:#faf5e6">${f(tin)}</td><td style="text-align:right;font-weight:800;background:#faf5e6">${f(tout)}</td><td style="text-align:right;font-weight:800;background:#faf5e6">${f(bal)}</td></tr>
+    <tr style="background:#faf5e6;border-top:2px solid #c9a227"><td></td><td style="font-weight:800">Monthly Totals</td><td style="text-align:right;font-weight:800;color:#1e7a45">${f(tdr)}</td><td style="text-align:right;font-weight:800;color:#a33">${f(tcr)}</td><td></td></tr>
+    <tr style="background:#f5edd6"><td></td><td style="font-weight:800">Closing Balance c/f</td><td></td><td></td><td style="text-align:right;font-weight:800;font-size:14px">${f(bal)}${bal<0?' Dr':''}</td></tr>
   </table>`;
   openPrintWin('Day Book — '+MNAMES[m]+' '+y,html);
 }
@@ -3733,7 +3739,7 @@ function openPrintWin(title,innerHtml){
     td{padding:5px 8px;border-bottom:1px solid #eee;}
     tr:nth-child(even) td{background:#fbfaf6;}
     .ft{text-align:center;color:#bbb;font-size:10px;margin-top:28px;border-top:1px solid #eee;padding-top:8px;}
-    @page{size:A4;margin:10mm;}@media print{body{padding:0;}}
+    @media print{body{padding:0;}}
   #tab-cash{zoom:1.12;}
 input[type=checkbox]{-webkit-appearance:none;appearance:none;width:13px;height:13px;border:1.5px solid var(--gold);border-radius:4px;background:transparent;vertical-align:middle;cursor:pointer;position:relative;flex-shrink:0;}
 input[type=checkbox]:checked{background:var(--gold);}
@@ -3754,8 +3760,10 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 #srch::placeholder{color:#9ab2d6;opacity:1;}
 .topbar-sub{color:#d5e2f5!important;font-size:10px!important;font-weight:600;}
 .unit-tag{font-size:11px!important;font-weight:800;}
-@page{margin:12mm;}
-</style></head><body onload="setTimeout(function(){window.print()},400)"><h2>🪔 GrihaLaxmi — ${title}</h2>${innerHtml}
+@.no-print{position:sticky;top:0;display:flex;gap:10px;justify-content:flex-end;background:#fffdf8;padding:6px 0 10px;z-index:9;}
+    .no-print button{border:1.5px solid #c9a227;background:#faf5e6;color:#8a6d1a;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
+    @media print{.no-print{display:none;}}
+</style></head><body onload="var mm=Math.ceil(document.body.scrollHeight*0.2646)+20;var st=document.createElement('style');st.textContent='@page{size:210mm '+Math.max(mm,60)+'mm;margin:8mm;}';document.head.appendChild(st);setTimeout(function(){window.print()},450)"><div class="no-print"><button onclick="window.print()">🖨 Print / Save PDF</button><button onclick="window.close()">← Back to App</button></div><h2>🪔 GrihaLaxmi — ${title}</h2>${innerHtml}
   <div class="ft">Generated from GrihaLaxmi App</div></body></html>`);
   w.document.close();
 }
