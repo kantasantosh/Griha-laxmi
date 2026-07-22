@@ -19,7 +19,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.28.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.28.1 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -1144,7 +1144,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 </div>
 
 <script>
-const APP_VERSION='2.28.0';
+const APP_VERSION='2.28.1';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -3851,8 +3851,10 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 #srch::placeholder{color:#9ab2d6;opacity:1;}
 .topbar-sub{color:#d5e2f5!important;font-size:10px!important;font-weight:600;}
 .unit-tag{font-size:11px!important;font-weight:800;}
-@.no-print{position:sticky;top:0;display:flex;gap:10px;justify-content:flex-end;background:#fffdf8;padding:6px 0 14px;margin-bottom:10px;border-bottom:1px solid #eee;z-index:9;}
-    .no-print button{width:185px;flex:none;border:1.5px solid #c9a227;background:#faf5e6;color:#8a6d1a;border-radius:8px;padding:9px 0;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;letter-spacing:0.3px;}
+@.no-print{position:sticky;top:0;display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:480px;margin:0 auto 16px;background:#fffdf8;padding:8px 0 14px;z-index:9;}
+    .no-print button{width:100%;border:1.5px solid #b0902a;border-radius:10px;padding:11px 0;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-align:center;letter-spacing:0.4px;}
+    .no-print button:first-child{background:linear-gradient(135deg,#c9a227,#b0902a);color:#fffdf4;box-shadow:0 2px 6px rgba(176,144,42,0.35);}
+    .no-print button:last-child{background:#fffdf4;color:#8a6d1a;}
     @media print{.no-print{display:none;}}
 </style></head><body onload="var mm=Math.ceil(document.body.scrollHeight*0.2646)+24;var st=document.createElement('style');st.textContent='@page{size:210mm '+Math.max(mm,60)+'mm;margin:8mm;}';document.head.appendChild(st)"><div class="no-print"><button onclick="window.print()">🖨 Print / Save PDF</button><button onclick="window.close();setTimeout(function(){if(!window.closed)history.back()},200)">← Back to App</button></div><div class="letterhead">
     <div class="lh-brand">🪔 GRIHALAXMI</div>
