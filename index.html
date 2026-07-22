@@ -19,7 +19,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.29.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.30.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -545,6 +545,14 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 </div>
 
 <!-- Day Book options -->
+
+<!-- Payment history -->
+<div class="mo" id="m-payhist">
+  <div class="mc">
+    <div class="mh"><span id="ph-title">📜 Payments</span><button class="mx" onclick="closeM('m-payhist')">✕</button></div>
+    <div id="ph-list" style="max-height:55vh;overflow-y:auto;"></div>
+  </div>
+</div>
 <div class="mo" id="m-daybook">
   <div class="mc">
     <div class="mh"><span>📒 Day Book</span><button class="mx" onclick="closeM('m-daybook')">✕</button></div>
@@ -1147,7 +1155,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 </div>
 
 <script>
-const APP_VERSION='2.29.0';
+const APP_VERSION='2.30.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1862,7 +1870,7 @@ function renderBills(){
         <div style="font-size:21px">${b.icon}</div>
         <div style="flex:1">
           <div style="font-weight:800;font-size:13px;color:#eaf2ff">${b.name}</div>
-          <div style="font-size:12px;color:#b8cce8;margin-top:2px">${b.cycle} ${b.amount?'• ₹'+b.amount.toLocaleString('en-IN'):'• Tap twice to set amount'}</div>
+          <div style="font-size:12px;color:#b8cce8;margin-top:2px">${b.cycle} ${b.amount?'• ₹'+b.amount.toLocaleString('en-IN'):'• amount not set — use Mark Paid or ✏️ Edit'}</div>
           <div style="margin-top:5px">${statusBadge}</div>
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
@@ -1881,6 +1889,59 @@ function renderBills(){
 
 
 // v2.18: Bill payment window -> records details, posts to CashBook
+
+// v2.30: per-entry payment history with edit/delete (unwinds CashBook too)
+let _phKey='',_phLabel='',_phRefresh=null;
+function openPayHist(key,label,refreshFn){
+  _phKey=key;_phLabel=label;_phRefresh=refreshFn;
+  document.getElementById('ph-title').textContent='📜 '+label+' — Payments';
+  renderPayHist();
+  openM('m-payhist');
+}
+function renderPayHist(){
+  const list=ld(_phKey,[]).slice().reverse();
+  const el=document.getElementById('ph-list');
+  if(!list.length){el.innerHTML='<div style="text-align:center;color:var(--tm);padding:20px;font-size:13px;">No payments recorded.</div>';return;}
+  el.innerHTML=list.map((p,ri)=>{
+    const i=list.length-1-ri;
+    return `<div style="display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px 10px;margin-bottom:6px;">
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:800;color:var(--gold);">₹${(p.amt||0).toLocaleString('en-IN')}</div>
+        <div style="font-size:11px;color:var(--tm);">${p.date||''}${p.note?' · '+p.note:''}${p.txid?'':' · <i>not in CashBook</i>'}</div>
+      </div>
+      <button onclick="editPayEntry(${i})" style="background:none;border:1px solid var(--p2);color:var(--p2);border-radius:50%;width:30px;height:30px;font-size:13px;cursor:pointer;">✏️</button>
+      <button onclick="delPayEntry(${i})" style="background:none;border:1px solid var(--red);color:var(--red);border-radius:50%;width:30px;height:30px;font-size:13px;cursor:pointer;">🗑</button>
+    </div>`;
+  }).join('');
+}
+function _phDone(){
+  svNoop=0;
+  renderPayHist();
+  try{if(_phRefresh)_phRefresh();}catch(e){}
+  try{renderCash();}catch(e){}
+}
+function delPayEntry(i){
+  guardDel('Delete this payment? Its CashBook entry will also be removed.',()=>{
+    const a=ld(_phKey,[]);const p=a[i];if(!p)return;
+    a.splice(i,1);sv(_phKey,a);
+    if(p.txid){sv('gl_txns',ld('gl_txns',[]).filter(t=>t.id!==p.txid));}
+    audit('Deleted payment ₹'+p.amt+' — '+_phLabel);
+    toast('Payment deleted'+(p.txid?' (CashBook updated)':''));
+    _phDone();
+  });
+}
+function editPayEntry(i){
+  const a=ld(_phKey,[]);const p=a[i];if(!p)return;
+  glPrompt('Edit amount (₹) — '+_phLabel,String(p.amt||''),v=>{
+    const amt=parseFloat(v);
+    if(!amt||amt<=0){toast('Invalid amount');return;}
+    p.amt=amt;sv(_phKey,a);
+    if(p.txid){const ts=ld('gl_txns',[]);const t=ts.find(x=>x.id===p.txid);if(t){t.amt=amt;sv('gl_txns',ts);}}
+    audit('Edited payment to ₹'+amt+' — '+_phLabel);
+    toast('Updated'+(p.txid?' (CashBook updated)':''));
+    _phDone();
+  },'number');
+}
 function openBillPay(id){
   const b=ld('gl_bills',[]).find(v=>v.id===id);if(!b)return;
   document.getElementById('bp-id').value=id;
@@ -2044,7 +2105,7 @@ function renderMilk(){
     const pe=document.getElementById('mpay-'+mm.id);
     if(pe)pe.innerHTML=pays.length?pays.map(p=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--tm);">${p.date}${p.note?' • '+p.note:''}</span><span style="font-weight:700;color:var(--green);">₹${p.amt.toLocaleString('en-IN')}</span></div>`).join(''):`<div style="color:var(--tm);font-size:13px;text-align:center;padding:6px;">No payments this month</div>`;
     const be=document.getElementById('mbal-'+mm.id);
-    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px;"><span style="color:var(--tm);">Total Milk</span><span style="font-weight:700;color:var(--p3);">${totL2} L</span></div><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Bill</span><span>₹${totBill2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid</span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Balance Due':bal2<0?'Advance with Vendor':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
+    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px;"><span style="color:var(--tm);">Total Milk</span><span style="font-weight:700;color:var(--p3);">${totL2} L</span></div><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Bill</span><span>₹${totBill2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid <a href="javascript:void(0)" onclick="openPayHist('gl_mpay_'+'${mm.id}','${mm.name}',renderMilk)" style="color:var(--p2);text-decoration:underline;font-size:11px;">view/edit</a></span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Balance Due':bal2<0?'Advance with Vendor':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
   });
 }
 function tapMilkDay(mid,key,d){
@@ -2087,10 +2148,10 @@ function saveMilkPay(){
   const raw=document.getElementById('mp-date').value;
   const note=document.getElementById('mp-note').value.trim();
   if(!amt||!raw){toast('Enter amount and date');return;}
-  const pays=ld('gl_mpay_'+mid,[]);pays.push({amt,date:fmt(raw),raw,note});
-  sv('gl_mpay_'+mid,pays);
   const mm=(ld('gl_milkmen',[]).find(m=>m.id===mid)||{}).name||'Milkman';
-  pushCashTxn('🥛 '+mm+' (Milk)',amt,'🥛 Milk',raw);
+  const txid=pushCashTxn('🥛 '+mm+' (Milk)',amt,'🥛 Milk',raw);
+  const pays=ld('gl_mpay_'+mid,[]);pays.push({amt,date:fmt(raw),raw,note,txid});
+  sv('gl_mpay_'+mid,pays);
   toast('Recorded — also added to CashBook');
   closeM('m-milkpay');renderMilk();
 }
@@ -2212,7 +2273,7 @@ function renderSupplier(type){
     const pe=document.getElementById('suppay-'+type+'-'+vd.id);
     if(pe)pe.innerHTML=pays.length?pays.map(p=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--tm);">${p.date}${p.note?' • '+p.note:''}</span><span style="font-weight:700;color:var(--green);">₹${p.amt.toLocaleString('en-IN')}</span></div>`).join(''):`<div style="color:var(--tm);font-size:13px;text-align:center;padding:6px;">No payments this month</div>`;
     const be=document.getElementById('supbal-'+type+'-'+vd.id);
-    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Spent</span><span>₹${totAmt2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid</span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Balance Due':bal2<0?'Advance with Vendor':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
+    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Spent</span><span>₹${totAmt2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid <a href="javascript:void(0)" onclick="openPayHist('gl_suppay_'+'${type}'+'_'+'${vd.id}','${vd.name}',()=>renderSupplier('${type}'))" style="color:var(--p2);text-decoration:underline;font-size:11px;">view/edit</a></span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Balance Due':bal2<0?'Advance with Vendor':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
   });
 }
 function tapSupplierDay(type,vid,key,d){
@@ -2252,10 +2313,10 @@ function saveSupplierPay(){
   const raw=document.getElementById('sp-date').value;
   const note=document.getElementById('sp-note').value.trim();
   if(!amt||!raw){toast('Enter amount and date');return;}
-  const pays=ld('gl_suppay_'+type+'_'+vid,[]);pays.push({amt,date:fmt(raw),raw,note});
-  sv('gl_suppay_'+type+'_'+vid,pays);
   const vn=(ld('gl_suppliers_'+type,ld('gl_vendors_'+type,[])).find(v=>v.id===vid)||{}).name||(type==='dhobi'?'Dhobi':'Vendor');
-  pushCashTxn((type==='dhobi'?'👔 ':'🥦 ')+vn,amt,type==='dhobi'?'👔 Dhobi':'🥦 Fruit/Tarkari',raw);
+  const txid=pushCashTxn((type==='dhobi'?'👔 ':'🥦 ')+vn,amt,type==='dhobi'?'👔 Dhobi':'🥦 Fruit/Tarkari',raw);
+  const pays=ld('gl_suppay_'+type+'_'+vid,[]);pays.push({amt,date:fmt(raw),raw,note,txid});
+  sv('gl_suppay_'+type+'_'+vid,pays);
   toast('Recorded — also added to CashBook');
   closeM('m-suppay');renderSupplier(type);
 }
@@ -2397,7 +2458,7 @@ function renderHelp(){
       <div class="sr"><span style="font-size:12px;color:var(--tm)">🗓 Holidays: ${holLabel}</span><span style="font-size:12px;color:var(--tm)">Working days: ${wdays}</span></div>
       <div class="sr"><span style="font-size:13px;color:var(--tm)">Monthly Salary</span><span style="font-weight:700;color:var(--text)">₹${h.salary.toLocaleString('en-IN')}</span></div>
       <div class="sr"><span style="font-size:13px;color:var(--tm)">Earned (${present} days @ ₹${Math.round(perDay)}/day)</span><span style="font-weight:700;color:var(--text)">₹${earned.toLocaleString('en-IN')}</span></div>
-      ${totAdv>0?`<div class="sr"><span style="font-size:13px;color:var(--red)">Advance Deduction</span><span style="font-weight:700;color:var(--red)">− ₹${totAdv.toLocaleString('en-IN')}</span></div>`:''}
+      ${totAdv>0?`<div class="sr"><span style="font-size:13px;color:var(--red)">Advance Deduction <a href="javascript:void(0)" onclick="openPayHist('gl_adv_'+'${h.id}','${h.name}',renderHelp)" style="color:var(--p2);text-decoration:underline;font-size:11px;">view/edit</a></span><span style="font-weight:700;color:var(--red)">− ₹${totAdv.toLocaleString('en-IN')}</span></div>`:''}
       <div class="sr" style="border-top:2px solid var(--border);margin-top:5px;padding-top:9px">
         <span style="font-size:14px;font-weight:800;color:var(--p1)">Net Payable</span>
         <span style="font-size:18px;font-weight:800;color:var(--green)">₹${net.toLocaleString('en-IN')}</span>
@@ -2578,10 +2639,12 @@ async function pickContact(phoneId,nameId){
   }catch(e){}
 }
 function pushCashTxn(desc,amt,cat,raw,mode){
-  if(!amt)return;
+  if(!amt)return null;
   const ts=ld('gl_txns',[]);
-  ts.push({id:Date.now().toString()+Math.floor(Math.random()*99),desc,amt,type:'out',cat,mode:mode||'💵 Cash',raw,date:fmt(raw)});
+  const txid=Date.now().toString()+Math.floor(Math.random()*99);
+  ts.push({id:txid,desc,amt,type:'out',cat,mode:mode||'💵 Cash',raw,date:fmt(raw)});
   sv('gl_txns',ts);
+  return txid;
 }
 
 // v2.17: populate voucher link dropdown & write-back to party ledgers
@@ -2615,10 +2678,10 @@ function saveAdv(){
   const amt=parseFloat(document.getElementById('adv-amt').value);
   const raw=document.getElementById('adv-date').value;
   if(!amt||amt<=0||!raw){toast('Enter valid amount and date');return;}
-  const advs=ld('gl_adv_'+id,[]);advs.push({amt,date:fmt(raw),raw});
-  sv('gl_adv_'+id,advs);
   const hName=document.getElementById('adv-name').value||'Staff';
-  pushCashTxn('👫 '+hName+' (Salary/Advance)',amt,'👫 Staff Salary',raw);
+  const txid=pushCashTxn('👫 '+hName+' (Salary/Advance)',amt,'👫 Staff Salary',raw);
+  const advs=ld('gl_adv_'+id,[]);advs.push({amt,date:fmt(raw),raw,txid});
+  sv('gl_adv_'+id,advs);
   toast('Recorded — also added to CashBook');
   closeM('m-adv');renderHelp();
 }
