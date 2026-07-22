@@ -1,4 +1,4 @@
-const CACHE = 'grihalaxmi-v2.27.0';
+const CACHE = 'grihalaxmi-v2.28.0';
 const FILES = ['/', '/index.html', '/manifest.json', '/icon.svg'];
 
 self.addEventListener('install', e => {
