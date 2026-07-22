@@ -19,7 +19,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.28.1 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.29.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -1101,6 +1101,9 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
           <button onclick="showAudit()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📜 Audit Log</button>
           <button onclick="famFlow()" style="background:var(--p2);color:white;border:1px solid var(--border);border-radius:var(--rsm);padding:11px 6px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">👪 Family Group</button>
         </div>
+        <div id="sync-status" style="grid-column:span 2;margin-top:8px;background:var(--bg);border:1px dashed rgba(245,200,66,0.35);border-radius:8px;padding:8px 10px;font-size:10.5px;color:var(--tm);line-height:1.7;text-align:left;"></div>
+        <div style="display:none;">
+        </div>
       </div>
       <div style="background:var(--card);border-radius:var(--rsm);padding:12px;border:1px solid var(--border);margin-bottom:10px;text-align:left;">
         <button onclick="guardDel('Reset ALL shopping data to defaults?',()=>{resetShoppingData();audit('Reset shopping data');})" style="width:100%;background:var(--red);color:white;border:none;border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;">🔄 Reset Shopping Data</button>
@@ -1144,7 +1147,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 </div>
 
 <script>
-const APP_VERSION='2.28.1';
+const APP_VERSION='2.29.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1342,7 +1345,7 @@ function hhView(v,btn){
 }
 
 // MODALS
-function openM(id){if(id==='m-addtxn'){fillTxnLink();setTimeout(updBalPreview,50);}if(id==='m-addhelp')fillRoles();
+function openM(id){if(id==='m-addtxn'){fillTxnLink();setTimeout(updBalPreview,50);}if(id==='m-about')setTimeout(updSyncStatus,100);if(id==='m-addhelp')fillRoles();
   document.getElementById(id).classList.add('open');
   if(id==='m-milkpay')document.getElementById('mp-date').value=td();
   if(id==='m-suppay')document.getElementById('sp-date').value=td();
@@ -2003,7 +2006,7 @@ function renderMilk(){
         <div class="sb"><div class="sn" style="color:var(--p2)">${delDays}</div><div class="sl">Days Recd</div></div>
         <div class="sb"><div class="sn" style="color:var(--p2)">${totL.toFixed(1)}L</div><div class="sl">Litres</div></div>
         <div class="sb"><div class="sn" style="color:var(--amber)">₹${totBill}</div><div class="sl">Bill</div></div>
-        <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Due':bal<0?'Overpaid':'Settled'}</div></div>
+        <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Due':bal<0?'Advance Paid':'Settled ✓'}</div></div>
       </div>
       <div style="font-size:11px;color:var(--tm);margin-bottom:5px;">Tap: 1x=default qty | 2x=not delivered ❌ | 3x=custom qty</div>
       <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px;">${DS.map(d=>`<div class="dl">${d}</div>`).join('')}</div>
@@ -2041,7 +2044,7 @@ function renderMilk(){
     const pe=document.getElementById('mpay-'+mm.id);
     if(pe)pe.innerHTML=pays.length?pays.map(p=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--tm);">${p.date}${p.note?' • '+p.note:''}</span><span style="font-weight:700;color:var(--green);">₹${p.amt.toLocaleString('en-IN')}</span></div>`).join(''):`<div style="color:var(--tm);font-size:13px;text-align:center;padding:6px;">No payments this month</div>`;
     const be=document.getElementById('mbal-'+mm.id);
-    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px;"><span style="color:var(--tm);">Total Milk</span><span style="font-weight:700;color:var(--p3);">${totL2} L</span></div><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Bill</span><span>₹${totBill2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid</span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Balance Due':bal2<0?'Overpaid':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
+    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px;"><span style="color:var(--tm);">Total Milk</span><span style="font-weight:700;color:var(--p3);">${totL2} L</span></div><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Bill</span><span>₹${totBill2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid</span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Balance Due':bal2<0?'Advance with Vendor':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
   });
 }
 function tapMilkDay(mid,key,d){
@@ -2171,7 +2174,7 @@ function renderSupplier(type){
         <div class="sb"><div class="sn" style="color:var(--p2)">${delDays}</div><div class="sl">Days Used</div></div>
         <div class="sb"><div class="sn" style="color:var(--amber)">₹${totAmt}</div><div class="sl">Total Spent</div></div>
         <div class="sb"><div class="sn" style="color:var(--green)">₹${totPaid}</div><div class="sl">Paid</div></div>
-        <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Due':bal<0?'Overpaid':'Settled'}</div></div>
+        <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Due':bal<0?'Advance Paid':'Settled ✓'}</div></div>
       </div>
       <div style="font-size:11px;color:var(--tm);margin-bottom:5px;">Tap a date to enter amount spent (₹0 = not used that day)</div>
       <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px;">${DS.map(d=>`<div class="dl">${d}</div>`).join('')}</div>
@@ -2209,7 +2212,7 @@ function renderSupplier(type){
     const pe=document.getElementById('suppay-'+type+'-'+vd.id);
     if(pe)pe.innerHTML=pays.length?pays.map(p=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--tm);">${p.date}${p.note?' • '+p.note:''}</span><span style="font-weight:700;color:var(--green);">₹${p.amt.toLocaleString('en-IN')}</span></div>`).join(''):`<div style="color:var(--tm);font-size:13px;text-align:center;padding:6px;">No payments this month</div>`;
     const be=document.getElementById('supbal-'+type+'-'+vd.id);
-    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Spent</span><span>₹${totAmt2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid</span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Balance Due':bal2<0?'Overpaid':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
+    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Spent</span><span>₹${totAmt2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid</span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Balance Due':bal2<0?'Advance with Vendor':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
   });
 }
 function tapSupplierDay(type,vid,key,d){
@@ -3297,8 +3300,8 @@ function contactPickerSupported(){
   return 'contacts' in navigator && 'ContactsManager' in window;
 }
 function toggleContactPickerButtons(){
-  const show=contactPickerSupported();
-  document.querySelectorAll('#c-pick-btn,#med-pick-btn,.sos-pick-btn').forEach(b=>{b.style.display=show?'block':'none';});
+  // always show; unsupported browsers get a clear message on tap
+  document.querySelectorAll('#c-pick-btn,#med-pick-btn,.sos-pick-btn').forEach(b=>{b.style.display='block';});
 }
 async function pickFromContacts(nameId,phoneId){
   if(!contactPickerSupported()){
@@ -3387,6 +3390,16 @@ function isAdmin(){return _authUser&&GL_ADMINS.includes((_authUser.email||'').to
 
 // v2.24: data doc = your family group if joined, else your own private uid
 function famId(){return String(ld('gl_famid','')||'')||(_authUser?_authUser.uid.slice(0,8).toUpperCase():'');}
+
+function updSyncStatus(){
+  const el=document.getElementById('sync-status');if(!el)return;
+  const last=ld('gl_last_sync',0);
+  el.innerHTML=`<b style="color:var(--gold)">☁️ Sync Status</b><br>
+  Signed in: <b>${_authUser?(_authUser.email):'❌ NOT signed in'}</b><br>
+  Data group: <b>${famId()||'—'}</b>${ld('gl_famid','')?' (joined family)':' (personal)'}<br>
+  Live listener: <b>${_liveUnsub?'🟢 connected':'🔴 off'}</b> · Last sync: <b>${last?new Date(last).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}):'never'}</b><br>
+  <span style="color:#8aa0c8">Both devices must show the SAME "Data group" to share data.</span>`;
+}
 function famFlow(){
   const cur=ld('gl_famid','');
   const myCode=_authUser?_authUser.uid.slice(0,8).toUpperCase():'—';
@@ -3416,7 +3429,7 @@ function initAuth(){
       if(g)g.style.display='none';
       const short=(u.displayName||u.email||'').split(/[ @]/)[0];
       if(short&&ld('gl_user','')!==short)sv('gl_user',short);
-      syncNow(true);listenLive();
+      syncNow(true);listenLive();migrateLegacyMain();
     }else{
       if(g)g.style.display='flex';
       if(_liveUnsub){try{_liveUnsub();}catch(e){}_liveUnsub=null;}
@@ -3426,7 +3439,7 @@ function initAuth(){
 setTimeout(initAuth,900);
 console.log('%c🪔 GrihaLaxmi © 2026 SantKanta — All rights reserved. Unauthorized commercial use prohibited.','color:#f5c842;font-size:13px;font-weight:bold;');
 let _fbdb=null,_syncBusy=false,_dirty=false;
-const SYNC_SKIP=['gl_last_tab','gl_key_ts','gl_last_sync','gl_family','gl_famid','gl_device'];
+const SYNC_SKIP=['gl_last_tab','gl_key_ts','gl_last_sync','gl_family','gl_famid','gl_device','gl_mig_main'];
 let _devId=ld('gl_device','');if(!_devId){_devId=Math.random().toString(36).slice(2,10);try{localStorage.setItem('gl_device',JSON.stringify(_devId));}catch(e){}}
 function fbInit(){
   try{
@@ -3452,6 +3465,23 @@ function collectLocal(){
     out[k]={v:localStorage.getItem(k),t:ts[k]||0};
   }
   return out;
+}
+
+async function migrateLegacyMain(){
+  try{
+    if(ld('gl_mig_main',false))return;
+    const db=fbInit();if(!db||!_authUser)return;
+    const fam=famId();if(!fam||fam==='main')return;
+    const snap=await db.collection('grihalaxmi').doc('main').get();
+    if(!snap.exists){_origSv('gl_mig_main',true);return;}
+    const remote=snap.data().keys||{};
+    const ts=ld('gl_key_ts',{});let n=0;
+    Object.keys(remote).forEach(k=>{
+      if((ts[k]||0)<remote[k].t){localStorage.setItem(k,remote[k].v);ts[k]=remote[k].t;n++;}
+    });
+    _origSv('gl_key_ts',ts);_origSv('gl_mig_main',true);
+    if(n){_dirty=true;syncNow(true);toast('☁️ Recovered '+n+' items from earlier sync');location.reload();}
+  }catch(e){}
 }
 async function syncNow(silent){
   if(!_authUser){if(!silent)toast('Sign in first');return;}
