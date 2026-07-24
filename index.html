@@ -19,7 +19,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.30.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.33.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -446,7 +446,6 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
     <div style="display:flex;gap:6px;flex-wrap:wrap;">
       <button onclick="printCashReport()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
       <button onclick="openDaybook()" style="background:white;border:1.5px solid var(--gold);color:#8a6d1a;border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📒 Day Book</button>
-      <button class="ab" onclick="openM('m-addtxn')">+ Entry</button>
     </div>
   </div>
   <div id="cash-list"></div>
@@ -547,6 +546,24 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 <!-- Day Book options -->
 
 <!-- Payment history -->
+
+<!-- Net salary payment -->
+<div class="mo" id="m-salpay">
+  <div class="mc">
+    <div class="mh"><span id="sal-title">💰 Pay Salary</span><button class="mx" onclick="closeM('m-salpay')">✕</button></div>
+    <input type="hidden" id="sal-id"/><input type="hidden" id="sal-name"/>
+    <div style="text-align:center;margin-bottom:12px;">
+      <label class="fl" style="display:block;margin-bottom:4px;">Amount (₹)</label>
+      <input class="fi" id="sal-amt" type="number" placeholder="0" style="font-size:24px;font-weight:800;text-align:center;color:var(--gold);max-width:180px;margin:auto;"/>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+      <div><label class="fl">Date</label><input class="fi" id="sal-date" type="date" style="margin-bottom:0;"/></div>
+      <div><label class="fl">Paid From</label><select class="fi" id="sal-mode" style="margin-bottom:0;"></select></div>
+    </div>
+    <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="sal-note" placeholder="e.g. July salary"/></div>
+    <button class="sb2" onclick="saveSalPay()" style="background:linear-gradient(135deg,var(--green),#1e8e5a);">✓ Confirm Salary Payment</button>
+  </div>
+</div>
 <div class="mo" id="m-payhist">
   <div class="mc">
     <div class="mh"><span id="ph-title">📜 Payments</span><button class="mx" onclick="closeM('m-payhist')">✕</button></div>
@@ -558,9 +575,9 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
     <div class="mh"><span>📒 Day Book</span><button class="mx" onclick="closeM('m-daybook')">✕</button></div>
     <div style="font-size:11px;color:var(--tm);margin:-4px 0 12px;line-height:1.5;">Ledger-style register with running balance — pick a period and account.</div>
     <div style="display:flex;gap:6px;margin-bottom:12px;">
-      <button onclick="dbPreset(0)" style="flex:1;background:var(--bg2);border:1px solid rgba(245,200,66,0.4);color:var(--gold);border-radius:16px;padding:7px 4px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">This Month</button>
-      <button onclick="dbPreset(1)" style="flex:1;background:var(--bg2);border:1px solid rgba(245,200,66,0.4);color:var(--gold);border-radius:16px;padding:7px 4px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">Last Month</button>
-      <button onclick="dbPreset(3)" style="flex:1;background:var(--bg2);border:1px solid rgba(245,200,66,0.4);color:var(--gold);border-radius:16px;padding:7px 4px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">3 Months</button>
+      <button class="dbp-btn" onclick="dbPreset(0,this)" style="flex:1;background:var(--bg2);border:1px solid rgba(245,200,66,0.4);color:var(--gold);border-radius:16px;padding:7px 4px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">This Month</button>
+      <button class="dbp-btn" onclick="dbPreset(1,this)" style="flex:1;background:var(--bg2);border:1px solid rgba(245,200,66,0.4);color:var(--gold);border-radius:16px;padding:7px 4px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">Last Month</button>
+      <button class="dbp-btn" onclick="dbPreset(3,this)" style="flex:1;background:var(--bg2);border:1px solid rgba(245,200,66,0.4);color:var(--gold);border-radius:16px;padding:7px 4px;font-size:11px;font-family:inherit;font-weight:700;cursor:pointer;">3 Months</button>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
       <div><label class="fl">From</label><input class="fi" id="db-from" type="date" style="margin-bottom:0;"/></div>
@@ -701,7 +718,10 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
   <div class="md"><button class="mc2" onclick="closeM('m-milkpay')">✕</button><h2>Record Payment</h2>
     <input type="hidden" id="mp-mid"/>
     <div class="fg"><label class="fl">Amount Paid (₹)</label><input class="fi" id="mp-amt" type="number" placeholder="0"/></div>
-    <div class="fg"><label class="fl">Date</label><input class="fi" id="mp-date" type="date"/></div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Date</label><input class="fi" id="mp-date" type="date"/></div>
+      <div class="fg"><label class="fl">Paid Via</label><select class="fi" id="mp-mode"></select></div>
+    </div>
     <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="mp-note" placeholder="e.g. Cash payment"/></div>
     <button class="sb2" onclick="saveMilkPay()">Save Payment</button>
   </div>
@@ -769,7 +789,10 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
   <div class="md"><button class="mc2" onclick="closeM('m-suppay')">✕</button><h2>Record Payment</h2>
     <input type="hidden" id="sp-type"/><input type="hidden" id="sp-vid"/>
     <div class="fg"><label class="fl">Amount Paid (₹)</label><input class="fi" id="sp-amt" type="number" placeholder="0"/></div>
-    <div class="fg"><label class="fl">Date</label><input class="fi" id="sp-date" type="date"/></div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Date</label><input class="fi" id="sp-date" type="date"/></div>
+      <div class="fg"><label class="fl">Paid Via</label><select class="fi" id="sp-mode"></select></div>
+    </div>
     <div class="fg"><label class="fl">Note (optional)</label><input class="fi" id="sp-note" placeholder="e.g. Cash payment"/></div>
     <button class="sb2" onclick="saveSupplierPay()">Save Payment</button>
   </div>
@@ -892,7 +915,10 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
   <div class="md"><button class="mc2" onclick="closeM('m-adv')">✕</button><h2>💸 Advance Given</h2>
     <div class="fg"><label class="fl">Helper</label><input class="fi" id="adv-name" readonly/></div>
     <div class="fg"><label class="fl">Amount (₹)</label><input class="fi" id="adv-amt" type="number" placeholder="0"/></div>
-    <div class="fg"><label class="fl">Date</label><input class="fi" id="adv-date" type="date"/></div>
+    <div class="fr">
+      <div class="fg"><label class="fl">Date</label><input class="fi" id="adv-date" type="date"/></div>
+      <div class="fg"><label class="fl">Paid Via</label><select class="fi" id="adv-mode"></select></div>
+    </div>
     <input type="hidden" id="adv-id"/>
     <button class="sb2" onclick="saveAdv()" style="background:linear-gradient(135deg,var(--purple),#9b59b6);">Save Advance</button>
   </div>
@@ -913,7 +939,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 <!-- Add Medical Contact -->
 <div class="mo" id="m-addmed">
   <div class="md"><button class="mc2" onclick="closeM('m-addmed')">✕</button><h2>👨‍⚕️ Add Doctor/Pharmacy</h2>
-    <button id="med-pick-btn" onclick="pickFromContacts('med-name','med-ph')" style="display:none;width:100%;background:var(--rl);border:1.5px solid var(--red);color:var(--red);border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:12px;">📇 Pick from Phone Contacts</button>
+    <button id="med-pick-btn" onclick="pickFromContacts('med-name','med-ph')" style="display:none;width:100%;background:var(--pl);border:1.5px solid var(--p2);color:var(--p1);border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:12px;">📇 Pick from Phone Contacts</button>
     <div class="fg"><label class="fl">Name</label><input class="fi" id="med-name" placeholder="e.g. Dr. Sharma"/></div>
     <div class="fg"><label class="fl">Type</label><select class="fi" id="med-role"><option value="👨‍⚕️ Doctor">👨‍⚕️ Doctor</option><option value="💊 Pharmacy">💊 Pharmacy</option><option value="🏥 Hospital">🏥 Hospital</option><option value="🦷 Dentist">🦷 Dentist</option><option value="👁️ Eye Specialist">👁️ Eye Specialist</option><option value="🧪 Lab/Diagnostics">🧪 Lab/Diagnostics</option><option value="📦 Other">📦 Other</option></select></div>
     <div class="fg"><label class="fl">Phone</label><input class="fi" id="med-ph" type="tel" placeholder="e.g. 9876543210"/></div>
@@ -1155,7 +1181,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 </div>
 
 <script>
-const APP_VERSION='2.30.0';
+const APP_VERSION='2.33.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1355,9 +1381,9 @@ function hhView(v,btn){
 // MODALS
 function openM(id){if(id==='m-addtxn'){fillTxnLink();setTimeout(updBalPreview,50);}if(id==='m-about')setTimeout(updSyncStatus,100);if(id==='m-addhelp')fillRoles();
   document.getElementById(id).classList.add('open');
-  if(id==='m-milkpay')document.getElementById('mp-date').value=td();
-  if(id==='m-suppay')document.getElementById('sp-date').value=td();
-  if(id==='m-adv')document.getElementById('adv-date').value=td();
+  if(id==='m-milkpay'){document.getElementById('mp-date').value=td();fillModeSelect('mp-mode');}
+  if(id==='m-suppay'){document.getElementById('sp-date').value=td();fillModeSelect('sp-mode');}
+  if(id==='m-adv'){document.getElementById('adv-date').value=td();fillModeSelect('adv-mode');}
   if(id==='m-addtxn'){document.getElementById('t-date').value=td();setTtype('out');refreshTxnSelects();}
   if(id==='m-addbill'&&!document.getElementById('b-edit-id').value){
     document.getElementById('bill-modal-title').textContent='Add Bill';
@@ -1420,11 +1446,12 @@ function renderShop(){
     const bid='b_'+broad.replace(/[^a-z0-9]/gi,'_');
     const besc=esc(broad);
     // Category card colors — DARKEST tier (visibly darker than sub/item)
-    const bg=catIdx%2===0?'#060e1e':'#081222';
+    const GRADS=['linear-gradient(135deg,#1a3a8c,#2a5ca8)','linear-gradient(135deg,#0d5c4a,#0f8a6e)','linear-gradient(135deg,#6b3fa0,#9b59b6)','linear-gradient(135deg,#8a4a12,#c9781f)','linear-gradient(135deg,#1f5c7a,#2a8ab0)','linear-gradient(135deg,#7a1f4a,#a8306e)'];
     const imgUrl=(window._croppedAssets&&window._croppedAssets['cat:'+broad])||ASSETS[broad]||'';
+    const fallbackGrad=GRADS[catIdx%GRADS.length];
     const patternStyle=imgUrl
       ?`background:url('${imgUrl}') center/cover no-repeat`
-      :`background:${bg}`;
+      :`background:${fallbackGrad}`;
     catIdx++;
     // Fix 6: golden title when any item is low
     const titleColor=lowCount?'var(--gold)':'white';
@@ -1432,6 +1459,7 @@ function renderShop(){
     const lowBadge=lowCount?`<span class="cat-card-low">⚠ ${lowCount}</span>`:'<span class="cat-card-low" style="display:none"></span>';
 
     html+=`<div class="cat-card" style="${patternStyle}" onclick="toggleC('${bid}')">
+      ${!imgUrl?`<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:38px;opacity:0.25;pointer-events:none;">${broad.split(' ')[0]}</div>`:''}
       <div class="cat-card-text">
         <div class="cat-card-title" style="color:${titleColor}">${broad}
           <span class="cat-card-count">${totalItems}</span>
@@ -1556,7 +1584,7 @@ function togLow(k,btn){
 }
 function togCart(k,v){const rk=unesc(k);const it=ld('gl_items',{});if(it[rk])it[rk].inCart=v;sv('gl_items',it);updCart();}
 function updCart(){const n=Object.values(ld('gl_items',{})).filter(i=>i.inCart).length;const el=document.getElementById('cart-count');if(el)el.textContent=n+' item'+(n!==1?'s':'');}
-function clearCart(){const it=ld('gl_items',{});Object.keys(it).forEach(k=>{it[k].inCart=false;it[k].low=false;});sv('gl_items',it);renderShop();}
+function clearCart(){const it=ld('gl_items',{});Object.keys(it).forEach(k=>{it[k].inCart=false;it[k].low=false;});sv('gl_items',it);localStorage.removeItem('gl_cart_src');renderShop();}
 function addItem(){
   const name=document.getElementById('ni-name').value.trim();
   const broad=document.getElementById('ni-broad').value;
@@ -1605,7 +1633,9 @@ function renderCart(){
   if(!cart.length){document.getElementById('cart-list').innerHTML=`<div class="es"><div style="font-size:44px">🛒</div><div>No items in cart.<br>Mark items as "Low" to add!</div></div>`;return;}
   const pending=cart.filter(i=>!i.purchased);
   const bought=cart.filter(i=>i.purchased);
-  let html=`<div style="margin-bottom:10px;padding:11px;background:var(--card);border-radius:var(--rsm);font-size:13px;color:var(--gold);font-weight:700;border:1px solid var(--border);">🛒 ${pending.length} pending · ✅ ${bought.length} purchased</div>`;
+  const srcName=ld('gl_cart_src','');
+  let html=srcName?`<div style="margin-bottom:6px;padding:7px 11px;background:var(--pl);border-radius:var(--rsm);font-size:12px;color:var(--p2);font-weight:700;border:1px solid var(--p2);">📋 From template: ${srcName}</div>`:'';
+  html+=`<div style="margin-bottom:10px;padding:11px;background:var(--card);border-radius:var(--rsm);font-size:13px;color:var(--gold);font-weight:700;border:1px solid var(--border);">🛒 ${pending.length} pending · ✅ ${bought.length} purchased</div>`;
   if(pending.length){
     html+=`<div style="font-size:11px;font-weight:700;color:var(--tm);margin-bottom:6px;">PENDING</div>`;
     pending.forEach(item=>{
@@ -1642,6 +1672,7 @@ function saveCart(){
   glPrompt('💾 Save this list as a template — give it a name','',(name)=>{_saveHistNamed(name);});return;
 }
 function _saveHistNamed(name){
+  localStorage.removeItem('gl_cart_src');
   if(name===null)return; // cancelled
   const items=ld('gl_items',{});
   const cart=Object.values(items).filter(i=>i.inCart);
@@ -1699,6 +1730,7 @@ function repeatOrd(i){
     Object.keys(it).forEach(k=>{if(it[k].name===n){it[k].inCart=true;it[k].low=true;if(typeof entry==='object'&&entry.qty)it[k].qty=entry.qty;}});
   });
   sv('gl_items',it);
+  sv('gl_cart_src',h[i].name||'');
   document.querySelectorAll('#tab-shopping .it').forEach((t,i)=>t.classList.toggle('active',i===1));
   shopView('cart',null);
 }
@@ -2142,14 +2174,21 @@ function openMilkPay(mid){
   document.getElementById('mp-amt').value='';document.getElementById('mp-note').value='';
   openM('m-milkpay');
 }
+
+function fillModeSelect(id){
+  const sel=document.getElementById(id);if(!sel)return;
+  const ms=getModes();
+  sel.innerHTML=ms.map(m=>{const v=(m.e?m.e+' ':'')+(m.n||m);return `<option value="${v}">${v}</option>`;}).join('');
+}
 function saveMilkPay(){
   const mid=document.getElementById('mp-mid').value;
   const amt=parseFloat(document.getElementById('mp-amt').value);
   const raw=document.getElementById('mp-date').value;
   const note=document.getElementById('mp-note').value.trim();
   if(!amt||!raw){toast('Enter amount and date');return;}
+  const mode=document.getElementById('mp-mode').value||'💵 Cash';
   const mm=(ld('gl_milkmen',[]).find(m=>m.id===mid)||{}).name||'Milkman';
-  const txid=pushCashTxn('🥛 '+mm+' (Milk)',amt,'🥛 Milk',raw);
+  const txid=pushCashTxn('🥛 '+mm+' (Milk)',amt,'🥛 Milk',raw,mode);
   const pays=ld('gl_mpay_'+mid,[]);pays.push({amt,date:fmt(raw),raw,note,txid});
   sv('gl_mpay_'+mid,pays);
   toast('Recorded — also added to CashBook');
@@ -2313,8 +2352,9 @@ function saveSupplierPay(){
   const raw=document.getElementById('sp-date').value;
   const note=document.getElementById('sp-note').value.trim();
   if(!amt||!raw){toast('Enter amount and date');return;}
+  const mode=document.getElementById('sp-mode').value||'💵 Cash';
   const vn=(ld('gl_suppliers_'+type,ld('gl_vendors_'+type,[])).find(v=>v.id===vid)||{}).name||(type==='dhobi'?'Dhobi':'Vendor');
-  const txid=pushCashTxn((type==='dhobi'?'👔 ':'🥦 ')+vn,amt,type==='dhobi'?'👔 Dhobi':'🥦 Fruit/Tarkari',raw);
+  const txid=pushCashTxn((type==='dhobi'?'👔 ':'🥦 ')+vn,amt,type==='dhobi'?'👔 Dhobi':'🥦 Fruit/Tarkari',raw,mode);
   const pays=ld('gl_suppay_'+type+'_'+vid,[]);pays.push({amt,date:fmt(raw),raw,note,txid});
   sv('gl_suppay_'+type+'_'+vid,pays);
   toast('Recorded — also added to CashBook');
@@ -2423,6 +2463,8 @@ function renderHelp(){
     const mAdv=advs.filter(a=>{try{const pd=new Date(a.raw);return pd.getFullYear()===y&&pd.getMonth()===m;}catch(e){return false;}});
     const totAdv=mAdv.reduce((s,a)=>s+a.amt,0);
     const net=Math.max(0,earned-totAdv);
+    const salPaidM=ld('gl_sal_'+h.id,[]).filter(s=>s.ym===y+'-'+m).reduce((s2,x)=>s2+x.amt,0);
+    const netRem=Math.max(0,earned-totAdv-salPaidM);
     const col=CLR[hi%CLR.length];
     const ini=h.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
     const holLabel=h.holtype==='sundays'?`All Sundays (${holidayDays} this month)`:`${holidayDays} fixed days/month`;
@@ -2459,11 +2501,15 @@ function renderHelp(){
       <div class="sr"><span style="font-size:13px;color:var(--tm)">Monthly Salary</span><span style="font-weight:700;color:var(--text)">₹${h.salary.toLocaleString('en-IN')}</span></div>
       <div class="sr"><span style="font-size:13px;color:var(--tm)">Earned (${present} days @ ₹${Math.round(perDay)}/day)</span><span style="font-weight:700;color:var(--text)">₹${earned.toLocaleString('en-IN')}</span></div>
       ${totAdv>0?`<div class="sr"><span style="font-size:13px;color:var(--red)">Advance Deduction <a href="javascript:void(0)" onclick="openPayHist('gl_adv_'+'${h.id}','${h.name}',renderHelp)" style="color:var(--p2);text-decoration:underline;font-size:11px;">view/edit</a></span><span style="font-weight:700;color:var(--red)">− ₹${totAdv.toLocaleString('en-IN')}</span></div>`:''}
+      ${salPaidM>0?`<div class="sr"><span style="font-size:13px;color:var(--green)">Salary Paid ✓ <a href="javascript:void(0)" onclick="openPayHist('gl_sal_'+'${h.id}','${h.name}',renderHelp)" style="color:var(--p2);text-decoration:underline;font-size:11px;">view/edit</a></span><span style="font-weight:700;color:var(--green)">− ₹${salPaidM.toLocaleString('en-IN')}</span></div>`:''}
       <div class="sr" style="border-top:2px solid var(--border);margin-top:5px;padding-top:9px">
-        <span style="font-size:14px;font-weight:800;color:var(--p1)">Net Payable</span>
-        <span style="font-size:18px;font-weight:800;color:var(--green)">₹${net.toLocaleString('en-IN')}</span>
+        <span style="font-size:14px;font-weight:800;color:var(--p1)">${netRem>0?'Net Payable':'Settled for month'}</span>
+        <span style="font-size:18px;font-weight:800;color:${netRem>0?'var(--green)':'var(--teal)'}">${netRem>0?'₹'+netRem.toLocaleString('en-IN'):'✓'}</span>
       </div>
-      <button onclick="openAdv('${h.id}','${h.name}')" style="margin-top:11px;width:100%;background:var(--purl);border:1.5px solid var(--purple);color:var(--purple);border-radius:20px;padding:8px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer">+ Record Advance Given</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px;">
+        <button onclick="openAdv('${h.id}','${h.name}')" style="background:var(--purl);border:1.5px solid var(--purple);color:var(--purple);border-radius:20px;padding:8px 4px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer">+ Advance</button>
+        <button onclick="openSalPay('${h.id}','${h.name}',${netRem})" style="background:var(--gl);border:1.5px solid var(--green);color:var(--green);border-radius:20px;padding:8px 4px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer">💰 Pay Salary</button>
+      </div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
         <button class="mb" onclick="chHelp(-1)">◀</button>
         <span style="font-size:12px;color:var(--tm);font-weight:700;">${MN[m]} ${y}</span>
@@ -2526,6 +2572,37 @@ function delHelper(idx){guardDel('Delete this staff member?',()=>{_g_delHelper(i
 function _g_delHelper(idx){
   
   const hs=ld('gl_helpers',[]);hs.splice(idx,1);sv('gl_helpers',hs);renderHelp();
+}
+
+// v2.31: proper net-salary settlement — staff account ↔ CashBook, one action
+function openSalPay(id,name,net){
+  document.getElementById('sal-id').value=id;
+  document.getElementById('sal-name').value=name;
+  document.getElementById('sal-title').textContent='💰 Pay Salary — '+name;
+  document.getElementById('sal-amt').value=net||'';
+  document.getElementById('sal-date').value=td();
+  document.getElementById('sal-note').value='';
+  const ms=getModes();
+  document.getElementById('sal-mode').innerHTML=ms.map(x=>{const v=(x.e?x.e+' ':'')+(x.n||x);return `<option value="${v}">${v}</option>`;}).join('');
+  openM('m-salpay');
+}
+function saveSalPay(){
+  const id=document.getElementById('sal-id').value;
+  const name=document.getElementById('sal-name').value||'Staff';
+  const amt=parseFloat(document.getElementById('sal-amt').value);
+  const raw=document.getElementById('sal-date').value;
+  const mode=document.getElementById('sal-mode').value;
+  const note=document.getElementById('sal-note').value.trim();
+  if(!amt||amt<=0||!raw){toast('Enter valid amount and date');return;}
+  const d=new Date(raw);
+  const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const txid=pushCashTxn('👫 '+name+' (Salary — '+MN[d.getMonth()]+')',amt,'👫 Staff Salary',raw,mode);
+  const sals=ld('gl_sal_'+id,[]);
+  sals.push({amt,raw,date:fmt(raw),mode,note,txid,ym:d.getFullYear()+'-'+d.getMonth()});
+  sv('gl_sal_'+id,sals);
+  audit('Paid salary ₹'+amt+' — '+name);
+  toast('✓ ₹'+amt.toLocaleString('en-IN')+' salary paid — recorded in CashBook');
+  closeM('m-salpay');renderHelp();
 }
 function openAdv(id,name){
   document.getElementById('adv-id').value=id;document.getElementById('adv-name').value=name;document.getElementById('adv-amt').value='';
@@ -2678,8 +2755,9 @@ function saveAdv(){
   const amt=parseFloat(document.getElementById('adv-amt').value);
   const raw=document.getElementById('adv-date').value;
   if(!amt||amt<=0||!raw){toast('Enter valid amount and date');return;}
+  const mode=document.getElementById('adv-mode').value||'💵 Cash';
   const hName=document.getElementById('adv-name').value||'Staff';
-  const txid=pushCashTxn('👫 '+hName+' (Salary/Advance)',amt,'👫 Staff Salary',raw);
+  const txid=pushCashTxn('👫 '+hName+' (Salary/Advance)',amt,'👫 Staff Salary',raw,mode);
   const advs=ld('gl_adv_'+id,[]);advs.push({amt,date:fmt(raw),raw,txid});
   sv('gl_adv_'+id,advs);
   toast('Recorded — also added to CashBook');
@@ -2816,7 +2894,7 @@ function renderCash(){
         <div style="font-size:22px;font-weight:800;">₹${totalBal.toLocaleString('en-IN')}</div>
       </div>
       <div style="font-size:11px;opacity:.75;margin-bottom:6px;">${MN[m]} ${y} — This Month</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
         <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px;">
           <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">💚 Cash Received</div>
           <div style="font-size:16px;font-weight:800;">₹${mCashInAmt.toLocaleString('en-IN')}</div>
@@ -2829,10 +2907,14 @@ function renderCash(){
           <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">🔴 Cash Spent</div>
           <div style="font-size:16px;font-weight:800;">₹${mCashExp.toLocaleString('en-IN')}</div>
         </div>
-        <div style="background:rgba(255,255,255,0.25);border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.4);">
-          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">📊 Total Spent</div>
-          <div style="font-size:16px;font-weight:800;">₹${mTotalExp.toLocaleString('en-IN')}</div>
+        <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px;">
+          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">💳 Bank Spent</div>
+          <div style="font-size:16px;font-weight:800;">₹${mDigitalExp.toLocaleString('en-IN')}</div>
         </div>
+      </div>
+      <div style="background:rgba(255,255,255,0.3);border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.45);">
+        <div style="font-size:10px;opacity:0.85;margin-bottom:3px;">📊 Total Spent This Month</div>
+        <div style="font-size:20px;font-weight:800;">₹${mTotalExp.toLocaleString('en-IN')}</div>
       </div>
     </div>`;
   if(!mT.length){document.getElementById('cash-list').innerHTML='<div class="es"><div style="font-size:44px">💸</div><div>No entries this month.<br>Tap "+ Entry" to start!</div></div>';return;}
@@ -3764,15 +3846,17 @@ function toast(msg){
 
 
 // v2.23: Day Book — full month register with running balance
-function dbPreset(back){
+function dbPreset(back,btn){
   const now=new Date();
   const from=new Date(now.getFullYear(),now.getMonth()-(back===0?0:back===1?1:back-0),1);
   const to=back===1?new Date(now.getFullYear(),now.getMonth(),0):now;
   const p=n=>String(n).padStart(2,'0');
   document.getElementById('db-from').value=`${from.getFullYear()}-${p(from.getMonth()+1)}-01`;
   document.getElementById('db-to').value=`${to.getFullYear()}-${p(to.getMonth()+1)}-${p(to.getDate())}`;
+  document.querySelectorAll('.dbp-btn').forEach(b=>{b.style.background='var(--bg2)';b.style.color='var(--gold)';b.style.boxShadow='none';});
+  if(btn){btn.style.background='linear-gradient(135deg,#c9a227,var(--gold))';btn.style.color='#1a1204';btn.style.boxShadow='0 2px 8px rgba(245,200,66,0.4)';}
 }
-function openDaybook(){
+function openDaybook(){document.querySelectorAll(".dbp-btn").forEach(b=>{b.style.background="var(--bg2)";b.style.color="var(--gold)";b.style.boxShadow="none";});
   const y=cashM.y,m=cashM.m;
   document.getElementById('db-from').value=`${y}-${String(m+1).padStart(2,'0')}-01`;
   document.getElementById('db-to').value=`${y}-${String(m+1).padStart(2,'0')}-${String(new Date(y,m+1,0).getDate()).padStart(2,'0')}`;
@@ -4099,6 +4183,8 @@ function shareStaff(){
     const mAdv=advs.filter(a=>{try{const pd=new Date(a.raw);return pd.getFullYear()===y&&pd.getMonth()===m;}catch(e){return false;}});
     const totAdv=mAdv.reduce((s,a)=>s+a.amt,0);
     const net=Math.max(0,earned-totAdv);
+    const salPaidM=ld('gl_sal_'+h.id,[]).filter(s=>s.ym===y+'-'+m).reduce((s2,x)=>s2+x.amt,0);
+    const netRem=Math.max(0,earned-totAdv-salPaidM);
     lines.push(`*${h.name}* — ${h.role}`);
     lines.push(`  • Present: ${present} | Absent: ${absent} | Holiday: ${holiday}`);
     lines.push(`  • Salary: ₹${h.salary} | Earned: ₹${earned}`);
