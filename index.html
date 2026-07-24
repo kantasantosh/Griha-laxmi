@@ -19,7 +19,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.33.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.34.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -1181,7 +1181,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 </div>
 
 <script>
-const APP_VERSION='2.33.0';
+const APP_VERSION='2.34.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1446,20 +1446,23 @@ function renderShop(){
     const bid='b_'+broad.replace(/[^a-z0-9]/gi,'_');
     const besc=esc(broad);
     // Category card colors — DARKEST tier (visibly darker than sub/item)
-    const GRADS=['linear-gradient(135deg,#1a3a8c,#2a5ca8)','linear-gradient(135deg,#0d5c4a,#0f8a6e)','linear-gradient(135deg,#6b3fa0,#9b59b6)','linear-gradient(135deg,#8a4a12,#c9781f)','linear-gradient(135deg,#1f5c7a,#2a8ab0)','linear-gradient(135deg,#7a1f4a,#a8306e)'];
     const imgUrl=(window._croppedAssets&&window._croppedAssets['cat:'+broad])||ASSETS[broad]||'';
-    const fallbackGrad=GRADS[catIdx%GRADS.length];
-    const patternStyle=imgUrl
-      ?`background:url('${imgUrl}') center/cover no-repeat`
-      :`background:${fallbackGrad}`;
+    // No custom art yet for this category? Reuse one of the existing category images
+    // (cycling through them) so new cards match the visual family instead of looking bare.
+    const assetKeys=Object.keys(ASSETS);
+    const reuseKey=assetKeys.length?assetKeys[catIdx%assetKeys.length]:null;
+    const reuseUrl=reuseKey?((window._croppedAssets&&window._croppedAssets['cat:'+reuseKey])||ASSETS[reuseKey]):'';
+    const finalUrl=imgUrl||reuseUrl;
+    const patternStyle=finalUrl
+      ?`background:url('${finalUrl}') center/cover no-repeat`
+      :`background:linear-gradient(135deg,#1a3a8c,#2a5ca8)`;
     catIdx++;
     // Fix 6: golden title when any item is low
     const titleColor=lowCount?'var(--gold)':'white';
     // Fix 6: show "low" badge text
     const lowBadge=lowCount?`<span class="cat-card-low">⚠ ${lowCount}</span>`:'<span class="cat-card-low" style="display:none"></span>';
 
-    html+=`<div class="cat-card" style="${patternStyle}" onclick="toggleC('${bid}')">
-      ${!imgUrl?`<div style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:38px;opacity:0.25;pointer-events:none;">${broad.split(' ')[0]}</div>`:''}
+    html+=`<div class="cat-card" style="${patternStyle}${!imgUrl&&finalUrl?';filter:saturate(0.55) brightness(0.7);':''}" onclick="toggleC('${bid}')">
       <div class="cat-card-text">
         <div class="cat-card-title" style="color:${titleColor}">${broad}
           <span class="cat-card-count">${totalItems}</span>
@@ -2099,7 +2102,7 @@ function renderMilk(){
         <div class="sb"><div class="sn" style="color:var(--p2)">${delDays}</div><div class="sl">Days Recd</div></div>
         <div class="sb"><div class="sn" style="color:var(--p2)">${totL.toFixed(1)}L</div><div class="sl">Litres</div></div>
         <div class="sb"><div class="sn" style="color:var(--amber)">₹${totBill}</div><div class="sl">Bill</div></div>
-        <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Due':bal<0?'Advance Paid':'Settled ✓'}</div></div>
+        <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Due':bal<0?'Credit Balance':'Settled ✓'}</div></div>
       </div>
       <div style="font-size:11px;color:var(--tm);margin-bottom:5px;">Tap: 1x=default qty | 2x=not delivered ❌ | 3x=custom qty</div>
       <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px;">${DS.map(d=>`<div class="dl">${d}</div>`).join('')}</div>
@@ -2274,7 +2277,7 @@ function renderSupplier(type){
         <div class="sb"><div class="sn" style="color:var(--p2)">${delDays}</div><div class="sl">Days Used</div></div>
         <div class="sb"><div class="sn" style="color:var(--amber)">₹${totAmt}</div><div class="sl">Total Spent</div></div>
         <div class="sb"><div class="sn" style="color:var(--green)">₹${totPaid}</div><div class="sl">Paid</div></div>
-        <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Due':bal<0?'Advance Paid':'Settled ✓'}</div></div>
+        <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Due':bal<0?'Credit Balance':'Settled ✓'}</div></div>
       </div>
       <div style="font-size:11px;color:var(--tm);margin-bottom:5px;">Tap a date to enter amount spent (₹0 = not used that day)</div>
       <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px;">${DS.map(d=>`<div class="dl">${d}</div>`).join('')}</div>
@@ -2417,7 +2420,7 @@ function shareSupplier(type){
     lines.push(`*${vd.name}*`);
     lines.push(`  • Days used: ${delDays} | Total: ₹${totAmt}`);
     lines.push(`  • Paid: ₹${totPaid}`);
-    lines.push(`  • ${bal>0?'Balance Due':'Settled'}: ₹${Math.abs(bal)}`);
+    lines.push(`  • ${bal>0?'Balance Due':bal<0?'Credit Balance (Advance)':'Settled ✓'}: ₹${Math.abs(bal)}`);
     lines.push('');
   });
   lines.push(`_Shared from GrihaLaxmi App_ 🪔`);
@@ -2877,44 +2880,46 @@ function renderCash(){
   const mDigitalInAmt=mT.filter(t=>t.type==='in'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
 
   document.getElementById('exp-summary').innerHTML=`
-    <div class="cbc" style="margin-bottom:13px;">
-      <div style="font-size:12px;opacity:.85;margin-bottom:8px;">💰 Overall Balance</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
-        <div style="background:rgba(255,255,255,0.18);border-radius:10px;padding:10px;">
-          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">💵 Cash in Hand</div>
-          <div style="font-size:20px;font-weight:800;">₹${cashBal.toLocaleString('en-IN')}</div>
+    <div class="cbc" style="margin-bottom:11px;padding:12px;">
+      <div style="font-size:11px;opacity:.85;margin-bottom:6px;">💰 Overall Balance</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px;">
+        <div style="background:rgba(255,255,255,0.18);border-radius:9px;padding:7px 9px;">
+          <div style="font-size:9px;opacity:0.8;margin-bottom:2px;">💵 Cash in Hand</div>
+          <div style="font-size:17px;font-weight:800;">₹${cashBal.toLocaleString('en-IN')}</div>
         </div>
-        <div style="background:rgba(255,255,255,0.18);border-radius:10px;padding:10px;">
-          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">🏦 Bank Balance</div>
-          <div style="font-size:20px;font-weight:800;">₹${digitalBal.toLocaleString('en-IN')}</div>
-        </div>
-      </div>
-      <div style="background:rgba(255,255,255,0.3);border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.45);margin-bottom:10px;">
-        <div style="font-size:10px;opacity:0.85;margin-bottom:3px;">📊 Total (Cash + Bank)</div>
-        <div style="font-size:22px;font-weight:800;">₹${totalBal.toLocaleString('en-IN')}</div>
-      </div>
-      <div style="font-size:11px;opacity:.75;margin-bottom:6px;">${MN[m]} ${y} — This Month</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
-        <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px;">
-          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">💚 Cash Received</div>
-          <div style="font-size:16px;font-weight:800;">₹${mCashInAmt.toLocaleString('en-IN')}</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px;">
-          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">📲 Bank Received</div>
-          <div style="font-size:16px;font-weight:800;">₹${mDigitalInAmt.toLocaleString('en-IN')}</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px;">
-          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">🔴 Cash Spent</div>
-          <div style="font-size:16px;font-weight:800;">₹${mCashExp.toLocaleString('en-IN')}</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px;">
-          <div style="font-size:10px;opacity:0.8;margin-bottom:3px;">💳 Bank Spent</div>
-          <div style="font-size:16px;font-weight:800;">₹${mDigitalExp.toLocaleString('en-IN')}</div>
+        <div style="background:rgba(255,255,255,0.18);border-radius:9px;padding:7px 9px;">
+          <div style="font-size:9px;opacity:0.8;margin-bottom:2px;">🏦 Bank Balance</div>
+          <div style="font-size:17px;font-weight:800;">₹${digitalBal.toLocaleString('en-IN')}</div>
         </div>
       </div>
-      <div style="background:rgba(255,255,255,0.3);border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.45);">
-        <div style="font-size:10px;opacity:0.85;margin-bottom:3px;">📊 Total Spent This Month</div>
-        <div style="font-size:20px;font-weight:800;">₹${mTotalExp.toLocaleString('en-IN')}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+        <div style="background:rgba(255,255,255,0.3);border-radius:9px;padding:7px 9px;border:1px solid rgba(255,255,255,0.45);">
+          <div style="font-size:9px;opacity:0.85;margin-bottom:2px;">📊 Total (Cash+Bank)</div>
+          <div style="font-size:16px;font-weight:800;">₹${totalBal.toLocaleString('en-IN')}</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.3);border-radius:9px;padding:7px 9px;border:1px solid rgba(255,255,255,0.45);">
+          <div style="font-size:9px;opacity:0.85;margin-bottom:2px;">📊 Total Spent (Month)</div>
+          <div style="font-size:16px;font-weight:800;">₹${mTotalExp.toLocaleString('en-IN')}</div>
+        </div>
+      </div>
+      <div style="font-size:10px;opacity:.7;margin-bottom:5px;">${MN[m]} ${y} — This Month</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:rgba(255,255,255,0.12);border-radius:9px;padding:7px 9px;">
+          <div style="font-size:9px;opacity:0.8;margin-bottom:2px;">💚 Cash Recd</div>
+          <div style="font-size:14px;font-weight:800;">₹${mCashInAmt.toLocaleString('en-IN')}</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.12);border-radius:9px;padding:7px 9px;">
+          <div style="font-size:9px;opacity:0.8;margin-bottom:2px;">📲 Bank Recd</div>
+          <div style="font-size:14px;font-weight:800;">₹${mDigitalInAmt.toLocaleString('en-IN')}</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.12);border-radius:9px;padding:7px 9px;">
+          <div style="font-size:9px;opacity:0.8;margin-bottom:2px;">🔴 Cash Spent</div>
+          <div style="font-size:14px;font-weight:800;">₹${mCashExp.toLocaleString('en-IN')}</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.12);border-radius:9px;padding:7px 9px;">
+          <div style="font-size:9px;opacity:0.8;margin-bottom:2px;">💳 Bank Spent</div>
+          <div style="font-size:14px;font-weight:800;">₹${mDigitalExp.toLocaleString('en-IN')}</div>
+        </div>
       </div>
     </div>`;
   if(!mT.length){document.getElementById('cash-list').innerHTML='<div class="es"><div style="font-size:44px">💸</div><div>No entries this month.<br>Tap "+ Entry" to start!</div></div>';return;}
@@ -4153,7 +4158,7 @@ function shareMilk(){
     lines.push(`  • Rate: ₹${mm.rate}/L | Default: ${mm.qty}L/day`);
     lines.push(`  • Days received: ${delDays} | Total: ${totL.toFixed(1)}L`);
     lines.push(`  • Bill: ₹${totBill} | Paid: ₹${totPaid}`);
-    lines.push(`  • ${bal>0?'Balance Due':'Settled'}: ₹${Math.abs(bal)}`);
+    lines.push(`  • ${bal>0?'Balance Due':bal<0?'Credit Balance (Advance)':'Settled ✓'}: ₹${Math.abs(bal)}`);
     lines.push('');
   });
   lines.push(`_Shared from GrihaLaxmi App_ 🪔`);
