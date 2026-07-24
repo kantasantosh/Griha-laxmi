@@ -19,7 +19,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.34.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.35.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -109,6 +109,7 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 .tab{display:none;padding:0 8px 8px;}
 .tab.active{display:block;}
 .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+#tab-organiser .sh,#tab-household .sh{position:sticky;z-index:71;background:var(--bg);padding:6px 0;margin-bottom:8px;}
 .st{font-size:18px;font-weight:800;color:var(--gold);}
 .ab{background:linear-gradient(135deg,var(--p2),var(--p3));color:white;border:none;border-radius:20px;padding:7px 14px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(26,90,173,0.4);}
 
@@ -343,6 +344,20 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
         <button onclick="openAddBroad()" title="Add Category" style="flex:0 0 auto;height:32px;box-sizing:border-box;border:1px solid rgba(245,200,66,0.25);color:var(--gold);border-radius:8px;padding:0 8px;font-size:10px;font-weight:700;background:var(--bg);white-space:nowrap;cursor:pointer;font-family:inherit;">+ Category</button>
       </div>
     </div>
+    <!-- Cart header — sticky, shown only in Cart view -->
+    <div id="shop-sticky-cart" style="display:none;background:var(--card);border-left:1px solid var(--border);border-right:1px solid var(--border);border-top:1px solid var(--border);padding:8px 10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:14px;font-weight:800;color:var(--gold);">🛒 My Cart</div>
+        <div style="display:flex;gap:5px;">
+          <button onclick="printCart()" style="border:1px solid var(--border);color:#c8d8f0;border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="PDF of cart items only">📄 PDF</button>
+          <button onclick="saveCart()" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="Save List">💾 Save</button>
+        </div>
+      </div>
+    </div>
+    <!-- History header — sticky, shown only in History view -->
+    <div id="shop-sticky-history" style="display:none;background:var(--card);border-left:1px solid var(--border);border-right:1px solid var(--border);border-top:1px solid var(--border);padding:8px 10px;">
+      <div style="font-size:14px;font-weight:800;color:var(--gold);">📋 Saved Lists</div>
+    </div>
   </div><!-- end shop-sticky -->
 
   <!-- Content panel -->
@@ -354,20 +369,12 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
     </div>
 
     <!-- CART VIEW -->
-    <div id="sv-cart" style="display:none;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-        <div style="font-size:15px;font-weight:800;color:var(--gold);">🛒 My Cart</div>
-        <div style="display:flex;gap:5px;">
-          <button onclick="printCart()" style="border:1px solid var(--border);color:#c8d8f0;border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="PDF of cart items only">📄 PDF</button>
-          <button onclick="saveCart()" style="border:1px solid var(--border);color:var(--tm);border-radius:8px;padding:5px 10px;font-size:11px;background:var(--bg2);font-family:inherit;font-weight:700;cursor:pointer;" title="Save List">💾 Save</button>
-        </div>
-      </div>
+    <div id="sv-cart" style="display:none;padding-top:8px;">
       <div id="cart-list"></div>
     </div>
 
     <!-- HISTORY VIEW -->
-    <div id="sv-history" style="display:none;">
-      <div style="font-size:17px;font-weight:800;color:var(--gold);margin-bottom:14px;">📋 Saved Lists</div>
+    <div id="sv-history" style="display:none;padding-top:8px;">
       <div id="hist-list"></div>
     </div>
 
@@ -442,7 +449,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
   <div id="exp-summary"></div>
   <div class="mnav"><button class="mb" onclick="chCash(-1)">◀</button><div class="ml" id="cash-ml"></div><button class="mb" onclick="chCash(1)">▶</button></div>
   <div class="sh">
-    <div class="st">💸 Expenses</div>
+    <div class="st">💰 Payments &amp; Receipts</div>
     <div style="display:flex;gap:6px;flex-wrap:wrap;">
       <button onclick="printCashReport()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
       <button onclick="openDaybook()" style="background:white;border:1.5px solid var(--gold);color:#8a6d1a;border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📒 Day Book</button>
@@ -468,7 +475,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
         
       </div>
     </div>
-    <div class="mnav"><button class="mb" onclick="chHelp(-1)">◀</button><div class="ml" id="help-ml"></div><button class="mb" onclick="chHelp(1)">▶</button></div>
+    <div class="mnav"><button class="mb" onclick="chHelp(-1)">◀</button><div class="ml" id="help-ml"></div><button class="mb" style="margin-right:52px;" onclick="chHelp(1)">▶</button></div>
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:9px;font-size:11px;color:var(--tm);">
       <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--green);margin-right:3px;"></span>Present</span>
       <span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--rl);border:1px solid var(--red);margin-right:3px;"></span>Absent</span>
@@ -486,7 +493,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
         <button class="ab" onclick="openM('m-addmilkman')">+ Add Milkman</button>
       </div>
     </div>
-    <div class="mnav"><button class="mb" onclick="chMilk(-1)">◀</button><div class="ml" id="milk-ml"></div><button class="mb" onclick="chMilk(1)">▶</button></div>
+    <div class="mnav"><button class="mb" onclick="chMilk(-1)">◀</button><div class="ml" id="milk-ml"></div><button class="mb" style="margin-right:52px;" onclick="chMilk(1)">▶</button></div>
     <div id="milk-list"></div>
   </div>
 
@@ -522,7 +529,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 <!-- Themed dialog -->
 
 <!-- v2.23: Sign-in gate -->
-<div id="auth-gate" style="display:none;position:fixed;inset:0;z-index:99999;background:linear-gradient(160deg,#0a1226,#122240);flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:30px;text-align:center;">
+<div id="auth-gate" style="display:flex;position:fixed;inset:0;z-index:99999;background:linear-gradient(160deg,#0a1226,#122240);flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:30px;text-align:center;">
   <div style="font-size:52px;">🪔</div>
   <div style="font-size:24px;font-weight:800;color:var(--gold);">GrihaLaxmi</div>
   <div style="font-size:13px;color:#b8cce8;max-width:280px;line-height:1.6;">Family app — sign in with your Google account to continue</div>
@@ -927,7 +934,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 <!-- Add Contact -->
 <div class="mo" id="m-addcon">
   <div class="md"><button class="mc2" onclick="closeM('m-addcon')">✕</button><h2>Add Contact</h2>
-    <button id="c-pick-btn" onclick="pickFromContacts('c-name','c-ph')" style="display:none;width:100%;background:var(--pl);border:1.5px solid var(--p2);color:var(--p1);border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:12px;">📇 Pick from Phone Contacts</button>
+    <button id="c-pick-btn" onclick="pickFromContacts('c-name','c-ph')" style="display:none;width:100%;background:var(--pl);border:1.5px solid var(--p2);color:var(--text);border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:12px;">📇 Pick from Phone Contacts</button>
     <div class="fg"><label class="fl">Name</label><input class="fi" id="c-name" placeholder="e.g. Suresh Plumber"/></div>
     <div class="fg"><label class="fl">Service</label><select class="fi" id="c-role"><option value="🔧 Plumber">🔧 Plumber</option><option value="⚡ Electrician">⚡ Electrician</option><option value="❄️ AC Repair">❄️ AC Repair</option><option value="🪵 Carpenter">🪵 Carpenter</option><option value="🎨 Painter">🎨 Painter</option><option value="🔒 Locksmith">🔒 Locksmith</option><option value="🚗 Car Mechanic">🚗 Car Mechanic</option><option value="📺 Appliance Repair">📺 Appliance Repair</option><option value="🏠 Pest Control">🏠 Pest Control</option><option value="📦 Other">📦 Other</option></select></div>
     <div class="fg"><label class="fl">Phone</label><input class="fi" id="c-ph" type="tel" placeholder="e.g. 9876543210"/></div>
@@ -939,7 +946,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 <!-- Add Medical Contact -->
 <div class="mo" id="m-addmed">
   <div class="md"><button class="mc2" onclick="closeM('m-addmed')">✕</button><h2>👨‍⚕️ Add Doctor/Pharmacy</h2>
-    <button id="med-pick-btn" onclick="pickFromContacts('med-name','med-ph')" style="display:none;width:100%;background:var(--pl);border:1.5px solid var(--p2);color:var(--p1);border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:12px;">📇 Pick from Phone Contacts</button>
+    <button id="med-pick-btn" onclick="pickFromContacts('med-name','med-ph')" style="display:none;width:100%;background:var(--pl);border:1.5px solid var(--p2);color:var(--text);border-radius:var(--rsm);padding:10px;font-size:13px;font-family:inherit;font-weight:700;cursor:pointer;margin-bottom:12px;">📇 Pick from Phone Contacts</button>
     <div class="fg"><label class="fl">Name</label><input class="fi" id="med-name" placeholder="e.g. Dr. Sharma"/></div>
     <div class="fg"><label class="fl">Type</label><select class="fi" id="med-role"><option value="👨‍⚕️ Doctor">👨‍⚕️ Doctor</option><option value="💊 Pharmacy">💊 Pharmacy</option><option value="🏥 Hospital">🏥 Hospital</option><option value="🦷 Dentist">🦷 Dentist</option><option value="👁️ Eye Specialist">👁️ Eye Specialist</option><option value="🧪 Lab/Diagnostics">🧪 Lab/Diagnostics</option><option value="📦 Other">📦 Other</option></select></div>
     <div class="fg"><label class="fl">Phone</label><input class="fi" id="med-ph" type="tel" placeholder="e.g. 9876543210"/></div>
@@ -1181,7 +1188,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 </div>
 
 <script>
-const APP_VERSION='2.34.0';
+const APP_VERSION='2.35.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1341,9 +1348,13 @@ function shopView(v,btn){
   document.querySelectorAll('.nb-stab').forEach(t=>t.classList.remove('active'));
   const activeTab=document.getElementById('stab-'+v);
   if(activeTab)activeTab.classList.add('active');
-  // Show search row only in Items view
+  // Sticky region: only the active view's action row shows
   const srchRow=document.getElementById('shop-search-sticky');
   if(srchRow)srchRow.style.display=v==='items'?'block':'none';
+  const cartRow=document.getElementById('shop-sticky-cart');
+  if(cartRow)cartRow.style.display=v==='cart'?'block':'none';
+  const histRow=document.getElementById('shop-sticky-history');
+  if(histRow)histRow.style.display=v==='history'?'block':'none';
   const fb=document.getElementById('fab-btn');
   if(fb)fb.style.display=v==='items'?'flex':'none';
   window._shopV=v;
@@ -1362,6 +1373,7 @@ function orgView(v,btn){
   if(btn)btn.classList.add('active');
   _activeOrgView=v;
   ({bills:renderBills,todo:renderTodo,services:()=>{renderCon();renderMedCon();},notes:renderNotes})[v]?.();
+  setTimeout(fixStickyTop,30);
 }
 function svcView(v,btn){
   ['repair','medical'].forEach(x=>document.getElementById('sv-'+x).style.display=x===v?'block':'none');
@@ -1376,6 +1388,7 @@ function hhView(v,btn){
   if(btn)btn.classList.add('active');
   _activeHHView=v;
   ({help:renderHelp,milk:renderMilk,fruitwala:()=>renderSupplier('fruitwala'),dhobi:()=>renderSupplier('dhobi')})[v]?.();
+  setTimeout(fixStickyTop,30);
 }
 
 // MODALS
@@ -1402,7 +1415,7 @@ function openM(id){if(id==='m-addtxn'){fillTxnLink();setTimeout(updBalPreview,50
   }
   if(id==='m-sosset')renderSOSSet();
 }
-function closeM(id){document.getElementById(id).classList.remove('open');if(id==='m-addtodo')stopVoice();}
+function closeM(id){document.getElementById(id).classList.remove('open');if(id==='m-addtodo')stopVoice();if(_pendingViewRefresh){_pendingViewRefresh=false;setTimeout(renderActiveView,50);}}
 document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
 
 // SHOPPING
@@ -2102,7 +2115,7 @@ function renderMilk(){
         <div class="sb"><div class="sn" style="color:var(--p2)">${delDays}</div><div class="sl">Days Recd</div></div>
         <div class="sb"><div class="sn" style="color:var(--p2)">${totL.toFixed(1)}L</div><div class="sl">Litres</div></div>
         <div class="sb"><div class="sn" style="color:var(--amber)">₹${totBill}</div><div class="sl">Bill</div></div>
-        <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Due':bal<0?'Credit Balance':'Settled ✓'}</div></div>
+        <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Credit Balance':bal<0?'Debit Balance':'Settled ✓'}</div></div>
       </div>
       <div style="font-size:11px;color:var(--tm);margin-bottom:5px;">Tap: 1x=default qty | 2x=not delivered ❌ | 3x=custom qty</div>
       <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px;">${DS.map(d=>`<div class="dl">${d}</div>`).join('')}</div>
@@ -2113,7 +2126,7 @@ function renderMilk(){
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
         <button class="mb" onclick="chMilk(-1)">◀</button>
         <span style="font-size:12px;color:var(--tm);font-weight:700;">${MN[m]} ${y}</span>
-        <button class="mb" onclick="chMilk(1)">▶</button>
+        <button class="mb" style="margin-right:52px;" onclick="chMilk(1)">▶</button>
       </div>
     </div>`;
   });
@@ -2140,7 +2153,7 @@ function renderMilk(){
     const pe=document.getElementById('mpay-'+mm.id);
     if(pe)pe.innerHTML=pays.length?pays.map(p=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--tm);">${p.date}${p.note?' • '+p.note:''}</span><span style="font-weight:700;color:var(--green);">₹${p.amt.toLocaleString('en-IN')}</span></div>`).join(''):`<div style="color:var(--tm);font-size:13px;text-align:center;padding:6px;">No payments this month</div>`;
     const be=document.getElementById('mbal-'+mm.id);
-    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px;"><span style="color:var(--tm);">Total Milk</span><span style="font-weight:700;color:var(--p3);">${totL2} L</span></div><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Bill</span><span>₹${totBill2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid <a href="javascript:void(0)" onclick="openPayHist('gl_mpay_'+'${mm.id}','${mm.name}',renderMilk)" style="color:var(--p2);text-decoration:underline;font-size:11px;">view/edit</a></span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Balance Due':bal2<0?'Advance with Vendor':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
+    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px;"><span style="color:var(--tm);">Total Milk</span><span style="font-weight:700;color:var(--p3);">${totL2} L</span></div><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Bill</span><span>₹${totBill2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid <a href="javascript:void(0)" onclick="openPayHist('gl_mpay_'+'${mm.id}','${mm.name}',renderMilk)" style="color:var(--p2);text-decoration:underline;font-size:11px;">view/edit</a></span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Credit Balance':bal2<0?'Debit Balance':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
   });
 }
 function tapMilkDay(mid,key,d){
@@ -2277,7 +2290,7 @@ function renderSupplier(type){
         <div class="sb"><div class="sn" style="color:var(--p2)">${delDays}</div><div class="sl">Days Used</div></div>
         <div class="sb"><div class="sn" style="color:var(--amber)">₹${totAmt}</div><div class="sl">Total Spent</div></div>
         <div class="sb"><div class="sn" style="color:var(--green)">₹${totPaid}</div><div class="sl">Paid</div></div>
-        <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Due':bal<0?'Credit Balance':'Settled ✓'}</div></div>
+        <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Credit Balance':bal<0?'Debit Balance':'Settled ✓'}</div></div>
       </div>
       <div style="font-size:11px;color:var(--tm);margin-bottom:5px;">Tap a date to enter amount spent (₹0 = not used that day)</div>
       <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px;">${DS.map(d=>`<div class="dl">${d}</div>`).join('')}</div>
@@ -2288,7 +2301,7 @@ function renderSupplier(type){
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
         <button class="mb" onclick="chSupplier('${type}',-1)">◀</button>
         <span style="font-size:12px;color:var(--tm);font-weight:700;">${MN[m]} ${y}</span>
-        <button class="mb" onclick="chSupplier('${type}',1)">▶</button>
+        <button class="mb" style="margin-right:52px;" onclick="chSupplier('${type}',1)">▶</button>
       </div>
     </div>`;
   });
@@ -2315,7 +2328,7 @@ function renderSupplier(type){
     const pe=document.getElementById('suppay-'+type+'-'+vd.id);
     if(pe)pe.innerHTML=pays.length?pays.map(p=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--tm);">${p.date}${p.note?' • '+p.note:''}</span><span style="font-weight:700;color:var(--green);">₹${p.amt.toLocaleString('en-IN')}</span></div>`).join(''):`<div style="color:var(--tm);font-size:13px;text-align:center;padding:6px;">No payments this month</div>`;
     const be=document.getElementById('supbal-'+type+'-'+vd.id);
-    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Spent</span><span>₹${totAmt2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid <a href="javascript:void(0)" onclick="openPayHist('gl_suppay_'+'${type}'+'_'+'${vd.id}','${vd.name}',()=>renderSupplier('${type}'))" style="color:var(--p2);text-decoration:underline;font-size:11px;">view/edit</a></span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Balance Due':bal2<0?'Advance with Vendor':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
+    if(be)be.innerHTML=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;"><span>Total Spent</span><span>₹${totAmt2.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:13px;margin-top:3px;"><span style="color:var(--tm);">Paid <a href="javascript:void(0)" onclick="openPayHist('gl_suppay_'+'${type}'+'_'+'${vd.id}','${vd.name}',()=>renderSupplier('${type}'))" style="color:var(--p2);text-decoration:underline;font-size:11px;">view/edit</a></span><span style="color:var(--green);font-weight:700;">₹${totPaid.toLocaleString('en-IN')}</span></div><div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin-top:5px;color:${bal2>0?'var(--red)':'var(--green)'};"><span>${bal2>0?'Credit Balance':bal2<0?'Debit Balance':'All Settled ✓'}</span><span>₹${Math.abs(bal2).toLocaleString('en-IN')}</span></div></div>`;
   });
 }
 function tapSupplierDay(type,vid,key,d){
@@ -2420,7 +2433,7 @@ function shareSupplier(type){
     lines.push(`*${vd.name}*`);
     lines.push(`  • Days used: ${delDays} | Total: ₹${totAmt}`);
     lines.push(`  • Paid: ₹${totPaid}`);
-    lines.push(`  • ${bal>0?'Balance Due':bal<0?'Credit Balance (Advance)':'Settled ✓'}: ₹${Math.abs(bal)}`);
+    lines.push(`  • ${bal>0?'Credit Balance':bal<0?'Debit Balance':'Settled ✓'}: ₹${Math.abs(bal)}`);
     lines.push('');
   });
   lines.push(`_Shared from GrihaLaxmi App_ 🪔`);
@@ -2516,7 +2529,7 @@ function renderHelp(){
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
         <button class="mb" onclick="chHelp(-1)">◀</button>
         <span style="font-size:12px;color:var(--tm);font-weight:700;">${MN[m]} ${y}</span>
-        <button class="mb" onclick="chHelp(1)">▶</button>
+        <button class="mb" style="margin-right:52px;" onclick="chHelp(1)">▶</button>
       </div>
     </div>`;
   });
@@ -2704,9 +2717,11 @@ function showChangelog(){
 }
 (function(){
   const vb=document.getElementById('ver-badge');if(!vb)return;
-  let t;const down=()=>{t=setTimeout(showChangelog,600);};const up=()=>clearTimeout(t);
-  vb.addEventListener('touchstart',down,{passive:true});vb.addEventListener('touchend',up);
+  vb.style.webkitTouchCallout='none';vb.style.webkitUserSelect='none';vb.style.userSelect='none';
+  let t;const down=(e)=>{if(e.cancelable)e.preventDefault();t=setTimeout(showChangelog,550);};const up=()=>clearTimeout(t);
+  vb.addEventListener('touchstart',down,{passive:false});vb.addEventListener('touchend',up);vb.addEventListener('touchmove',up);
   vb.addEventListener('mousedown',down);vb.addEventListener('mouseup',up);vb.addEventListener('mouseleave',up);
+  vb.addEventListener('contextmenu',e=>e.preventDefault());
 })();
 async function pickContact(phoneId,nameId){
   if(!('contacts' in navigator&&'select' in navigator.contacts)){toast('Contact picker needs Chrome on Android');return;}
@@ -3671,6 +3686,26 @@ async function syncNow(silent){
 }
 // live listener: changes from other phones appear automatically
 let _liveUnsub=null,_lastApplied=0;
+
+// v2.35: refresh only what's actually on screen (fixes "several taps needed" —
+// a background sync update was previously re-rendering ALL tabs, including the
+// one the user was actively tapping, orphaning their in-flight click)
+let _pendingViewRefresh=false;
+function renderActiveView(){
+  try{
+    if(_activeTab==='shopping'){
+      if(window._shopV==='cart')renderCart();
+      else if(window._shopV==='history')renderHist();
+      else renderShop();
+    }else if(_activeTab==='organiser'){
+      ({bills:renderBills,todo:renderTodo,services:()=>{renderCon();renderMedCon();},notes:renderNotes})[_activeOrgView]?.();
+    }else if(_activeTab==='cash'){
+      renderCash();
+    }else if(_activeTab==='household'){
+      ({help:renderHelp,milk:renderMilk,fruitwala:()=>renderSupplier('fruitwala'),dhobi:()=>renderSupplier('dhobi')})[_activeHHView]?.();
+    }
+  }catch(e){}
+}
 function _liveApply(d){
   if(!d.updatedAt||d.updatedAt<=_lastApplied)return;
   _lastApplied=d.updatedAt;
@@ -3681,7 +3716,10 @@ function _liveApply(d){
   });
   _origSv('gl_key_ts',ts);
   if(applied){
-    [()=>renderShop(),()=>renderCart(),()=>renderHist(),()=>updCart(),()=>renderBills(),()=>renderCash(),()=>renderHelp(),()=>renderTodo(),()=>renderNotes(),()=>renderMilk(),()=>renderCon(),()=>renderMedCon(),()=>renderSupplier('fruitwala'),()=>renderSupplier('dhobi'),()=>renderSvc&&renderSvc()].forEach(f=>{try{f();}catch(e){}});
+    const at=document.activeElement;
+    const busy=!!document.querySelector('.mo.open')||(at&&['INPUT','SELECT','TEXTAREA'].includes(at.tagName));
+    if(busy){_pendingViewRefresh=true;}
+    else{renderActiveView();}
     toast('☁️ Updated from '+(d.by||'family'));
   }
 }
@@ -4158,7 +4196,7 @@ function shareMilk(){
     lines.push(`  • Rate: ₹${mm.rate}/L | Default: ${mm.qty}L/day`);
     lines.push(`  • Days received: ${delDays} | Total: ${totL.toFixed(1)}L`);
     lines.push(`  • Bill: ₹${totBill} | Paid: ₹${totPaid}`);
-    lines.push(`  • ${bal>0?'Balance Due':bal<0?'Credit Balance (Advance)':'Settled ✓'}: ₹${Math.abs(bal)}`);
+    lines.push(`  • ${bal>0?'Credit Balance':bal<0?'Debit Balance':'Settled ✓'}: ₹${Math.abs(bal)}`);
     lines.push('');
   });
   lines.push(`_Shared from GrihaLaxmi App_ 🪔`);
@@ -4342,10 +4380,18 @@ setInterval(updateDateTime,1000);
 function fixStickyTop(){
   const tb=document.querySelector('.topbar');
   if(!tb)return;
-  const t=(tb.offsetHeight-1)+'px';
+  const tPx=tb.offsetHeight-1;
+  const t=tPx+'px';
   const st=document.getElementById('shop-sticky');
   if(st)st.style.top=t;
-  document.querySelectorAll('.itabs').forEach(el=>el.style.top=t);
+  document.querySelectorAll('.itabs').forEach(el=>{
+    el.style.top=t;
+    const h=el.offsetHeight;
+    if(!h)return; // hidden (inactive tab) — nothing to stick under right now
+    const shTop=(tPx+h)+'px';
+    const root=el.closest('.tab');
+    if(root)root.querySelectorAll('.sh').forEach(sh=>{sh.style.top=shTop;});
+  });
 }
 window.addEventListener('load',fixStickyTop);
 
@@ -4488,6 +4534,7 @@ showTab=function(n,btn){
   try{localStorage.setItem('gl_last_tab',n);}catch(e){}
   setTimeout(()=>{const fb=document.getElementById('fab-btn');
     if(fb)fb.style.display=(n==='shopping'&&window._shopV&&window._shopV!=='items')?'none':'flex';},50);
+  setTimeout(fixStickyTop,30);
   return _origShowTab(n,btn);
 };
 setTimeout(()=>{
@@ -4514,7 +4561,7 @@ document.addEventListener('focusin',e=>{if(e.target.type==='date'){try{e.target.
 document.addEventListener('keydown',e=>{
   if(e.key!=='Enter'||e.target.tagName==='TEXTAREA')return;
   const mo=document.querySelector('.mo.open:not(#m-gldlg)');
-  if(mo&&e.target.tagName==='INPUT'){const b=mo.querySelector('.sb2');if(b){e.preventDefault();b.click();}}
+  if(mo&&(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')){const b=mo.querySelector('.sb2');if(b){e.preventDefault();b.click();}}
   const dlg=document.getElementById('m-gldlg');
   if(dlg&&dlg.classList.contains('open')&&e.target.id==='gldlg-input'){e.preventDefault();document.getElementById('gldlg-ok').click();}
 });
