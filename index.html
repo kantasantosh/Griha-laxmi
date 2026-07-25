@@ -19,7 +19,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.40.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.41.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;600;700;800&family=Montserrat:wght@400;600;700;800&family=Roboto:wght@400;600;700;900&family=Lora:wght@400;600;700&family=Arimo:wght@400;600;700;800&display=swap');
 
 :root{
@@ -111,7 +111,7 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 #bnav-circle,#bnav-icontext{transition:cx 0.35s cubic-bezier(0.34,1.4,0.64,1);}
 
 /* ===== TABS ===== */
-.tab{display:none;padding:0 8px 8px;}
+.tab{display:none;padding:0 8px 8px;position:relative;z-index:1;}
 .tab.active{display:block;}
 .sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 #tab-organiser .sh,#tab-household .sh{position:sticky;z-index:71;background:var(--bg);padding:6px 0;margin-bottom:8px;}
@@ -305,8 +305,8 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 </head>
 <body>
-<div id="bg-pattern-layer" style="position:fixed;inset:0;z-index:-2;background-image:url("data:image/jpeg;base64,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");background-repeat:repeat;background-size:130px 130px;pointer-events:none;"></div>
-<div id="bg-scrim-layer" style="position:fixed;inset:0;z-index:-1;background:rgba(9,19,36,0.32);pointer-events:none;"></div>
+<div id="bg-pattern-layer" style="position:fixed;inset:0;z-index:0;background-image:url("data:image/jpeg;base64,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");background-repeat:repeat;background-size:130px 130px;pointer-events:none;"></div>
+<div id="bg-scrim-layer" style="position:fixed;inset:0;z-index:0;background:rgba(9,19,36,0.32);pointer-events:none;"></div>
 
 <div class="topbar">
   <div class="topbar-brand" style="max-width:120px;">
@@ -322,7 +322,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
       <button onclick="forceSyncNow()" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.2);color:white;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Sync">☁️</button>
       <button onclick="openM('m-about')" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.2);color:white;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;" title="Settings">⚙️</button>
     </div>
-    <span id="ver-badge" style="font-size:10px;color:rgba(245,200,66,0.5);font-weight:700;"></span>
+    <span id="ver-badge" style="font-size:10px;color:rgba(245,200,66,0.5);font-weight:700;padding:10px 8px;margin:-10px -8px;display:inline-block;border-radius:8px;transition:background 0.15s,transform 0.15s;"></span>
   </div>
 </div>
 
@@ -1114,7 +1114,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
       <div style="font-size:11px;color:var(--tm);margin-top:2px;">Your Complete Home Manager</div>
     </div>
       <!-- Credits & Tech Stack -->
-      <div style="padding:16px;background:var(--card);border-radius:var(--rsm);color:white;margin-bottom:10px;border:1px solid var(--border);text-align:center;">
+      <div style="padding:16px;background:var(--card);border-radius:var(--rsm);color:var(--text);margin-bottom:10px;border:1px solid var(--border);text-align:center;">
         <div style="font-size:11px;opacity:0.6;margin-bottom:10px;letter-spacing:0.5px;">BUILT WITH ❤️ USING</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
           <!-- Claude -->
@@ -1203,7 +1203,6 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
     </div>
     <div class="fg" style="margin-top:14px;">
       <label class="fl">Font Style</label>
-      <div style="font-size:10.5px;color:var(--tm);margin:2px 0 8px;">Note: Agrandir, The Seasons &amp; Glacial Indifference aren't free web fonts, so they can't load reliably — these are the closest strong alternatives.</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
         <button onclick="setFont('rounded')" class="font-btn" data-font="rounded" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#0a1a38;font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Nunito</button>
         <button onclick="setFont('poppins')" class="font-btn" data-font="poppins" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#0a1a38;font-family:'Poppins',sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Poppins</button>
@@ -1228,7 +1227,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 </div>
 
 <script>
-const APP_VERSION='2.40.0';
+const APP_VERSION='2.41.0';
 const APP_BUILD='25 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -2742,12 +2741,21 @@ function showAudit(){
   document.getElementById('changelog-body').innerHTML='<b>📜 Audit Log (last 200)</b><br><br>'+body;
   openM('m-changelog');
 }
-const CHANGELOG=`v2.40.0 (25 Jul)
+const CHANGELOG=`v2.41.0 (25 Jul)
+• Background STILL not showing — real cause found: layers used negative z-index, which
+  can render behind the browser's own canvas paint on mobile. Fixed to use normal DOM order.
+• Dashboard "Transferred This Month" removed — was a bolt-on patch. Real fix: Cash/Bank
+  Recd &amp; Spent now naturally include transfers for that account (correct definition)
+• Credits card text was white-on-white on Warm/Green themes — fixed
+• Version-number touch target enlarged (was tiny with zero padding) + visual press feedback added
+• Font picker's developer-facing technical note removed from user-visible UI
+
+v2.40.0 (25 Jul)
 • Day Book was silently excluding all transfer entries from single-account ledgers — fixed
 • Contra (transfer) entries can now be edited, not just deleted
 • Background pattern had a genuine CSS syntax error (mismatched parentheses) breaking it entirely — found and fixed
 • Category cards were double-darkened (two stacked effects) — simplified to one, restoring vibrancy
-• CashBook dashboard now shows a "Transferred This Month" line so contra-funded balances are traceable at a glance
+• CashBook dashboard: Recd/Spent per account now naturally include transfers (no more misleading "0" figures)
 • Warm Saffron / Nature Green themes: fixed several hardcoded light-text colours that were unreadable on light backgrounds
 
 v2.39.1 (25 Jul)\n• Selected font now clearly highlighted (gold border + checkmark) — was too subtle to notice before\n\nv2.39.0 (25 Jul)
@@ -2814,7 +2822,13 @@ function showChangelog(){
 (function(){
   const vb=document.getElementById('ver-badge');if(!vb)return;
   vb.style.webkitTouchCallout='none';vb.style.webkitUserSelect='none';vb.style.userSelect='none';
-  let t;const down=(e)=>{if(e.cancelable)e.preventDefault();t=setTimeout(showChangelog,550);};const up=()=>clearTimeout(t);
+  let t;
+  const down=(e)=>{
+    if(e.cancelable)e.preventDefault();
+    vb.style.background='rgba(245,200,66,0.25)';vb.style.transform='scale(0.92)';
+    t=setTimeout(showChangelog,550);
+  };
+  const up=()=>{clearTimeout(t);vb.style.background='';vb.style.transform='';};
   vb.addEventListener('touchstart',down,{passive:false});vb.addEventListener('touchend',up);vb.addEventListener('touchmove',up);
   vb.addEventListener('mousedown',down);vb.addEventListener('mouseup',up);vb.addEventListener('mouseleave',up);
   vb.addEventListener('contextmenu',e=>e.preventDefault());
@@ -2983,14 +2997,22 @@ function renderCash(){
 
   const totalBal=cashBal+digitalBal;
 
+  // "Recd"/"Spent" for a specific account correctly INCLUDE transfers touching that
+  // account — a transfer genuinely is a real inflow/outflow of that one account,
+  // even though it nets to zero across cash+bank combined. This makes the boxes
+  // below reconcile on their own — no separate "transferred" line needed.
+  const mCashContraIn=mT.filter(t=>t.type==='contra'&&t.contraTo==='cash').reduce((s,t)=>s+t.amt,0);
+  const mCashContraOut=mT.filter(t=>t.type==='contra'&&t.contraFrom==='cash').reduce((s,t)=>s+t.amt,0);
+  const mBankContraIn=mT.filter(t=>t.type==='contra'&&t.contraTo==='bank').reduce((s,t)=>s+t.amt,0);
+  const mBankContraOut=mT.filter(t=>t.type==='contra'&&t.contraFrom==='bank').reduce((s,t)=>s+t.amt,0);
   // This month — real income/expense only, contra excluded since it's a transfer not income/expense
-  const mCashExp=mT.filter(t=>t.type==='out'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0);
-  const mDigitalExp=mT.filter(t=>t.type==='out'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
-  const mContraToBank=mT.filter(t=>t.type==='contra'&&t.contraTo==='bank').reduce((s,t)=>s+t.amt,0);
-  const mContraToCash=mT.filter(t=>t.type==='contra'&&t.contraTo==='cash').reduce((s,t)=>s+t.amt,0);
-  const mTotalExp=mCashExp+mDigitalExp;
-  const mCashInAmt=mT.filter(t=>t.type==='in'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0);
-  const mDigitalInAmt=mT.filter(t=>t.type==='in'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
+  const mCashExpReal=mT.filter(t=>t.type==='out'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0);
+  const mDigitalExpReal=mT.filter(t=>t.type==='out'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0);
+  const mCashExp=mCashExpReal+mCashContraOut;
+  const mDigitalExp=mDigitalExpReal+mBankContraOut;
+  const mTotalExp=mCashExpReal+mDigitalExpReal; // real expenses only — a transfer between your own accounts isn't a household expense
+  const mCashInAmt=mT.filter(t=>t.type==='in'&&t.mode==='💵 Cash').reduce((s,t)=>s+t.amt,0)+mCashContraIn;
+  const mDigitalInAmt=mT.filter(t=>t.type==='in'&&digitalModes.includes(t.mode)).reduce((s,t)=>s+t.amt,0)+mBankContraIn;
 
   document.getElementById('exp-summary').innerHTML=`
     <div class="cbc" style="margin-bottom:11px;padding:12px;">
@@ -3034,10 +3056,7 @@ function renderCash(){
           <div style="font-size:14px;font-weight:800;">₹${mDigitalExp.toLocaleString('en-IN')}</div>
         </div>
       </div>
-      ${(mContraToBank||mContraToCash)?`<div style="margin-top:8px;background:rgba(155,89,182,0.25);border-radius:9px;padding:7px 9px;border:1px solid rgba(155,89,182,0.4);">
-        <div style="font-size:9px;opacity:0.85;margin-bottom:2px;">🔄 Transferred This Month${mContraToBank&&mContraToCash?' (both ways)':''}</div>
-        <div style="font-size:13px;font-weight:800;">${mContraToBank?`Cash → Bank: ₹${mContraToBank.toLocaleString('en-IN')}`:''}${mContraToBank&&mContraToCash?' · ':''}${mContraToCash?`Bank → Cash: ₹${mContraToCash.toLocaleString('en-IN')}`:''}</div>
-      </div>`:''}
+      <div style="font-size:8.5px;opacity:0.55;margin-top:6px;">Cash/Bank Recd &amp; Spent include any transfers between your own accounts</div>
     </div>`;
   if(!mT.length){document.getElementById('cash-list').innerHTML='<div class="es"><div style="font-size:44px">💸</div><div>No entries this month.<br>Tap "+ Entry" to start!</div></div>';return;}
   const sorted=[...mT].sort((a,b)=>new Date(b.raw)-new Date(a.raw));
