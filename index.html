@@ -19,8 +19,8 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.38.3 — Indian Dark Theme ===== */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+/* ===== GRIHALAXMI v2.39.0 — Indian Dark Theme ===== */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;600;700;800&family=Montserrat:wght@400;600;700;800&family=Roboto:wght@400;600;700;900&family=Lora:wght@400;600;700&family=Arimo:wght@400;600;700;800&display=swap');
 
 :root{
   /* Brand — navy blue base */
@@ -71,15 +71,17 @@ body.theme-warm{
   --cat-a:#fff3e8;--cat-b:#ffeedd;
   --input-bg:white;--input-border:#f0c090;--input-text:#2a1000;
 }
-body.font-system{--font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
 body.font-rounded{--font-body:'Nunito',sans-serif;}
-body.font-serif{--font-body:Georgia,'Times New Roman',serif;}
-body.font-mono{--font-body:'Courier New',Courier,monospace;}
+body.font-poppins{--font-body:'Poppins',sans-serif;}
+body.font-montserrat{--font-body:'Montserrat',sans-serif;}
+body.font-roboto{--font-body:'Roboto',sans-serif;}
+body.font-lora{--font-body:'Lora',serif;}
+body.font-arimo{--font-body:'Arimo',sans-serif;}
 
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 button,a{transition:transform 0.08s ease,opacity 0.08s ease;}
 button:active,a:active{transform:scale(0.96);opacity:0.85;}
-body{font-family:var(--font-body);background-color:var(--bg);background-image:linear-gradient(rgba(9,19,36,0.72),rgba(9,19,36,0.72)),url("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHCAkIBgoJCAkMCwoMDxoRDw4ODx8WGBMaJSEnJiQhJCMpLjsyKSw4LCMkM0Y0OD0/QkNCKDFITUhATTtBQj//2wBDAQsMDA8NDx4RER4/KiQqPz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz//wAARCADIAMgDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAQACAwf/xAAkEAADAAMAAgMBAAIDAAAAAAAAARECITESQVFhcTKBoSJCkf/EABcBAQEBAQAAAAAAAAAAAAAAAAABAwL/xAAVEQEBAAAAAAAAAAAAAAAAAAAAAf/aAAwDAQACEQMRAD8A8wapngpul41m7BY/10Wk2ZahpPQFlwyTdHxAUvYtUOL5LFgZNY9LxDjA1FaGXofLVM9YEaSgeP2LcQE1eGTS2g8XAhx4MVplOMXlooMtZB0us14xgKU4DXtFk/ge4gYN4/yDxcBOAaSnCDLL4IA3HQxs+iSdKx8IpcmzJN1mktbAMZfs0YkY+QCrWTvjser4DFAONmyynvoeX0HWBGsYHjoOAbdmgxs0Hl9C02ionYhV9ktIz5AOUv2ZJbZp460QOMmiys0Z4x8uaKFXxUB9ULJNjxfICZc9F5OAlQIha9oiAbhkjSXyFGPTT0wbhNK/oFlwyaqTgtUAT9C3DMhbYEOPRShNxgVVgZFFRTrKjJpO/otX9MbQVtv0YGNmkkggx4N9BVYSSv4AZf0RpOk1f0CTpN+jPCSbAjWP8iuBboBTpAotogObQp/Jow1GyK04yb3wF010Ai6xbgZcMgPSemaSKUCTvSiZg1j0orvgpJMZumcpr5CFufplbZG0ogMcZtNMmqYA3FaCavCx/wBmoAJJFk/SDLoJASVJaZuTSDJaoCmoES2jJvHgAo9SEKUII5qp7GJhNPdFIjoNQk9C2ZAumvHQJo0BetAvvhJS0vXyA+KMtQ0lEGTX6BeWvsFtkaxYF4onWtC9oEnPgqFcjDxJqpTZpcAxsXlr7LJoyApNs14osWWSbWgJ184XVvpTSVhNNtQC8f8A0ytM6GMnWBZO8ICAEoTbotwyRV7NJaBWi3GANQq4OW0DQGurZJQE/TFuAZ8milLo4gMUMmvJUsroqDyYtVfZlmscvTAUojPkxyfpGY3wBSrNPHWgx4KdcAzwVk20WV8g4wNNUeY6DF0HleATbhJUIzacx3oAa+CFOkByNYrQNaBOEVrJwv8ABJ1wnboCu4PUDcRNhA0XSSpZKbCtJRaJtpoE4KdKiivCTbYbvRbjAWk1sx7FuklWQC706cRhqCsp0ob/AMoSS+CTqBW7AcXSyWqTyj4DdYASVY4q7BqEHT0ZtbpLLX2O2taKDlaUIsb7IAMPorT6KjIoTjNGWvaABb9AKVNRQCXCCpkolehAWLhpRg1Cq0ZboeoKVZEBviKKbDqvChchg1/K+RiAMX6NejDUK6gE3WS6OKveGnFsCeiy4D3uwuRAZNYv0MphqAbbhGWyAzra+RShJA+kUt+kZJKs2tAZThrqDJezIGpC01FoVwkoUSUQN/AClSA9UU500ZagRpxrYaSjMm5UUETQ6SLUMALd/C9Dir011AZT9M01UYajJdQGtLTKXYtUnwC4jLbYGsV7AOEaapAc29aJKgaUmiKpGDbuhy/0W9ATVQNfA/8AYQMpwW/QOXRASVNJQUZdpUVdFqlu/QJOgTULF7hr1sw/oBbpLGkp7NgCUBN0t+Q738ATVfQahYp/4NOTYGU/kG6QqXYEsdGtpa2RlWugKpE7GQGGtaBOGk7wH3hFSbbFqsynGbTqAG4tA3SboAKVFr2hX8knQMpw0m2Za3wk4A+O/oW4NUphulE3RS9gbbiAy1CTaNWrRjYRtOrYLHfQxyhpuIAbjBu7JukuoBS+QahptInwAWTHuJkU/TAcVCFuEBzU2/gU6CdcgqLRFTXtGRbvOElUBJU16MJw3VAC20tJVFpLRLfqAKdBr4Goy3fwIvoUvkJqknArbcWw6tlUXCorFoVsFtcg1ToA18GfoW6TWqRTivbFtIynPw049FQONVlZFNE3NQdNVgPTDUNVQy3WBdZE1CIqMv3CIBW2aIgDJezJEBtcIiCMCtkQVszkiIqA31EQWpybMERCNYr2aIiow1GS7siIrTLLhEVGDeK1SIB9ERAf/9k="));background-repeat:repeat;background-size:130px 130px;background-blend-mode:normal;color:var(--text);min-height:100vh;padding-bottom:72px;}
+body{font-family:var(--font-body);background-color:var(--bg);background-image:linear-gradient(rgba(9,19,36,0.3),rgba(9,19,36,0.3)),url("data:image/jpeg;base64,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"));background-repeat:repeat;background-size:130px 130px;background-blend-mode:normal;color:var(--text);min-height:100vh;padding-bottom:72px;}
 h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 
 /* ===== TOPBAR ===== */
@@ -1164,20 +1166,37 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
   <div class="md"><button class="mc2" onclick="closeM('m-settings')">✕</button><h2>⚙️ Appearance</h2>
     <div class="fg">
       <label class="fl">Theme</label>
+      <div style="font-size:10.5px;color:var(--tm);margin:2px 0 8px;">Preview strip shows this theme's real background + card + gold-accent colours before you pick it.</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
-        <button onclick="setTheme('')" class="theme-btn" data-theme="" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--p2);background:linear-gradient(135deg,#1a3a8c,#0071e3);color:white;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer;">🔵 Classic Blue</button>
-        <button onclick="setTheme('dark')" class="theme-btn" data-theme="dark" style="padding:10px;border-radius:var(--rsm);border:2px solid #333;background:linear-gradient(135deg,#0f1a30,#1a3a8c);color:white;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer;">🌙 Dark</button>
-        <button onclick="setTheme('green')" class="theme-btn" data-theme="green" style="padding:10px;border-radius:var(--rsm);border:2px solid #27ae60;background:linear-gradient(135deg,#1a6b3a,#27ae60);color:white;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer;">🌿 Nature Green</button>
-        <button onclick="setTheme('warm')" class="theme-btn" data-theme="warm" style="padding:10px;border-radius:var(--rsm);border:2px solid #e07020;background:linear-gradient(135deg,#7a3000,#e07020);color:white;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer;">🔥 Warm Saffron</button>
+        <button onclick="setTheme('')" class="theme-btn" data-theme="" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--p2);background:#0c1a2e;color:white;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer;">
+          <div style="display:flex;gap:3px;margin-bottom:6px;"><span style="width:14px;height:14px;border-radius:3px;background:#0c1a2e;border:1px solid #333;"></span><span style="width:14px;height:14px;border-radius:3px;background:#1a5aad;"></span><span style="width:14px;height:14px;border-radius:3px;background:#f5c842;"></span></div>
+          🔵 Classic Blue
+        </button>
+        <button onclick="setTheme('dark')" class="theme-btn" data-theme="dark" style="padding:10px;border-radius:var(--rsm);border:2px solid #333;background:#0a0a0a;color:white;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer;">
+          <div style="display:flex;gap:3px;margin-bottom:6px;"><span style="width:14px;height:14px;border-radius:3px;background:#0a0a0a;border:1px solid #333;"></span><span style="width:14px;height:14px;border-radius:3px;background:#1a3a8c;"></span><span style="width:14px;height:14px;border-radius:3px;background:#f5c842;"></span></div>
+          🌙 Dark
+        </button>
+        <button onclick="setTheme('green')" class="theme-btn" data-theme="green" style="padding:10px;border-radius:var(--rsm);border:2px solid #27ae60;background:#f0fff5;color:#0a2015;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer;">
+          <div style="display:flex;gap:3px;margin-bottom:6px;"><span style="width:14px;height:14px;border-radius:3px;background:#f0fff5;border:1px solid #ccc;"></span><span style="width:14px;height:14px;border-radius:3px;background:#27ae60;"></span><span style="width:14px;height:14px;border-radius:3px;background:#f5c842;"></span></div>
+          🌿 Nature Green
+        </button>
+        <button onclick="setTheme('warm')" class="theme-btn" data-theme="warm" style="padding:10px;border-radius:var(--rsm);border:2px solid #e07020;background:#fff8f0;color:#2a1000;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer;">
+          <div style="display:flex;gap:3px;margin-bottom:6px;"><span style="width:14px;height:14px;border-radius:3px;background:#fff8f0;border:1px solid #ccc;"></span><span style="width:14px;height:14px;border-radius:3px;background:#e07020;"></span><span style="width:14px;height:14px;border-radius:3px;background:#f5c842;"></span></div>
+          🔥 Warm Saffron
+        </button>
       </div>
+      <div style="font-size:10px;color:var(--red);margin-top:8px;">⚠️ Note: switching theme does not yet re-tint the background pattern image (it stays navy-toned) — Green/Warm themes may clash with it until that's fixed in a future update.</div>
     </div>
     <div class="fg" style="margin-top:14px;">
       <label class="fl">Font Style</label>
+      <div style="font-size:10.5px;color:var(--tm);margin:2px 0 8px;">Note: Agrandir, The Seasons &amp; Glacial Indifference aren't free web fonts, so they can't load reliably — these are the closest strong alternatives.</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
-        <button onclick="setFont('system')" class="font-btn" data-font="system" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#0a1a38;font-family:-apple-system,sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa System</button>
-        <button onclick="setFont('rounded')" class="font-btn" data-font="rounded" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#0a1a38;font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Rounded</button>
-        <button onclick="setFont('serif')" class="font-btn" data-font="serif" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#0a1a38;font-family:Georgia,serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Serif</button>
-        <button onclick="setFont('mono')" class="font-btn" data-font="mono" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#0a1a38;font-family:'Courier New',monospace;font-weight:700;font-size:12px;cursor:pointer;">Aa Mono</button>
+        <button onclick="setFont('rounded')" class="font-btn" data-font="rounded" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#0a1a38;font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Nunito</button>
+        <button onclick="setFont('poppins')" class="font-btn" data-font="poppins" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#0a1a38;font-family:'Poppins',sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Poppins</button>
+        <button onclick="setFont('montserrat')" class="font-btn" data-font="montserrat" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#0a1a38;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Montserrat</button>
+        <button onclick="setFont('roboto')" class="font-btn" data-font="roboto" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#0a1a38;font-family:'Roboto',sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Roboto</button>
+        <button onclick="setFont('lora')" class="font-btn" data-font="lora" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#0a1a38;font-family:'Lora',serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Lora</button>
+        <button onclick="setFont('arimo')" class="font-btn" data-font="arimo" style="padding:10px;border-radius:var(--rsm);border:2px solid var(--border);background:white;color:#0a1a38;font-family:'Arimo',sans-serif;font-weight:700;font-size:12px;cursor:pointer;">Aa Arimo</button>
       </div>
     </div>
     <button class="sb2" onclick="closeM('m-settings')" style="margin-top:16px;">✓ Done</button>
@@ -1195,7 +1214,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 </div>
 
 <script>
-const APP_VERSION='2.38.3';
+const APP_VERSION='2.39.0';
 const APP_BUILD='25 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1483,7 +1502,7 @@ function renderShop(){
     const lowBadge=lowCount?`<span class="cat-card-low">⚠ ${lowCount}</span>`:'<span class="cat-card-low" style="display:none"></span>';
 
     html+=`<div class="cat-card" style="${patternStyle};filter:saturate(0.7) brightness(${!imgUrl&&finalUrl?0.55:0.8});" onclick="toggleC('${bid}')">
-      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,14,30,0.55) 0%,rgba(6,14,30,0.15) 45%,transparent 70%);pointer-events:none;z-index:1;"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,14,30,0.55) 0%,rgba(6,14,30,0.2) 45%,rgba(6,14,30,0.35) 75%,rgba(6,14,30,0.55) 100%);pointer-events:none;z-index:1;"></div>
       <div class="cat-card-text">
         <div class="cat-card-title" style="color:${titleColor}">${broad}
           <span class="cat-card-count">${totalItems}</span>
@@ -2709,7 +2728,15 @@ function showAudit(){
   document.getElementById('changelog-body').innerHTML='<b>📜 Audit Log (last 200)</b><br><br>'+body;
   openM('m-changelog');
 }
-const CHANGELOG=`v2.38.3 (25 Jul)\n• Repair/Medical contact "WhatsApp" button was a generic chat bubble, not the actual WhatsApp mark — fixed with a real glyph\n\nv2.38.2 (25 Jul)
+const CHANGELOG=`v2.39.0 (25 Jul)
+• Fonts replaced with real, reliable options: Nunito, Poppins, Montserrat, Roboto, Lora, Arimo
+• Theme picker now shows real colour-preview swatches before you choose
+• Contra transfer rows now show the actual per-account effect, not "no effect on total"
+• Category card right edge no longer left un-darkened behind the action buttons
+• Page background pattern brightened (was over-darkened to near invisibility)
+• Long-press changelog re-verified end-to-end with real timing simulation
+
+v2.38.3 (25 Jul)\n• Repair/Medical contact "WhatsApp" button was a generic chat bubble, not the actual WhatsApp mark — fixed with a real glyph\n\nv2.38.2 (25 Jul)
 • Nav bar fully reverted to the original flat design (bubble/notch idea dropped)
 • Category card gap restored to the tighter original spacing
 • Items tab icon changed (was a yellow folder) • Version number dimmed
@@ -2993,7 +3020,7 @@ function renderCash(){
         <div style="font-size:22px">🔄</div>
         <div style="flex:1;min-width:0">
           <div style="font-weight:700;font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.desc}</div>
-          <div style="font-size:11px;color:var(--tm);margin-top:2px">${t.date} • Contra (no effect on total)</div>
+          <div style="font-size:11px;color:var(--tm);margin-top:2px">${t.date} • ${t.contraFrom==='cash'?'💵 Cash':'🏦 Bank'} −₹${t.amt.toLocaleString('en-IN')} → ${t.contraTo==='bank'?'🏦 Bank':'💵 Cash'} +₹${t.amt.toLocaleString('en-IN')}</div>
         </div>
         <div style="text-align:right;flex-shrink:0">
           <div style="font-size:14px;font-weight:800;color:var(--purple);white-space:nowrap">₹${t.amt.toLocaleString('en-IN')}</div>
@@ -3900,7 +3927,7 @@ function setTheme(theme){
   });
 }
 function setFont(font){
-  document.body.classList.remove('font-system','font-rounded','font-serif','font-mono');
+  document.body.classList.remove('font-rounded','font-poppins','font-montserrat','font-roboto','font-lora','font-arimo');
   if(font)document.body.classList.add('font-'+font);
   localStorage.setItem('gl_font',font);
   document.querySelectorAll('.font-btn').forEach(b=>{
