@@ -19,7 +19,7 @@
 <title>GrihaLaxmi</title>
 <link rel="manifest" href="manifest.json">
 <style>
-/* ===== GRIHALAXMI v2.35.0 — Indian Dark Theme ===== */
+/* ===== GRIHALAXMI v2.36.0 — Indian Dark Theme ===== */
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 :root{
@@ -45,6 +45,7 @@
 }
 /* Light theme override */
 body.theme-light{
+  --paisley-op:0.12;
   --p1:#1a3a8c;--p2:#0071e3;--pl:#e8f0fe;--pd:#0051a8;
   --text:#1a2440;--tm:#6b7a99;--border:#dde4f0;
   --bg:#f0f4ff;--bg2:#e8f0fe;--bg3:#dde4f0;
@@ -78,7 +79,7 @@ body.font-mono{--font-body:'Courier New',Courier,monospace;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 button,a{transition:transform 0.08s ease,opacity 0.08s ease;}
 button:active,a:active{transform:scale(0.96);opacity:0.85;}
-body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:72px;}
+body{font-family:var(--font-body);background-color:var(--bg);background-image:url("data:image/svg+xml,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='160'%20height='160'><g%20fill='none'%20stroke='%23f5c842'%20stroke-width='0.6'%20opacity='0.5'><path%20d='M20%2080c0-20%2016-36%2036-36s36%2016%2036%2036-16%2036-36%2036c-14%200-22-10-22-22s10-18%2018-18%2014%206%2014%2014-6%2010-10%2010'/><circle%20cx='120'%20cy='30'%20r='14'/><circle%20cx='120'%20cy='30'%20r='7'/><path%20d='M10%20140c8-10%2020-10%2028%200s6%2022-4%2026-18-2-16-12%208-10%2012-4'/><path%20d='M140%20110c-6%208-16%208-22%200s-4-18%204-20%2014%202%2012%2010'/></g></svg>");background-repeat:repeat;background-size:160px 160px;background-attachment:fixed;color:var(--text);min-height:100vh;padding-bottom:88px;}
 h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 
 /* ===== TOPBAR ===== */
@@ -99,11 +100,12 @@ h1,h2,h3{font-family:var(--font-body);font-weight:800;}
 @keyframes fdflip{0%{transform:rotateX(0);}50%{transform:rotateX(-88deg);}100%{transform:rotateX(0);}}
 
 /* ===== BOTTOM NAV ===== */
-.bnav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:100;box-shadow:0 -4px 20px rgba(10,26,46,0.4);}
-.nb{flex:1;display:flex;flex-direction:column;align-items:center;padding:7px 1px 6px;border:none;background:none;cursor:pointer;font-family:inherit;color:#b8cce8;font-size:11px;font-weight:700;gap:2px;position:relative;}
-.nb.active{color:var(--gold);}
-.nb.active::before{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:linear-gradient(90deg,var(--gold),var(--p3));border-radius:0 0 2px 2px;}
-.ni{font-size:20px;line-height:1;}
+.bnav{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);width:min(94%,420px);background:rgba(14,28,52,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(245,200,66,0.18);border-radius:30px;display:flex;z-index:100;box-shadow:0 10px 30px rgba(0,0,0,0.45);padding:6px;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;padding:9px 1px 7px;border:none;background:none;cursor:pointer;font-family:inherit;color:#8098c0;font-size:10px;font-weight:700;gap:2px;position:relative;z-index:2;transition:color 0.25s;}
+.nb.active{color:transparent;}
+.ni{font-size:19px;line-height:1;transition:opacity 0.2s;}
+.nb.active .ni{opacity:0;}
+.nb-bubble{position:absolute;top:-16px;left:0;width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a020);box-shadow:0 4px 16px rgba(245,200,66,0.5),0 0 0 4px rgba(14,28,52,0.92);display:flex;align-items:center;justify-content:center;font-size:21px;z-index:1;transition:left 0.35s cubic-bezier(0.34,1.4,0.64,1);pointer-events:none;}
 
 /* ===== TABS ===== */
 .tab{display:none;padding:0 8px 8px;}
@@ -221,9 +223,10 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .mc2{float:right;background:var(--card);border:1px solid var(--border);border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer;line-height:30px;text-align:center;color:var(--tm);}
 .sb2{width:100%;background:linear-gradient(135deg,var(--p2),var(--p3));color:white;border:none;border-radius:var(--rsm);padding:13px;font-size:15px;font-family:inherit;font-weight:700;cursor:pointer;margin-top:6px;box-shadow:0 3px 10px rgba(26,90,173,0.4);}
 .es{text-align:center;padding:36px 20px;color:var(--tm);}
+.gilt{border:1.5px dashed rgba(245,200,66,0.55)!important;}
 
 /* ===== FAB ===== */
-.fab{position:fixed;bottom:80px;right:16px;width:48px;height:48px;border-radius:50%;background:rgba(13,30,60,0.85);color:var(--gold);border:2px solid rgba(245,200,66,0.65);font-size:26px;cursor:pointer;box-shadow:none;z-index:90;display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.2s;}
+.fab{position:fixed;bottom:96px;right:16px;width:48px;height:48px;border-radius:50%;background:rgba(13,30,60,0.85);color:var(--gold);border:2px solid rgba(245,200,66,0.65);font-size:26px;cursor:pointer;box-shadow:none;z-index:90;display:flex;align-items:center;justify-content:center;line-height:1;transition:all 0.2s;}
 .fab:hover,.fab:active{background:linear-gradient(135deg,rgba(26,90,173,0.6),rgba(245,200,66,0.3));border-color:rgba(245,200,66,0.6);color:white;box-shadow:0 4px 20px rgba(245,200,66,0.2);}
 .hero{background:linear-gradient(135deg,var(--p1),var(--p2));border-radius:var(--radius);padding:16px;margin-bottom:14px;color:white;box-shadow:0 4px 20px rgba(26,90,173,0.3);}
 
@@ -448,11 +451,11 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 <div class="tab" id="tab-cash">
   <div id="exp-summary"></div>
   <div class="mnav"><button class="mb" onclick="chCash(-1)">◀</button><div class="ml" id="cash-ml"></div><button class="mb" onclick="chCash(1)">▶</button></div>
-  <div class="sh">
-    <div class="st">💰 Payments &amp; Receipts</div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;">
-      <button onclick="printCashReport()" style="background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
-      <button onclick="openDaybook()" style="background:white;border:1.5px solid var(--gold);color:#8a6d1a;border-radius:22px;padding:7px 12px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📒 Day Book</button>
+  <div style="margin-bottom:10px;">
+    <div class="st" style="margin-bottom:8px;">💰 Payments &amp; Receipts</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <button onclick="printCashReport()" style="width:100%;background:white;border:1.5px solid var(--teal);color:var(--teal);border-radius:20px;padding:8px 4px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📄 PDF</button>
+      <button onclick="openDaybook()" style="width:100%;background:white;border:1.5px solid var(--gold);color:#8a6d1a;border-radius:20px;padding:8px 4px;font-size:12px;font-family:inherit;font-weight:700;cursor:pointer;">📒 Day Book</button>
     </div>
   </div>
   <div id="cash-list"></div>
@@ -619,11 +622,12 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 <button class="fab" id="fab-btn" onclick="fabAction()" title="Add new item">＋</button>
 
 <!-- BOTTOM NAV -->
-<nav class="bnav">
-  <button class="nb active" onclick="showTab('shopping',this)"><span class="ni">🛒</span>Shopping</button>
-  <button class="nb" onclick="showTab('organiser',this)"><span class="ni">📋</span>Organiser</button>
-  <button class="nb" onclick="showTab('cash',this)"><span class="ni">💰</span>₹ Book</button>
-  <button class="nb" onclick="showTab('household',this)"><span class="ni">🏠</span>Household</button>
+<nav class="bnav" id="bnav">
+  <div class="nb-bubble" id="nb-bubble">🛒</div>
+  <button class="nb active" data-icon="🛒" onclick="showTab('shopping',this)"><span class="ni">🛒</span>Shopping</button>
+  <button class="nb" data-icon="📋" onclick="showTab('organiser',this)"><span class="ni">📋</span>Organiser</button>
+  <button class="nb" data-icon="💰" onclick="showTab('cash',this)"><span class="ni">💰</span>₹ Book</button>
+  <button class="nb" data-icon="🏠" onclick="showTab('household',this)"><span class="ni">🏠</span>Household</button>
 </nav>
 
 <!-- ===== MODALS ===== -->
@@ -1188,7 +1192,7 @@ input[type=checkbox]:checked::before{content:'✓';position:absolute;top:-3px;le
 </div>
 
 <script>
-const APP_VERSION='2.35.0';
+const APP_VERSION='2.36.0';
 const APP_BUILD='19 Jul 2026';
 const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DS=['S','M','T','W','T','F','S'];
@@ -1657,7 +1661,7 @@ function renderCart(){
     pending.forEach(item=>{
       const k=esc(item._key);
       const qtyLabel=item.qty!=null&&item.qty!==''?` <span style="color:var(--p2);font-weight:700;">(${item.qty}${item.unit?' '+item.unit:''})</span>`:'';
-      html+=`<div style="display:flex;align-items:center;gap:8px;padding:9px 11px;background:var(--card);border-radius:var(--rsm);margin-bottom:4px;border:1px solid var(--border);">
+      html+=`<div class="gilt" style="display:flex;align-items:center;gap:8px;padding:9px 11px;background:var(--card);border-radius:var(--rsm);margin-bottom:4px;">
         <input type="checkbox" style="width:20px;height:20px;cursor:pointer;accent-color:var(--green);flex-shrink:0;" onchange="markPurchased('${k}',this.checked)"/>
         <span style="flex:1;font-size:13px;font-weight:600;color:var(--text)">${item.name}${qtyLabel}</span>
         <span style="font-size:10px;color:var(--tm)">${item.sub||''}</span>
@@ -1912,7 +1916,7 @@ function renderBills(){
       statusBadge=`<span style="font-size:11px;color:var(--tm)">Due: ${b.dueDay}th</span>`;
     }
 
-    html+=`<div style="background:${bgCol};border:1px solid var(--border);border-left:4px solid ${borderCol};border-radius:10px;padding:7px 10px;margin-bottom:6px;"
+    html+=`<div class="gilt" style="background:${bgCol};border-left:4px solid ${borderCol};border-radius:10px;padding:7px 10px;margin-bottom:6px;"
       ondblclick="editBill(${b.id})" title="Double tap to edit">
       <div style="display:flex;align-items:center;gap:10px;">
         <div style="font-size:21px">${b.icon}</div>
@@ -2091,9 +2095,10 @@ function renderMilk(){
     const del=ld('gl_mdel_'+mm.id,{});const key=y+'-'+m;const md=del[key]||{};
     let totL=0,delDays=0;
     for(let d=1;d<=dim;d++){
-      if(new Date(y,m,d)<=tdn&&md[d]!==undefined&&md[d]!==null){
-        const q=parseFloat(md[d])||0;if(q>0){totL+=q;delDays++;}
-      }
+      if(new Date(y,m,d)>tdn)continue;
+      const raw=md[d];
+      const q=raw===undefined?mm.qty:(parseFloat(raw)||0); // no tap yet = assume delivered at default qty
+      if(q>0){totL+=q;delDays++;}
     }
     const totBill=Math.round(totL*mm.rate);
     const pays=ld('gl_mpay_'+mm.id,[]).filter(p=>{const pd=new Date(p.raw);return pd.getFullYear()===y&&pd.getMonth()===m;});
@@ -2117,7 +2122,7 @@ function renderMilk(){
         <div class="sb"><div class="sn" style="color:var(--amber)">₹${totBill}</div><div class="sl">Bill</div></div>
         <div class="sb"><div class="sn" style="color:${bal>0?'var(--red)':'var(--green)'}">₹${Math.abs(bal)}</div><div class="sl">${bal>0?'Credit Balance':bal<0?'Debit Balance':'Settled ✓'}</div></div>
       </div>
-      <div style="font-size:11px;color:var(--tm);margin-bottom:5px;">Tap: 1x=default qty | 2x=not delivered ❌ | 3x=custom qty</div>
+      <div style="font-size:11px;color:var(--tm);margin-bottom:5px;">Every day assumes default qty unless marked. Tap: 1x=Not delivered ❌ | 2x=custom qty | 3x=back to default</div>
       <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:3px;">${DS.map(d=>`<div class="dl">${d}</div>`).join('')}</div>
       <div class="mcg" id="mcal-${mm.id}"></div>
       <div style="font-weight:700;font-size:13px;margin:11px 0 7px;color:var(--p1);">💰 Payments</div>
@@ -2137,18 +2142,18 @@ function renderMilk(){
     let cal='';for(let i=0;i<fd;i++)cal+='<div></div>';
     for(let d=1;d<=dim;d++){
       const fut=new Date(y,m,d)>tdn;
-      const qty=md[d]!==undefined?parseFloat(md[d]):null;
-      const hasQ=qty!==null&&qty>0;const isN=qty===0;
+      const raw=md[d];
+      const qty=fut?null:(raw===undefined?mm.qty:parseFloat(raw));
+      const hasQ=!fut&&qty>0;const isN=!fut&&qty===0;
       const cls=fut?'fut':hasQ?'hq':isN?'nm':'';
-      const ql=fut?'':(qty===null?`${mm.qty}?`:qty===0?'❌':`${qty}L`);
-      const qs=qty===null&&!fut?'color:#b0bcd4;font-style:italic;':'';;
-      cal+=`<div class="mc ${cls}" onclick="${fut?'':` tapMilkDay('${mm.id}','${key}',${d})`}"><span class="mcd">${d}</span><span class="mcq" style="${qs}">${ql}</span></div>`;
+      const ql=fut?'':(qty>0?`${qty}L`:'❌');
+      cal+=`<div class="mc ${cls}" onclick="${fut?'':` tapMilkDay('${mm.id}','${key}',${d})`}"><span class="mcd">${d}</span><span class="mcq">${ql}</span></div>`;
     }
     const ce=document.getElementById('mcal-'+mm.id);if(ce)ce.innerHTML=cal;
     const pays=ld('gl_mpay_'+mm.id,[]).filter(p=>{const pd=new Date(p.raw);return pd.getFullYear()===y&&pd.getMonth()===m;});
     const totPaid=pays.reduce((s,p)=>s+p.amt,0);
     let totL2=0;
-    for(let d=1;d<=dim;d++){if(new Date(y,m,d)<=tdn&&md[d]!==undefined){const q=parseFloat(md[d])||0;if(q>0)totL2+=q;}}
+    for(let d=1;d<=dim;d++){if(new Date(y,m,d)>tdn)continue;const raw=md[d];const q=raw===undefined?mm.qty:(parseFloat(raw)||0);if(q>0)totL2+=q;}
     const totBill2=Math.round(totL2*mm.rate);const bal2=totBill2-totPaid;
     const pe=document.getElementById('mpay-'+mm.id);
     if(pe)pe.innerHTML=pays.length?pays.map(p=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--tm);">${p.date}${p.note?' • '+p.note:''}</span><span style="font-weight:700;color:var(--green);">₹${p.amt.toLocaleString('en-IN')}</span></div>`).join(''):`<div style="color:var(--tm);font-size:13px;text-align:center;padding:6px;">No payments this month</div>`;
@@ -2160,9 +2165,8 @@ function tapMilkDay(mid,key,d){
   const del=ld('gl_mdel_'+mid,{});if(!del[key])del[key]={};
   const mm=ld('gl_milkmen',[]).find(m=>m.id===mid);if(!mm)return;
   const cur=del[key][d];
-  if(cur===undefined){del[key][d]=mm.qty;sv('gl_mdel_'+mid,del);renderMilk();}
-  else if(parseFloat(cur)>0){del[key][d]=0;sv('gl_mdel_'+mid,del);renderMilk();}
-  else{
+  if(cur===undefined){del[key][d]=0;sv('gl_mdel_'+mid,del);renderMilk();} // was implied-default -> mark Not Delivered
+  else if(parseFloat(cur)===0){
     document.getElementById('me-title').textContent=mm.name+' — Day '+d;
     document.getElementById('me-qty').value='';
     document.getElementById('me-day').value=d;
@@ -2170,6 +2174,7 @@ function tapMilkDay(mid,key,d){
     document.getElementById('me-mid').value=mid;
     openM('m-milkentry');
   }
+  else{delete del[key][d];sv('gl_mdel_'+mid,del);renderMilk();} // was custom qty -> reset back to default
 }
 function saveMilkEntry(){
   const d=parseInt(document.getElementById('me-day').value);
@@ -2698,18 +2703,33 @@ function showAudit(){
   document.getElementById('changelog-body').innerHTML='<b>📜 Audit Log (last 200)</b><br><br>'+body;
   openM('m-changelog');
 }
-const CHANGELOG=`v2.18.0 (20 Jul)
-• Clock second-accurate • Bill payment window → CashBook
-• PIN protection (deletes + settings) • Audit log with user names
-• Back-swipe stays in app • Last tab remembered on refresh
-• Contact picker 📇 • Notes readable • Visibility fixes
+const CHANGELOG=`v2.35.0 (22 Jul)
+• Sticky headers on all tabs • Targeted sync refresh (fixes sluggish taps)
+• Debit/Credit accounting terms corrected • Cart & History headers now sticky
+• Contact-picker text visibility fixed • Long-press changelog hardened
 
-v2.17.0 — Two-way CashBook↔Staff/Vendor sync, contra both-side preview
-v2.16.0 — PNG auto-crop (uniform cards), sticky sub-tabs, bigger fonts
-v2.15.0 — Voucher balance preview, About redesign
-v2.14.0 — Cart-only PDF, soft bill accents, Bills→CashBook
-v2.13.0 — Print-based PDF (jsPDF removed), 2-line clock, back nav
-v2.12.0 — Search fixed, colors laddered, clock simplified`;
+v2.34.0 — CashBook dashboard compressed • New categories reuse existing art
+v2.33.0 — Contact-picker styling unified • Bank Spent added to dashboard
+v2.32.0 — Day Book chip highlighting • Payment mode selector everywhere
+v2.31.0 — Net Salary settlement (separate from Advance), staff ledger
+v2.30.0 — 30+ automated tests added before every release, going forward
+v2.29.0 — Sync Status panel in About • Legacy-doc auto-migration
+v2.28.0 — Professional Cash Book report (letterhead, tables, no emoji)
+v2.27.0 — Print letterhead redesign • Day Book presets (This/Last/3 Months)
+v2.26.0 — Template reuse no longer mixes lists • FAB visibility fixed
+v2.25.0 — Day Book proper ledger (Dr/Cr columns, opening/closing balance)
+v2.24.0 — Per-user private data + optional Family Group join code
+v2.23.0 — Google Sign-In required • Admin PIN bypass • Copyright notice
+v2.22.0 — Firebase live sync (Pilates-style, no manual codes)
+v2.20.0 — Firebase cloud sync foundation laid
+v2.19.0 — Bill payment window • PIN protection • Audit log • Contact picker
+v2.18.0 — Clock second-accurate • Themed dialogs replacing browser popups
+v2.17.0 — Two-way CashBook ↔ Staff/Vendor sync
+v2.16.0 — PNG auto-crop (uniform category cards), sticky sub-tabs
+v2.15.0 — Voucher balance preview, About page redesign
+v2.14.0 — Cart-only PDF, soft bill accent colours, Bills→CashBook
+v2.13.0 — Print-based PDF, two-line clock, in-app back navigation
+v2.12.0 — Search fixed, colour ladder, simplified clock`;
 function showChangelog(){
   const ab=document.getElementById('m-about');if(ab&&ab.classList.contains('open'))closeM('m-about');
   document.getElementById('changelog-body').textContent=CHANGELOG;
@@ -2956,7 +2976,7 @@ function renderCash(){
         </div>
       </div>`;
     }
-    return `<div class="tr ${t.type==='out'?'out':''}" style="border-left-color:${t.type==='out'?'var(--red)':'var(--green)'}">
+    return `<div class="tr gilt ${t.type==='out'?'out':''}" style="border-left-color:${t.type==='out'?'var(--red)':'var(--green)'}">
       <div style="font-size:22px">${t.cat?t.cat.split(' ')[0]:'💰'}</div>
       <div style="flex:1;min-width:0">
         <div style="font-weight:700;font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.desc}</div>
@@ -4393,6 +4413,23 @@ function fixStickyTop(){
     if(root)root.querySelectorAll('.sh').forEach(sh=>{sh.style.top=shTop;});
   });
 }
+
+// v2.36: sliding bubble indicator for the floating pill nav bar
+function positionNavBubble(){
+  try{
+    const bar=document.getElementById('bnav');
+    const bubble=document.getElementById('nb-bubble');
+    const active=bar&&bar.querySelector('.nb.active');
+    if(!bar||!bubble||!active)return;
+    const barRect=bar.getBoundingClientRect();
+    const btnRect=active.getBoundingClientRect();
+    const left=(btnRect.left-barRect.left)+(btnRect.width/2)-(bubble.offsetWidth/2);
+    bubble.style.left=Math.max(4,left)+'px';
+    bubble.textContent=active.dataset.icon||'';
+  }catch(e){}
+}
+window.addEventListener('load',()=>setTimeout(positionNavBubble,80));
+window.addEventListener('resize',positionNavBubble);
 window.addEventListener('load',fixStickyTop);
 
 // v2.16: auto-crop transparent margins from Canva PNGs so all cards render identical geometry
@@ -4535,6 +4572,7 @@ showTab=function(n,btn){
   setTimeout(()=>{const fb=document.getElementById('fab-btn');
     if(fb)fb.style.display=(n==='shopping'&&window._shopV&&window._shopV!=='items')?'none':'flex';},50);
   setTimeout(fixStickyTop,30);
+  setTimeout(positionNavBubble,30);
   return _origShowTab(n,btn);
 };
 setTimeout(()=>{
